@@ -1,4 +1,5 @@
 const { fontFamily } = require("tailwindcss/defaultTheme")
+const plugin = require("tailwindcss/plugin")
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -72,5 +73,27 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".content-auto": {
+          "content-visibility": "auto",
+        },
+        ".content-hidden": {
+          "content-visibility": "hidden",
+        },
+        ".content-visible": {
+          "content-visibility": "visible",
+        },
+        "*::-webkit-scrollbar": {
+          display: "none",
+        },
+        body: {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
+        },
+      })
+    }),
+  ],
 }

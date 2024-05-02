@@ -8,36 +8,7 @@ import { Button } from "../ui/button"
 import { Checkbox } from "../ui/checkbox"
 import { DataTableRowActions } from "./row-actions"
 
-declare module "@tanstack/react-table" {
-  interface ColumnMeta<TData extends RowData, TValue> {
-    width: string
-  }
-}
-
 export const columns: ColumnDef<TableRowMember>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-
   {
     id: "zone",
     accessorKey: "zone",
@@ -72,9 +43,6 @@ export const columns: ColumnDef<TableRowMember>[] = [
           ) : null}
         </div>
       )
-    },
-    meta: {
-      width: "1/3",
     },
   },
   {

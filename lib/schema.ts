@@ -22,8 +22,8 @@ export type Beneficiary = z.infer<typeof BeneficiarySchema>
 export const MemberSchama = z.object({
   id: z.string(),
   name: z.string(),
-  registrationDate: z.date(),
-  dob: z.date(),
+  registrationDate: z.string(),
+  dob: z.string(),
   isCollector: z.boolean(),
   isCoordinator: z.boolean(),
   isIsolated: z.boolean(),
@@ -46,7 +46,5 @@ export type Member = z.infer<typeof MemberSchama>
 
 export type TableRowMember = Pick<
   Member,
-  "id" | "name" | "address" | "chapel" | "primaryBeneficiaryId"
-> & {
-  zoneName: string
-}
+  "id" | "name" | "address" | "chapel" | "primaryBeneficiaryId" | "zone"
+>

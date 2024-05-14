@@ -1,14 +1,13 @@
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { ColumnDef, RowData } from "@tanstack/react-table"
 
-import { TableRowMember } from "@/lib/schema"
+import { Member } from "@/lib/schema"
 
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
-import { Checkbox } from "../ui/checkbox"
 import { DataTableRowActions } from "./row-actions"
 
-export const columns: ColumnDef<TableRowMember>[] = [
+export const columns: ColumnDef<Member>[] = [
   {
     id: "zone",
     accessorKey: "zone",

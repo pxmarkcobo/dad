@@ -44,17 +44,16 @@ import Sidebar from "@/components/sidebar"
 export default function Dashboard() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <MobileSidebar />
+      <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <Sidebar />
+        <MobileSidebar />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
           <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-            <Tabs defaultValue="week">
+            <Tabs defaultValue="all">
               <div className="flex items-center">
                 <TabsList>
-                  <TabsTrigger value="week">All</TabsTrigger>
-                  <TabsTrigger value="month">Members</TabsTrigger>
-                  <TabsTrigger value="year">Officers</TabsTrigger>
+                  <TabsTrigger value="all">All</TabsTrigger>
+                  <TabsTrigger value="officers">Officers</TabsTrigger>
                 </TabsList>
                 <div className="ml-auto flex items-center gap-2">
                   <DropdownMenu>
@@ -100,12 +99,12 @@ export default function Dashboard() {
                   </Button>
                 </div>
               </div>
-              <TabsContent value="week">
+              <TabsContent value="all">
                 <Card x-chunk="dashboard-05-chunk-3">
                   <CardHeader className="px-7">
-                    <CardTitle>Orders</CardTitle>
+                    <CardTitle>Members</CardTitle>
                     <CardDescription>
-                      Recent orders from your store.
+                      Active members of the organization
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -119,26 +118,14 @@ export default function Dashboard() {
             <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
               <CardHeader className="flex flex-row items-start bg-muted/50">
                 <div className="grid gap-0.5">
-                  <CardTitle className="group flex items-center gap-2 text-lg">
-                    Order Oe31b70H
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="size-6 opacity-0 transition-opacity group-hover:opacity-100"
-                    >
-                      <Copy className="size-3" />
-                      <span className="sr-only">Copy Order ID</span>
-                    </Button>
+                  <CardTitle className="text-lg">
+                    Abbie Claire Golosino
                   </CardTitle>
-                  <CardDescription>Date: November 23, 2023</CardDescription>
+                  <CardDescription>
+                    Registration Date: November 23, 2023
+                  </CardDescription>
                 </div>
                 <div className="ml-auto flex items-center gap-1">
-                  <Button size="sm" variant="outline" className="h-8 gap-1">
-                    <Truck className="size-3.5" />
-                    <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                      Track Order
-                    </span>
-                  </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button size="icon" variant="outline" className="size-8">

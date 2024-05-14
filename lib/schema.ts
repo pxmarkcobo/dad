@@ -43,8 +43,3 @@ export const MemberSchama = z.object({
 })
 
 export type Member = z.infer<typeof MemberSchama>
-
-export type TableRowMember = Pick<
-  Member,
-  "id" | "name" | "address" | "chapel" | "primaryBeneficiaryId" | "zone"
->

@@ -15,7 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { TableRowMember } from "@/lib/schema"
+import { Member } from "@/lib/schema"
 import { fakeMembers } from "@/lib/utils"
 
 import {
@@ -31,12 +31,7 @@ import { DataTablePagination } from "./pagination"
 import { DataTableToolbar } from "./toolbar"
 
 export function DataTable(): JSX.Element {
-  const [users, setUsers] = React.useState<TableRowMember[]>(fakeMembers)
-
-  // React.useEffect(() => {
-  //   setUsers(fakeMembers)
-  //   console.log(fakeMembers)
-  // }, [])
+  const [users, setUsers] = React.useState<Member[]>(fakeMembers)
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

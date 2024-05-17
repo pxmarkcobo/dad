@@ -3,23 +3,18 @@ import Link from "next/link"
 import avatar from "@/assets/avatar.jpg"
 
 import { siteConfig } from "@/config/site"
-import { Button, buttonVariants } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
 import { ThemeToggle } from "@/components/theme-toggle"
 
+import MobileSidebar from "./mobile-sidebar"
+
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
+      <div className="flex h-16 items-center space-x-4 px-4 sm:justify-between sm:space-x-0">
+        <MobileSidebar />
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">

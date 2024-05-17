@@ -34,25 +34,23 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <>
-      <html lang="en" suppressHydrationWarning>
-        <head />
-        <body
-          className={cn(
-            "min-h-screen overflow-auto bg-background font-sans antialiased",
-            fontSans.variable
-          )}
-        >
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body
+        className={cn(
+          "min-h-screen overflow-auto bg-background font-sans antialiased",
+          fontSans.variable
+        )}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthContextProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <div className="relative flex min-h-screen flex-col">
-                <div className="flex-1">{children}</div>
-              </div>
-              <TailwindIndicator />
-            </ThemeProvider>
+            <div className="relative flex min-h-screen flex-col">
+              {children}
+            </div>
+            <TailwindIndicator />
           </AuthContextProvider>
-        </body>
-      </html>
-    </>
+        </ThemeProvider>
+      </body>
+    </html>
   )
 }

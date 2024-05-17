@@ -31,7 +31,6 @@ export function DataTableToolbar<TData>({
       value: zone.name,
       label: zone.name,
     }))
-    console.log(zones)
     setZones(zones)
   }, [])
 

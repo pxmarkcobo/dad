@@ -47,7 +47,7 @@ export function AuthContextProvider({
 
   return (
     <AuthContext.Provider value={{ user }}>
-      {loading ? <div>Loading...</div> : children}
+      {loading ? <div>Loading Spinner Here...</div> : children}
     </AuthContext.Provider>
   )
 }

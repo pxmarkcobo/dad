@@ -1,6 +1,6 @@
 export default function Registration() {
   return (
-    <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+    <section className="col-span-12 bg-white antialiased dark:bg-gray-900 md:py-16">
       <form action="#" className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <ol className="items-nter flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
           <li className="after:border-1 text-primary-700 dark:text-primary-500 flex items-center after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:after:border-gray-700 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">

@@ -21,21 +21,14 @@ import {
 
 export default function Sidebar() {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+    <aside className="inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
-        <Link
-          href="#"
-          className="group flex size-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:size-8 md:text-base"
-        >
-          <Package2 className="size-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">Acme Inc</span>
-        </Link>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="#"
-                className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:size-8"
+                className="group flex size-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:size-8 md:text-base"
               >
                 <Home className="size-5" />
                 <span className="sr-only">Dashboard</span>

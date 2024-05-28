@@ -21,18 +21,16 @@ export const AuthContext = createContext<AuthContextInterface | undefined>(
 export const useAuthContext = (): AuthContextInterface => {
   const context = useContext(AuthContext)
   if (!context) {
-    throw new Error("useAuthContext must be used within an AuthContextProvider")
+    throw new Error("useAuthContext must be used within an AuthProvider")
   }
   return context
 }
 
-interface AuthContextProviderProps {
+interface AuthProviderProps {
   children: ReactNode
 }
 
-export function AuthContextProvider({
-  children,
-}: AuthContextProviderProps): JSX.Element {
+export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 

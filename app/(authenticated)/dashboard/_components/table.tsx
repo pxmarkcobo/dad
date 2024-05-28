@@ -1,8 +1,10 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React from "react"
+import { useQuery } from "@tanstack/react-query"
 import {
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -15,9 +17,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { Member } from "@/lib/schema"
-import { fakeMembers } from "@/lib/utils"
-
+import { fetchMembers } from "@/lib/utils"
 import {
   Table,
   TableBody,
@@ -25,14 +25,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table"
-import { columns } from "./columns"
-import { DataTablePagination } from "./pagination"
-import { DataTableToolbar } from "./toolbar"
+} from "@/components/ui/table"
+import { DataTablePagination } from "@/components/table/table-pagination"
 
-export function DataTable(): JSX.Element {
-  const [users, setUsers] = React.useState<Member[]>(fakeMembers)
+import { columns } from "./table-columns"
+import { DataTableToolbar } from "./table-toolbar"
 
+export function MembersTable(): JSX.Element {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -41,8 +40,33 @@ export function DataTable(): JSX.Element {
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
+  // const [{ pageIndex, pageSize }, setPagination] =
+  //   React.useState<PaginationState>({
+  //     pageIndex: 0,
+  //     pageSize: 10,
+  //   })
+  // const pagination = React.useMemo(
+  //   () => ({
+  //     pageIndex,
+  //     pageSize,
+  //   }),
+  //   [pageIndex, pageSize]
+  // )
+
+  // const fetchDataOptions = {
+  //   pageIndex,
+  //   pageSize,
+  // }
+
+  const dataQuery = useQuery({
+    queryKey: ["members"],
+    queryFn: () => fetchMembers(),
+  })
+
+  const defaultData = React.useMemo(() => [], [])
+
   const table = useReactTable({
-    data: users,
+    data: dataQuery.data ?? defaultData,
     columns: columns,
     state: {
       sorting,
@@ -50,7 +74,9 @@ export function DataTable(): JSX.Element {
       columnVisibility,
       rowSelection,
     },
-    enableRowSelection: true,
+    // manualPagination: true,
+    // pageCount: dataQuery.data?.pageCount ?? -1,
+    // onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

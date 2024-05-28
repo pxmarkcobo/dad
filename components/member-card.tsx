@@ -1,16 +1,14 @@
 import * as React from "react"
-import {
-  ChevronLeft,
-  ChevronRight,
-  CreditCard,
-  MoreVertical,
-} from "lucide-react"
+import { useSelectedMember } from "@/contexts/members-context"
+import { DocumentReference, getDoc } from "firebase/firestore"
+import { CircleCheck, CircleX, MoreVertical, UserCircle } from "lucide-react"
 
+import { Beneficiary, BeneficiarySchema } from "@/lib/schema"
+import { formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -22,24 +20,112 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination"
 import { Separator } from "@/components/ui/separator"
 
-export default function MembercardInformation() {
+interface StatusIconProps {
+  id: string
+  isChecked: boolean
+}
+
+const StatusIcon: React.FC<StatusIconProps> = ({ id, isChecked }) => {
+  return isChecked ? (
+    <CircleCheck id={id} fill="hsl(var(--primary))" color="white" />
+  ) : (
+    <CircleX id={id} fill="red" color="white" />
+  )
+}
+
+export default function MemberCardInformation() {
+  const { selectedMember: member } = useSelectedMember()
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [primary, setPrimary] = React.useState<Beneficiary>()
+  const [dependents, setDependents] = React.useState<Beneficiary[]>()
+
+  React.useEffect(() => {
+    setIsLoading(true)
+
+    if (!member) {
+      setIsLoading(false)
+      return
+    }
+
+    if (member.resolved) {
+      setIsLoading(false)
+      setPrimary(member.primary_beneficiary as Beneficiary)
+      setDependents(member.dependents as Beneficiary[])
+    }
+
+    if (!(member.primary_beneficiary instanceof DocumentReference)) {
+      setIsLoading(false)
+      return
+    }
+
+    const resolveDocumentReferences = async () => {
+      try {
+        // Resolve primary beneficiary
+        const doc = await getDoc(
+          member.primary_beneficiary as DocumentReference
+        )
+        const { success, error, data } = BeneficiarySchema.safeParse({
+          id: doc.id,
+          ...doc.data(),
+        })
+        if (success) {
+          member.primary_beneficiary = data
+          setPrimary(data)
+        }
+
+        // Resolve dependents
+        const dependentPromises = member.dependents.map((ref) =>
+          getDoc(ref as DocumentReference)
+        )
+        const dependentDocs = await Promise.all(dependentPromises)
+        let dependents: any[] = dependentDocs.map((doc) => {
+          if (!doc.exists()) return null
+          const { success, error, data } = BeneficiarySchema.safeParse({
+            id: doc.id,
+            ...doc.data(),
+          })
+          if (error) {
+            console.error(error.issues)
+          }
+          if (!success) return null
+          return data
+        })
+
+        dependents = dependents.filter((d) => d !== null) as Beneficiary[]
+
+        member.dependents = dependents
+        setDependents(dependents)
+      } catch (err) {
+        console.error("Error resolving document reference:", err)
+      } finally {
+        setIsLoading(false)
+        member.resolved = true
+      }
+    }
+    resolveDocumentReferences()
+  }, [member])
+
+  if (!member) {
+    return (
+      <button className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed">
+        <p className="text-sm text-muted-foreground">
+          Tip: Select a member to show information.
+        </p>
+      </button>
+    )
+  }
+
+  if (isLoading) {
+    return <p>loading</p>
+  }
+
   return (
-    <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
-      <CardHeader className="flex flex-row items-start bg-muted/50">
-        <div className="grid gap-0.5">
-          <CardTitle className="text-lg">Abbie Claire Golosino</CardTitle>
-          <CardDescription>
-            Registration Date: November 23, 2023
-          </CardDescription>
-        </div>
-        <div className="ml-auto flex items-center gap-1">
+    <Card className="overflow-hidden">
+      <CardHeader className="flex flex-row items-center justify-between bg-muted/50 px-6 py-2 ">
+        <CardTitle className="text-lg">{member.name}</CardTitle>
+        <div className="flex items-center gap-1">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="icon" variant="outline" className="size-8">
@@ -57,115 +143,150 @@ export default function MembercardInformation() {
         </div>
       </CardHeader>
       <CardContent className="p-6 text-sm">
-        <div className="grid gap-3">
-          <div className="font-semibold">Order Details</div>
-          <ul className="grid gap-3">
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">
-                Glimmer Lamps x <span>2</span>
-              </span>
-              <span>$250.00</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">
-                Aqua Filters x <span>1</span>
-              </span>
-              <span>$49.00</span>
-            </li>
-          </ul>
-          <Separator className="my-2" />
-          <ul className="grid gap-3">
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
-              <span>$299.00</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Shipping</span>
-              <span>$5.00</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Tax</span>
-              <span>$25.00</span>
-            </li>
-            <li className="flex items-center justify-between font-semibold">
-              <span className="text-muted-foreground">Total</span>
-              <span>$329.00</span>
-            </li>
-          </ul>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-3">
+            <div className="font-semibold">Petsang Natawhan</div>
+            <address className="grid gap-0.5 not-italic text-muted-foreground">
+              <span>{formatDate(member.birth_date)}</span>
+            </address>
+          </div>
+          <div className="grid auto-rows-max gap-3">
+            <div className="font-semibold">Registration Date</div>
+            <div className="text-muted-foreground">
+              {formatDate(member.registration_date)}
+            </div>
+          </div>
+        </div>
+        <Separator className="my-4" />
+        <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-1">
+            <div className="flex items-center space-x-2">
+              <StatusIcon id="nag-inusara" isChecked={member.isolated} />
+              <label
+                htmlFor="nag-inusara"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Nag-inusara
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <StatusIcon id="bako" isChecked={member.widowed} />
+              <label
+                htmlFor="bako"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Bako/Biyuda
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <StatusIcon id="puyo-puyo" isChecked={member.puyopuyo} />
+              <label
+                htmlFor="puyo-puyo"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Puyo-puyo
+              </label>
+            </div>
+          </div>
+          <div className="grid auto-rows-max gap-1">
+            <div className="flex items-center space-x-2">
+              <StatusIcon id="minyo" isChecked={member.married} />
+              <label
+                htmlFor="minyo"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Minyo
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <StatusIcon
+                id="kasal-simbahan"
+                isChecked={member.church_marriage}
+              />
+              <label
+                htmlFor="kasal-simbahan"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Kasal sa Simbahan
+              </label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <StatusIcon id="kasal-sibil" isChecked={member.civil_marriage} />
+              <label
+                htmlFor="kasal-sibil"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Kasal sa Sibil
+              </label>
+            </div>
+          </div>
         </div>
         <Separator className="my-4" />
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-3">
-            <div className="font-semibold">Shipping Information</div>
+            <div className="font-semibold">Zone</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <span>Liam Johnson</span>
-              <span>1234 Main St.</span>
-              <span>Anytown, CA 12345</span>
+              <span>{member.zone.name}</span>
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
-            <div className="font-semibold">Billing Information</div>
-            <div className="text-muted-foreground">
-              Same as shipping address
-            </div>
+            <div className="font-semibold">Chapel</div>
+            <div className="text-muted-foreground">{member.chapel}</div>
+          </div>
+          <div className="grid gap-3">
+            <div className="font-semibold">Address</div>
+            <address className="grid gap-0.5 not-italic text-muted-foreground">
+              <span>{member.address}</span>
+            </address>
+          </div>
+          <div className="grid auto-rows-max gap-3">
+            <div className="font-semibold">Selda</div>
+            <div className="text-muted-foreground">{member.selda}</div>
           </div>
         </div>
         <Separator className="my-4" />
-        <div className="grid gap-3">
-          <div className="font-semibold">Customer Information</div>
-          <dl className="grid gap-3">
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Customer</dt>
-              <dd>Liam Johnson</dd>
+        {primary && (
+          <>
+            <div className="grid gap-3">
+              <div className="font-semibold">Primary Beneficiary</div>
+              <dl className="grid gap-3">
+                <div className="flex items-center justify-between">
+                  <dt className="flex items-center gap-1 text-muted-foreground">
+                    <UserCircle className="size-4" />
+                    {primary.name}
+                  </dt>
+                  <dd>{primary.relation}</dd>
+                  <dd>{primary.contact_number}</dd>
+                </div>
+              </dl>
             </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Email</dt>
-              <dd>
-                <a href="mailto:">liam@acme.com</a>
-              </dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Phone</dt>
-              <dd>
-                <a href="tel:">+1 234 567 890</a>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <Separator className="my-4" />
-        <div className="grid gap-3">
-          <div className="font-semibold">Payment Information</div>
-          <dl className="grid gap-3">
-            <div className="flex items-center justify-between">
-              <dt className="flex items-center gap-1 text-muted-foreground">
-                <CreditCard className="size-4" />
-                Visa
-              </dt>
-              <dd>**** **** **** 4532</dd>
-            </div>
-          </dl>
-        </div>
+            <Separator className="my-4" />
+          </>
+        )}
+        <div className="my-4 font-semibold">Dependents</div>
+        <table className="size-full table-auto">
+          <thead>
+            <tr>
+              <th className="text-left">Name</th>
+              <th className="text-left">Birthdate</th>
+              <th className="text-left">Relation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dependents?.map((dependent) => (
+              <tr key={dependent.id}>
+                <td>{dependent.name}</td>
+                <td>{formatDate(dependent.birth_date)}</td>
+                <td>{dependent.relation}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
         <div className="text-xs text-muted-foreground">
           Updated <time dateTime="2023-11-23">November 23, 2023</time>
         </div>
-        <Pagination className="ml-auto mr-0 w-auto">
-          <PaginationContent>
-            <PaginationItem>
-              <Button size="icon" variant="outline" className="size-6">
-                <ChevronLeft className="size-3.5" />
-                <span className="sr-only">Previous Order</span>
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <Button size="icon" variant="outline" className="size-6">
-                <ChevronRight className="size-3.5" />
-                <span className="sr-only">Next Order</span>
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </CardFooter>
     </Card>
   )

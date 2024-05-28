@@ -1,38 +1,20 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
-import { fakeZones } from "@/lib/utils"
-
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { DataTableFacetedFilter } from "./faceted-filter"
-import { DataTableViewOptions } from "./view-options"
+import zones from "@/lib/zones"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter"
+import { DataTableViewOptions } from "@/components/table/table-view-options"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
-}
-
-interface DropdownOption {
-  label: string
-  value: string
 }
 
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>): JSX.Element {
   const isFiltered = table.getState().columnFilters.length > 0
-  const [zones, setZones] = useState<DropdownOption[]>([])
-
-  useEffect(() => {
-    const zones = fakeZones.map((zone) => ({
-      value: zone.name,
-      label: zone.name,
-    }))
-    setZones(zones)
-  }, [])
 
   return (
     <div className="flex items-center justify-between">

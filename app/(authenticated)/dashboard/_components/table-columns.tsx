@@ -1,11 +1,11 @@
 import { CaretSortIcon } from "@radix-ui/react-icons"
-import { ColumnDef, RowData } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table"
 
-import { Member } from "@/lib/schema"
+import { Member, Zone } from "@/lib/schema"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 
-import { Badge } from "../ui/badge"
-import { Button } from "../ui/button"
-import { DataTableRowActions } from "./row-actions"
+import { DataTableRowActions } from "./table-row-actions"
 
 export const columns: ColumnDef<Member>[] = [
   {
@@ -23,7 +23,10 @@ export const columns: ColumnDef<Member>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("zone")}</div>,
+    cell: ({ row }) => {
+      const zone: Zone = row.getValue("zone")
+      return <div className="capitalize">{zone.name}</div>
+    },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },

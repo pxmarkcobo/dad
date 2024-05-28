@@ -12,7 +12,7 @@ import MobileSidebar from "./mobile-sidebar"
 
 export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
+    <header className="static z-40 w-full border-b bg-background">
       <div className="flex h-16 items-center space-x-4 px-4 sm:justify-between sm:space-x-0">
         <MobileSidebar />
         <MainNav items={siteConfig.mainNav} />

@@ -3,6 +3,7 @@ import { useSelectedMember } from "@/contexts/members-context"
 import { DocumentReference, getDoc } from "firebase/firestore"
 import { CircleCheck, CircleX, MoreVertical, UserCircle } from "lucide-react"
 
+import { CivilStatusChoices } from "@/lib/enums"
 import { Beneficiary, BeneficiarySchema } from "@/lib/schema"
 import { formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -246,7 +247,10 @@ export default function MemberCardInformation() {
           </div>
           <div className="grid auto-rows-max gap-1">
             <div className="flex items-center space-x-2">
-              <StatusIcon id="minyo" isChecked={member.married} />
+              <StatusIcon
+                id="minyo"
+                isChecked={member.civil_status !== CivilStatusChoices.Single}
+              />
               <label
                 htmlFor="minyo"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -257,7 +261,9 @@ export default function MemberCardInformation() {
             <div className="flex items-center space-x-2">
               <StatusIcon
                 id="kasal-simbahan"
-                isChecked={member.church_marriage}
+                isChecked={
+                  member.civil_status == CivilStatusChoices.ChurchMarriage
+                }
               />
               <label
                 htmlFor="kasal-simbahan"
@@ -267,7 +273,12 @@ export default function MemberCardInformation() {
               </label>
             </div>
             <div className="flex items-center space-x-2">
-              <StatusIcon id="kasal-sibil" isChecked={member.civil_marriage} />
+              <StatusIcon
+                id="kasal-sibil"
+                isChecked={
+                  member.civil_status == CivilStatusChoices.CivilMarriage
+                }
+              />
               <label
                 htmlFor="kasal-sibil"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

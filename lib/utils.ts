@@ -46,7 +46,7 @@ export async function fetchMembers() {
   const q = query(memberCollection, orderBy("name"))
 
   const querySnapshot = await getDocs(q)
-  const members: Member[] = querySnapshot.docs.map((doc) => {
+  const members: any[] = querySnapshot.docs.map((doc) => {
     console.log(doc.data())
     const { success, error, data } = MemberSchema.safeParse({
       id: doc.id,

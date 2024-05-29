@@ -40,8 +40,10 @@ export const columns: ColumnDef<Member>[] = [
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue("name")}
           </span>
-          {row.original.isCollector ? (
-            <Badge variant="secondary">Alagad</Badge>
+          {row.original.roles.collector ? (
+            <Badge variant="secondary">Collector</Badge>
+          ) : row.original.roles.coordinator ? (
+            <Badge variant="secondary">Coordinator</Badge>
           ) : null}
         </div>
       )

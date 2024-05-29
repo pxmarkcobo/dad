@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore"
 import { twMerge } from "tailwind-merge"
 
-import { Member, MemberSchama, Zone } from "./schema"
+import { Member, MemberSchema, Zone } from "./schema"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -48,7 +48,7 @@ export async function fetchMembers() {
   const querySnapshot = await getDocs(q)
   const members: Member[] = querySnapshot.docs.map((doc) => {
     console.log(doc.data())
-    const { success, error, data } = MemberSchama.safeParse({
+    const { success, error, data } = MemberSchema.safeParse({
       id: doc.id,
       ...doc.data(),
     })

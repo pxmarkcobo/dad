@@ -1,4 +1,4 @@
-export enum FamilyRelations {
+export enum FamilyRelationChoices {
   Mother = "Mother",
   Father = "Father",
   Son = "Son",
@@ -38,4 +38,15 @@ export enum FamilyRelations {
   Spouse = "Spouse",
   Husband = "Husband",
   Wife = "Wife",
+}
+
+export enum CivilStatusChoices {
+  Single = "Single",
+  CivilMarriage = "Civil Marriage",
+  ChurchMarriage = "Church Marriage",
+}
+
+export enum SexChoices {
+  Male = "Male",
+  Female = "Female",
 }

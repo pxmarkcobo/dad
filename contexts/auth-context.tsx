@@ -10,6 +10,8 @@ import {
 import { auth } from "@/services/firebase"
 import { User, onAuthStateChanged } from "firebase/auth"
 
+import LoadingScreen from "@/components/loading-screen"
+
 interface AuthContextInterface {
   user: User | null
 }
@@ -45,8 +47,7 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 
   return (
     <AuthContext.Provider value={{ user }}>
-      {/* {loading ? <div>Loading Spinner Here...</div> : children} */}
-      {children}
+      {loading ? <LoadingScreen /> : children}
     </AuthContext.Provider>
   )
 }

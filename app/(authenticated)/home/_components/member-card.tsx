@@ -92,7 +92,7 @@ const SkeletonCard = () => {
                 htmlFor="bako"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Bako/Biyuda
+                Balo/Biyuda
               </label>
             </div>
             <div className="flex items-center space-x-2">

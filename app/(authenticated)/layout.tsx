@@ -4,6 +4,7 @@ import { useGlobalData } from "@/contexts/global-context"
 import QueryClientProvider from "@/contexts/query-client-context"
 
 import { Toaster } from "@/components/ui/sonner"
+import LoadingScreen from "@/components/loading-screen"
 import Sidebar from "@/components/sidebar"
 
 export default function AuthenticatedLayout({
@@ -14,7 +15,7 @@ export default function AuthenticatedLayout({
   const { hydrated } = useGlobalData()
 
   if (!hydrated) {
-    return <p>Fetching global data...</p>
+    return <LoadingScreen />
   }
   return (
     <QueryClientProvider>

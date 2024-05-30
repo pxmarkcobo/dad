@@ -8,7 +8,9 @@ import PageHeader from "@/components/page-header"
 import MemberCardInformation from "./_components/member-card"
 import { MembersTable } from "./_components/table"
 
-export default function Dashboard() {
+export const dynamic = "force-dynamic"
+
+export default function Home() {
   return (
     <SelectedMemberProvider>
       <PageHeader title="Dashboard" />

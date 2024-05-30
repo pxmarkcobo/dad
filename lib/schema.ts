@@ -24,7 +24,7 @@ export type Zone = z.infer<typeof ZoneSchema>
 
 export const BeneficiarySchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(3, "Please indicate dependent's full name."),
+  name: z.string(),
   birth_date: z.coerce.date().transform((val) => formatDate(val, "P")),
   contact_number: z.string().optional(),
   relation: z.nativeEnum(FamilyRelationChoices),

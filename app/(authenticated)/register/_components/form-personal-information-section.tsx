@@ -55,6 +55,7 @@ export default function PersonalInformation() {
                     className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                     placeholder="Please indicate member's full name"
                     autoComplete="off"
+                    required={true}
                   />
                 </FormControl>
                 <FormMessage />
@@ -267,7 +268,7 @@ export default function PersonalInformation() {
               </p>
               <FormControl>
                 <RadioGroup
-                  defaultValue="single"
+                  defaultValue="Single"
                   className="grid grid-cols-1 gap-4 md:grid-cols-3"
                   name="status"
                   onValueChange={field.onChange}

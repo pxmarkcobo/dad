@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useGlobalData } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
 import { formatDate } from "date-fns"
 import { Dot } from "lucide-react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -24,6 +25,7 @@ import PersonalInformation from "./form-personal-information-section"
 import { SubmitButton } from "./submit-button"
 
 export default function RegistrationForm() {
+  const queryClient = useQueryClient()
   const { zones } = useGlobalData()
   const [open, setOpen] = useState(false)
   const [zone, setZone] = useState<Zone>(zones[0])
@@ -33,8 +35,8 @@ export default function RegistrationForm() {
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),
     defaultValues: {
-      registration_date: formatDate(new Date(), "MM/dd/yyyy"),
-      birth_date: formatDate(new Date(), "MM/dd/yyyy"),
+      registration_date: formatDate(new Date(), "yyyy-MM-dd"),
+      birth_date: "",
       name: "",
       sex: SexChoices.Male,
       isolated: false,
@@ -49,7 +51,7 @@ export default function RegistrationForm() {
         {
           name: "",
           relation: FamilyRelationChoices.Mother,
-          birth_date: formatDate(new Date(), "MM/dd/yyyy"),
+          birth_date: "",
           contact_number: "",
         },
       ],
@@ -77,11 +79,25 @@ export default function RegistrationForm() {
     }
   }
 
+  const reset = async () => {
+    setMemberID("")
+    form.reset()
+    await queryClient.invalidateQueries({
+      queryKey: ["members"],
+      refetchType: "active",
+    })
+
+    const element = document.getElementById("page-header")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
   return (
     <FormProvider {...form}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="lg:flex lg:items-start lg:gap-12 xl:gap-16">
+          <div id="form" className="lg:flex lg:items-start lg:gap-12 xl:gap-16">
             <div className="min-w-0 flex-1 space-y-8">
               <PersonalInformation />
               <Dot className="mx-auto my-0 size-4" />
@@ -100,6 +116,7 @@ export default function RegistrationForm() {
           memberID={memberID}
           zone={zone}
           dependents={dependents}
+          reset={reset}
         />
       )}
     </FormProvider>

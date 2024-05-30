@@ -60,14 +60,15 @@ export default function EditMemberRelations({
   memberID,
   zone,
   dependents,
+  reset,
 }: {
   open: boolean
   onOpenChange(open: boolean): void
   memberID: string
   zone: Zone
   dependents: Beneficiary[]
+  reset(): void
 }) {
-  console.log("memberID", memberID)
   const { collectors } = useGlobalData()
   const collectorChoices = collectors.filter((c) => c.zone.id == zone.id)
 
@@ -87,6 +88,7 @@ export default function EditMemberRelations({
         description: formatDate(new Date(), "PPPPp"),
         duration: 3000,
       })
+      await reset()
       onOpenChange(false)
     } else {
       toast(`Error: ${response.error_message}`)
@@ -95,7 +97,13 @@ export default function EditMemberRelations({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-l">
+      <DialogContent
+        className="sm:max-w-l"
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDown={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Edit Member Relations</DialogTitle>
           <DialogDescription>

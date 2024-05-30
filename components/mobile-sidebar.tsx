@@ -3,26 +3,32 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import avatar from "@/assets/avatar.jpg"
 import {
+  BriefcaseBusiness,
   Home,
   LineChart,
   Package,
   Package2,
   PanelLeft,
+  Settings,
   ShoppingCart,
   Users2,
 } from "lucide-react"
 
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 export default function MobileSidebar() {
+  const pathname = usePathname()
+
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 bg-background px-0 sm:static sm:h-auto sm:border-0 sm:bg-transparent">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 px-0 sm:static sm:h-auto sm:border-0 sm:bg-transparent">
       <Sheet>
         <SheetTrigger asChild>
-          <Button size="icon" variant="outline" className="lg:hidden">
+          <Button size="icon" variant="outline" className="sm:hidden">
             <PanelLeft className="size-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
@@ -30,45 +36,67 @@ export default function MobileSidebar() {
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="#"
-              className="group flex size-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+              href="home"
+              className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
-              <Package2 className="size-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
+              <span
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-full",
+                  pathname == "/home"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-accent text-accent-foreground"
+                )}
+              >
+                <Home className="size-5" />
+              </span>
+              Home
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              href="register"
+              className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
-              <Home className="size-5" />
-              Dashboard
+              <span
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-full",
+                  pathname == "/register"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-accent text-accent-foreground"
+                )}
+              >
+                <Users2 className="size-5" />
+              </span>
+              Register
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-foreground"
+              href="officers"
+              className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
-              <ShoppingCart className="size-5" />
-              Orders
+              <span
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-full",
+                  pathname == "/officers"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-accent text-accent-foreground"
+                )}
+              >
+                <BriefcaseBusiness className="size-5" />
+              </span>
+              Officers
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              href="settings"
+              className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
-              <Package className="size-5" />
-              Products
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Users2 className="size-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="size-5" />
+              <span
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-full",
+                  pathname == "/settings"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-accent text-accent-foreground"
+                )}
+              >
+                <Settings className="size-5" />
+              </span>
               Settings
             </Link>
           </nav>

@@ -5,12 +5,20 @@ export const siteConfig = {
   description: "Platform for managing death aid members.",
   mainNav: [
     {
-      title: "Dashboard",
-      href: "/dashboard",
+      title: "Home",
+      href: "/home",
     },
     {
-      title: "Registration",
-      href: "/registration",
+      title: "Register",
+      href: "/register",
+    },
+    {
+      title: "Officers",
+      href: "/officers",
+    },
+    {
+      title: "Settings",
+      href: "/settings",
     },
   ],
   links: {

@@ -1,8 +1,8 @@
 import QueryClientProvider from "@/contexts/query-client-context"
 
+import MobileHeader from "@/components/mobile-header"
 import MobileSidebar from "@/components/mobile-sidebar"
 import Sidebar from "@/components/sidebar"
-import SiteHeader from "@/components/site-header"
 
 export default function AuthenticatedLayout({
   children,

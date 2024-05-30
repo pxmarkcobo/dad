@@ -173,12 +173,13 @@ export default function PersonalInformation() {
             control={control}
             name="isolated"
             render={({ field }) => (
-              <FormItem className="flex items-start space-y-0 rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+              <FormItem className="flex items-center space-y-0 rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
                 <FormControl className="flex items-center">
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     {...field}
+                    size="6"
                   />
                 </FormControl>
                 <div className="ms-4 text-sm">
@@ -200,12 +201,13 @@ export default function PersonalInformation() {
             control={control}
             name="widowed"
             render={({ field }) => (
-              <FormItem className="flex items-start space-y-0 rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+              <FormItem className="flex items-center space-y-0 rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
                 <FormControl className="flex items-center">
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     {...field}
+                    size="6"
                   />
                 </FormControl>
                 <div className="ms-4 text-sm">
@@ -227,12 +229,13 @@ export default function PersonalInformation() {
             control={control}
             name="puyopuyo"
             render={({ field }) => (
-              <FormItem className="flex items-start space-y-0 rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+              <FormItem className="flex items-center space-y-0 rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
                 <FormControl className="flex items-center">
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     {...field}
+                    size="6"
                   />
                 </FormControl>
                 <div className="ms-4 text-sm">
@@ -271,10 +274,15 @@ export default function PersonalInformation() {
                   <FormItem>
                     <FormControl>
                       <FormLabel htmlFor="single">
-                        <div className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                          <div className="flex items-start">
+                        <div className="h-full cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                          <div className="flex items-center">
                             <div className="flex h-5 items-center">
-                              <RadioGroupItem value="Single" id="single" />
+                              <RadioGroupItem
+                                value="Single"
+                                id="single"
+                                outerSize="6"
+                                innerSize="3.5"
+                              />
                             </div>
                             <div className="ms-4 text-sm">
                               <label className="cursor-pointer font-medium leading-none text-gray-900 dark:text-white">
@@ -293,11 +301,13 @@ export default function PersonalInformation() {
                     <FormControl>
                       <FormLabel htmlFor="church_marriage">
                         <div className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                          <div className="flex items-start">
+                          <div className="flex items-center">
                             <div className="flex h-5 items-center">
                               <RadioGroupItem
                                 value="Church Marriage"
                                 id="church_marriage"
+                                outerSize="6"
+                                innerSize="3.5"
                               />
                             </div>
                             <div className="ms-4 text-sm">
@@ -320,11 +330,13 @@ export default function PersonalInformation() {
                     <FormControl>
                       <FormLabel htmlFor="civil_marriage">
                         <div className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                          <div className="flex items-start">
+                          <div className="flex items-center">
                             <div className="flex h-5 items-center">
                               <RadioGroupItem
                                 value="Civil Marriage"
                                 id="civil_marriage"
+                                outerSize="6"
+                                innerSize="3.5"
                               />
                             </div>
                             <div className="ms-4 text-sm">

@@ -45,7 +45,8 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 
   return (
     <AuthContext.Provider value={{ user }}>
-      {loading ? <div>Loading Spinner Here...</div> : children}
+      {/* {loading ? <div>Loading Spinner Here...</div> : children} */}
+      {children}
     </AuthContext.Provider>
   )
 }

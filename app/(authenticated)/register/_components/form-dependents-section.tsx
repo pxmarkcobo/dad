@@ -51,25 +51,25 @@ export default function Dependents() {
         <h1 className="text-l font-semibold text-gray-900 dark:text-white">
           Dependents
         </h1>
-        <div>
+        <div className="max-w-4xl">
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="mb-1 flex w-full items-center justify-between"
+              className="mb-1 flex items-center justify-center gap-4"
             >
               <Button variant="ghost" size="icon" disabled>
                 {index + 1}
               </Button>
-              <div className="flex gap-4">
+              <div className="grid w-full grid-cols-2 place-content-center gap-3 md:grid-cols-3 xl:grid-cols-4">
                 <FormField
                   control={control}
                   key={`${field.id}.${index}.name`}
                   name={`dependents.${index}.name`}
                   render={({ field }) => (
-                    <FormItem className="grow">
+                    <FormItem className="col-span-2 md:col-span-1 xl:col-span-2">
                       <FormControl>
                         <Input
-                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-[250px] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
+                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                           placeholder="Full Name"
                           {...field}
                         />
@@ -109,7 +109,7 @@ export default function Dependents() {
                               variant="outline"
                               role="combobox"
                               className={cn(
-                                "w-[150px] justify-between bg-gray-50 text-left font-normal dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400",
+                                "w-full justify-between bg-gray-50 text-left font-normal dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400",
                                 !field.value && "text-muted-foreground"
                               )}
                             >

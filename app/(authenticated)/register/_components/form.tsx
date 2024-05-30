@@ -62,7 +62,7 @@ export default function RegistrationForm() {
     <FormProvider {...form}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
+          <div className="lg:flex lg:items-start lg:gap-12 xl:gap-16">
             <div className="min-w-0 flex-1 space-y-8">
               <PersonalInformation />
               <Dot className="mx-auto my-0 size-4" />

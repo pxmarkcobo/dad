@@ -22,7 +22,7 @@ export function DataTableRowActions<TData>({
       size="default"
       onClick={() => setSelectedMember(original as Member)}
     >
-      Show Information
+      Show
     </Button>
   )
 }

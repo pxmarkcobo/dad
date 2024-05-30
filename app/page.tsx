@@ -40,7 +40,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.replace("/dashboard")
+      router.replace("/home")
     }
   }, [user, router])
 

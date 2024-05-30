@@ -49,48 +49,48 @@ export const columns: ColumnDef<Member>[] = [
       )
     },
   },
-  {
-    accessorKey: "address",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="p-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Address
-          <CaretSortIcon className="ml-2 size-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("address") || "-"}</div>
-    ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
-  {
-    accessorKey: "chapel",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="p-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Chapel
-          <CaretSortIcon className="ml-2 size-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("chapel") || "-"}</div>
-    ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
+  // {
+  //   accessorKey: "address",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         className="p-0"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Address
+  //         <CaretSortIcon className="ml-2 size-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">{row.getValue("address") || "-"}</div>
+  //   ),
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id))
+  //   },
+  // },
+  // {
+  //   accessorKey: "chapel",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         className="p-0"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Chapel
+  //         <CaretSortIcon className="ml-2 size-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">{row.getValue("chapel") || "-"}</div>
+  //   ),
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id))
+  //   },
+  // },
   {
     id: "actions",
     enableHiding: false,

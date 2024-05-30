@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChevronDown, Dot } from "lucide-react"
 import { FormProvider, useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 import {
   CivilStatusChoices,
@@ -14,10 +15,12 @@ import { Member, MemberSchema } from "@/lib/schema"
 import zones from "@/lib/zones"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
+import { createMember } from "@/app/actions"
 
 import Dependents from "./form-dependents-section"
 import LocationInformation from "./form-location-section"
 import PersonalInformation from "./form-personal-information-section"
+import { SubmitButton } from "./submit-button"
 
 export default function RegistrationForm() {
   const form = useForm<Member>({
@@ -51,7 +54,12 @@ export default function RegistrationForm() {
   })
 
   const onSubmit = async (data: Member) => {
-    console.log(data)
+    const response = await createMember(data)
+    if (response.success) {
+      toast("Sucessfully registered new member!")
+    } else {
+      toast(`Error: ${response.error_message}`)
+    }
   }
 
   useEffect(() => {
@@ -71,9 +79,7 @@ export default function RegistrationForm() {
               <LocationInformation />
             </div>
           </div>
-          <Button className="float-end" type="submit">
-            Submit
-          </Button>
+          <SubmitButton></SubmitButton>
         </form>
       </Form>
     </FormProvider>

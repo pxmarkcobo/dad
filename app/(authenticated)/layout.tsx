@@ -1,7 +1,8 @@
+"use client"
+
 import QueryClientProvider from "@/contexts/query-client-context"
 
-import MobileHeader from "@/components/mobile-header"
-import MobileSidebar from "@/components/mobile-sidebar"
+import { Toaster } from "@/components/ui/sonner"
 import Sidebar from "@/components/sidebar"
 
 export default function AuthenticatedLayout({
@@ -21,6 +22,7 @@ export default function AuthenticatedLayout({
           </div>
         </main>
       </div>
+      <Toaster />
     </QueryClientProvider>
   )
 }

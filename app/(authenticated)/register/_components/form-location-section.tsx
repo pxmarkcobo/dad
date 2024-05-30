@@ -50,7 +50,7 @@ export default function LocationInformation() {
                     <Button
                       variant="outline"
                       role="combobox"
-                      className="w-full justify-between dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
+                      className="w-full justify-between bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                     >
                       {field.value ? field.value.name : "Select zone"}
                       <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />

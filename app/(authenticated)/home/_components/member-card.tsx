@@ -67,7 +67,8 @@ export default function MemberCardInformation() {
         const doc = await getDoc(
           member.primary_beneficiary as DocumentReference
         )
-        const { success, error, data } = BeneficiarySchema.safeParse({
+
+        const { success, data } = BeneficiarySchema.safeParse({
           id: doc.id,
           ...doc.data(),
         })
@@ -351,6 +352,9 @@ export default function MemberCardInformation() {
             ))}
           </tbody>
         </table>
+
+        <div className="my-4 font-semibold">Remarks</div>
+        <p>{member.remarks}</p>
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
         <div className="text-xs text-muted-foreground">

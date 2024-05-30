@@ -41,6 +41,7 @@ export default function Dependents() {
         name: "",
         relation: FamilyRelationChoices.Mother,
         birth_date: new Date(),
+        contact_number: "",
       })
     }
   }
@@ -51,7 +52,7 @@ export default function Dependents() {
         <h1 className="text-l font-semibold text-gray-900 dark:text-white">
           Dependents
         </h1>
-        <div className="max-w-4xl">
+        <div className="max-w-6xl">
           {fields.map((field, index) => (
             <div
               key={field.id}
@@ -60,17 +61,34 @@ export default function Dependents() {
               <Button variant="ghost" size="icon" disabled>
                 {index + 1}
               </Button>
-              <div className="grid w-full grid-cols-2 place-content-center gap-3 md:grid-cols-3 xl:grid-cols-4">
+              <div className="grid w-full grid-cols-2 place-content-center gap-3 xl:grid-cols-4">
                 <FormField
                   control={control}
                   key={`${field.id}.${index}.name`}
                   name={`dependents.${index}.name`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2 md:col-span-1 xl:col-span-2">
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormControl>
                         <Input
                           className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                           placeholder="Full Name"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  key={`${field.id}.${index}.contact_number`}
+                  name={`dependents.${index}.contact_number`}
+                  render={({ field }) => (
+                    <FormItem className="col-span-2 md:col-span-1">
+                      <FormControl>
+                        <Input
+                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
+                          placeholder="Contact Number"
                           {...field}
                         />
                       </FormControl>

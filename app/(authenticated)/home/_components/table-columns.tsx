@@ -11,6 +11,7 @@ export const columns: ColumnDef<Member>[] = [
   {
     id: "zone",
     accessorKey: "zone",
+    accessorFn: (originalRow, index) => originalRow.zone.label,
     header: ({ column }) => {
       return (
         <Button
@@ -24,11 +25,12 @@ export const columns: ColumnDef<Member>[] = [
       )
     },
     cell: ({ row }) => {
-      const zone: Zone = row.getValue("zone")
-      return <div className="capitalize">{zone.name}</div>
+      const value: string = row.getValue("zone")
+      return <div className="capitalize">{value}</div>
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      const cell: string = row.getValue(id)
+      return value.includes(cell)
     },
   },
   {

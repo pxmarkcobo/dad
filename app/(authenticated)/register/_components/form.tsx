@@ -1,8 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { useGlobalData } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ChevronDown, Dot } from "lucide-react"
+import { formatDate } from "date-fns"
+import { Dot } from "lucide-react"
 import { FormProvider, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -11,23 +13,28 @@ import {
   FamilyRelationChoices,
   SexChoices,
 } from "@/lib/enums"
-import { Member, MemberSchema } from "@/lib/schema"
-import zones from "@/lib/zones"
-import { Button } from "@/components/ui/button"
+import { Beneficiary, Member, MemberSchema, Zone } from "@/lib/schema"
 import { Form } from "@/components/ui/form"
 import { createMember } from "@/app/actions"
 
+import EditMemberRelations from "./edit-relations"
 import Dependents from "./form-dependents-section"
 import LocationInformation from "./form-location-section"
 import PersonalInformation from "./form-personal-information-section"
 import { SubmitButton } from "./submit-button"
 
 export default function RegistrationForm() {
+  const { zones } = useGlobalData()
+  const [open, setOpen] = useState(false)
+  const [zone, setZone] = useState<Zone>(zones[0])
+  const [dependents, setDependents] = useState<Beneficiary[]>([])
+  const [memberID, setMemberID] = useState<string>("")
+
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),
     defaultValues: {
-      registration_date: new Date(),
-      birth_date: new Date(),
+      registration_date: formatDate(new Date(), "MM/dd/yyyy"),
+      birth_date: formatDate(new Date(), "MM/dd/yyyy"),
       name: "",
       sex: SexChoices.Male,
       isolated: false,
@@ -42,7 +49,8 @@ export default function RegistrationForm() {
         {
           name: "",
           relation: FamilyRelationChoices.Mother,
-          birth_date: new Date(),
+          birth_date: formatDate(new Date(), "MM/dd/yyyy"),
+          contact_number: "",
         },
       ],
       roles: {
@@ -56,15 +64,18 @@ export default function RegistrationForm() {
   const onSubmit = async (data: Member) => {
     const response = await createMember(data)
     if (response.success) {
-      toast("Sucessfully registered new member!")
+      toast("Successful Member Registration", {
+        description: formatDate(new Date(), "PPPPp"),
+        duration: 3000,
+      })
+      setMemberID(response.data?.memberID as string)
+      setZone(data.zone)
+      setDependents(response.data?.dependents as Beneficiary[])
+      setOpen(true)
     } else {
       toast(`Error: ${response.error_message}`)
     }
   }
-
-  useEffect(() => {
-    console.log("error", form.formState.errors)
-  }, [form.formState])
 
   return (
     <FormProvider {...form}>
@@ -79,9 +90,18 @@ export default function RegistrationForm() {
               <LocationInformation />
             </div>
           </div>
-          <SubmitButton></SubmitButton>
+          <SubmitButton text="Next" />
         </form>
       </Form>
+      {memberID && (
+        <EditMemberRelations
+          open={open}
+          onOpenChange={setOpen}
+          memberID={memberID}
+          zone={zone}
+          dependents={dependents}
+        />
+      )}
     </FormProvider>
   )
 }

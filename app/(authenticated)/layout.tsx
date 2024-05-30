@@ -1,5 +1,6 @@
 "use client"
 
+import { useGlobalData } from "@/contexts/global-context"
 import QueryClientProvider from "@/contexts/query-client-context"
 
 import { Toaster } from "@/components/ui/sonner"
@@ -10,6 +11,11 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode
 }) {
+  const { hydrated } = useGlobalData()
+
+  if (!hydrated) {
+    return <p>Fetching global data...</p>
+  }
   return (
     <QueryClientProvider>
       <div className="relative isolate flex min-h-svh w-full bg-white dark:bg-zinc-900 max-lg:flex-col lg:bg-zinc-100 dark:lg:bg-zinc-950">

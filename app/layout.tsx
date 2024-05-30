@@ -1,6 +1,7 @@
 import "@/styles/globals.css"
 import { Metadata } from "next"
 import { AuthProvider } from "@/contexts/auth-context"
+import { GlobalDataProvider } from "@/contexts/global-context"
 
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
@@ -44,10 +45,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
-            <div className="relative flex min-h-screen flex-col">
-              {children}
-            </div>
-            <TailwindIndicator />
+            <GlobalDataProvider>
+              <div className="relative flex min-h-screen flex-col">
+                {children}
+              </div>
+              <TailwindIndicator />
+            </GlobalDataProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

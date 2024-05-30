@@ -18,6 +18,7 @@ import {
 } from "@tanstack/react-table"
 
 import { fetchMembers } from "@/lib/utils"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
   TableBody,
@@ -30,6 +31,20 @@ import { DataTablePagination } from "@/components/table/table-pagination"
 
 import { columns } from "./table-columns"
 import { DataTableToolbar } from "./table-toolbar"
+
+const SkeletonRows = Array.from({ length: 10 }, (_, index) => (
+  <TableRow key={index} className="w-full">
+    <TableCell>
+      <Skeleton className="h-[40px] w-full rounded-full" />
+    </TableCell>
+    <TableCell>
+      <Skeleton className="h-[40px] w-full rounded-full" />
+    </TableCell>
+    <TableCell>
+      <Skeleton className="h-[40px] w-full rounded-full" />
+    </TableCell>
+  </TableRow>
+))
 
 export function MembersTable(): JSX.Element {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -58,7 +73,7 @@ export function MembersTable(): JSX.Element {
   //   pageSize,
   // }
 
-  const dataQuery = useQuery({
+  const { status, data } = useQuery({
     queryKey: ["members"],
     queryFn: () => fetchMembers(),
   })
@@ -66,7 +81,7 @@ export function MembersTable(): JSX.Element {
   const defaultData = React.useMemo(() => [], [])
 
   const table = useReactTable({
-    data: dataQuery.data ?? defaultData,
+    data: data ?? defaultData,
     columns: columns,
     state: {
       sorting,
@@ -111,7 +126,8 @@ export function MembersTable(): JSX.Element {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {status === "pending" && SkeletonRows}
+            {status === "success" &&
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
@@ -123,12 +139,7 @@ export function MembersTable(): JSX.Element {
                     </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell className="h-24 text-center">No results.</TableCell>
-              </TableRow>
-            )}
+              ))}
           </TableBody>
         </Table>
       </div>

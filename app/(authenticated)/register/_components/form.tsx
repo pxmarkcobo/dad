@@ -41,7 +41,7 @@ export default function RegistrationForm() {
       sex: SexChoices.Male,
       isolated: false,
       widowed: false,
-      puyopuyo: false,
+      live_in: false,
       address: "",
       chapel: "",
       selda: "",

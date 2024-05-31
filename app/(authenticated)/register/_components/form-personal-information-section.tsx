@@ -188,10 +188,7 @@ export default function PersonalInformation() {
                   <FormLabel className="font-medium leading-none text-gray-900 dark:text-white">
                     Isolated
                   </FormLabel>
-                  <p
-                    id="isolated-text"
-                    className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                  >
+                  <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
                     Separated, alone, no contact
                   </p>
                 </div>
@@ -216,10 +213,7 @@ export default function PersonalInformation() {
                   <FormLabel className="font-medium leading-none text-gray-900 dark:text-white">
                     Widowed
                   </FormLabel>
-                  <p
-                    id="isolated-text"
-                    className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                  >
+                  <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
                     Spouse has passed away
                   </p>
                 </div>
@@ -242,13 +236,10 @@ export default function PersonalInformation() {
                 </FormControl>
                 <div className="ms-4 text-sm">
                   <FormLabel className="font-medium leading-none text-gray-900 dark:text-white">
-                    Puyo-puyo
+                    Live In
                   </FormLabel>
-                  <p
-                    id="isolated-text"
-                    className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                  >
-                    Lorem ipsum dolor sit
+                  <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+                    Couple living together, unmarried
                   </p>
                 </div>
               </FormItem>

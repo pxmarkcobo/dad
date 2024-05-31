@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { SelectedMemberProvider } from "@/contexts/members-context"
 
@@ -7,8 +5,6 @@ import PageHeader from "@/components/page-header"
 
 import MemberCardInformation from "./_components/member-card"
 import { MembersTable } from "./_components/table"
-
-export const dynamic = "force-dynamic"
 
 export default function Home() {
   return (

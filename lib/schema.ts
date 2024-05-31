@@ -56,7 +56,7 @@ export const MemberSchema = z.object({
   birth_date: z.coerce.date().transform((val) => formatDate(val, "P")),
   isolated: z.boolean(),
   widowed: z.boolean(),
-  puyopuyo: z.boolean(),
+  live_in: z.boolean(),
   civil_status: z.nativeEnum(CivilStatusChoices),
   roles: z.object({
     collector: z.boolean(),
@@ -72,7 +72,7 @@ export const MemberSchema = z.object({
     .optional(),
   dependents: z.array(z.union([DocumentReferenceSchema, BeneficiarySchema])),
   collector: z.union([DocumentReferenceSchema, CollectorSchema]).optional(),
-  resolved: z.boolean().default(false),
+  _resolved: z.boolean().default(false),
 })
 
 export type Member = z.infer<typeof MemberSchema>

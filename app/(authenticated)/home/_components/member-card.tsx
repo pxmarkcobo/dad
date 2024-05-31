@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useSelectedMember } from "@/contexts/members-context"
+import { useMemberInfo } from "@/contexts/member-info-context"
 import { DocumentReference, getDoc } from "firebase/firestore"
 import { MoreVertical, UserCircle } from "lucide-react"
 
@@ -30,7 +30,7 @@ import SkeletonCard from "./member-card-loading"
 import StatusIcon from "./status-icon"
 
 export default function MemberCardInformation() {
-  const { selectedMember: member } = useSelectedMember()
+  const { memberInfo: member } = useMemberInfo()
   const [isLoading, setIsLoading] = React.useState(true)
   const [primary, setPrimary] = React.useState<Beneficiary>()
   const [dependents, setDependents] = React.useState<Beneficiary[]>()

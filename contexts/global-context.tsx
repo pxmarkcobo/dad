@@ -8,13 +8,21 @@ import {
   useState,
 } from "react"
 
-import { Collector, Coordinator, Member, Zone } from "@/lib/schema"
+import {
+  Collector,
+  CollectorSchema,
+  Coordinator,
+  Member,
+  Zone,
+} from "@/lib/schema"
 import { fetchCollectors, fetchCoordinators, fetchZones } from "@/lib/utils"
 
 interface GlobalDataInterface {
   zones: Zone[]
   collectors: Collector[]
   coordinators: Coordinator[]
+  modifyCollector(data: unknown): void
+  addCollector(data: unknown): void
   hydrated: boolean
 }
 
@@ -61,9 +69,37 @@ export function GlobalDataProvider({
     fetchData()
   }, []) // Empty dependency array ensures this runs once when component mounts
 
+  const modifyCollector = (payload: unknown) => {
+    const { success, error, data } = CollectorSchema.safeParse(payload)
+    if (!success) return
+
+    setCollectors((prev) =>
+      prev.map((collector) => {
+        if (collector.id == data.id) {
+          return data
+        }
+        return collector
+      })
+    )
+  }
+
+  const addCollector = (payload: unknown) => {
+    const { success, error, data } = CollectorSchema.safeParse(payload)
+    if (!success) return
+
+    setCollectors((prev) => [...prev, data])
+  }
+
   return (
     <GlobalDataContext.Provider
-      value={{ zones, collectors, coordinators, hydrated }}
+      value={{
+        zones,
+        collectors,
+        coordinators,
+        modifyCollector,
+        addCollector,
+        hydrated,
+      }}
     >
       {children}
     </GlobalDataContext.Provider>

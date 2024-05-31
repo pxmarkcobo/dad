@@ -3,14 +3,19 @@
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 
-import { MemberRelationsSchema, MemberSchema } from "@/lib/schema"
+import {
+  CollectorSchema,
+  MemberRelationsSchema,
+  MemberSchema,
+} from "@/lib/schema"
 import {
   createMember as createMemberAPI,
+  postCollectorAPI,
   updateMemberRelations as updateMemberRelationsAPI,
 } from "@/lib/utils"
 
-export async function createMember(payload: unknown) {
-  // check if logged in user has the correct permission
+export async function createMemberAction(payload: unknown) {
+  // TODO: check if logged in user has the correct permission
   const { success, error, data } = MemberSchema.safeParse(payload)
 
   if (!success) {
@@ -33,14 +38,13 @@ export async function createMember(payload: unknown) {
       error_message: result.error_message,
     }
   }
-  revalidatePath("/home")
   return {
     success: true,
     data: result.data,
   }
 }
 
-export async function updateMemberRelations(payload: unknown) {
+export async function updateMemberRelationsAction(payload: unknown) {
   const { success, error, data } = MemberRelationsSchema.safeParse(payload)
 
   if (!success) {
@@ -55,8 +59,6 @@ export async function updateMemberRelations(payload: unknown) {
     }
   }
 
-  console.log(data)
-
   const result = await updateMemberRelationsAPI(data)
 
   if (!result.success) {
@@ -66,9 +68,32 @@ export async function updateMemberRelations(payload: unknown) {
     }
   }
 
-  revalidatePath("/home")
-  return {
-    success: true,
-    message: `Successfully updated member relations!`,
+  return { success: true }
+}
+
+export async function postCollectorAction(payload: unknown) {
+  const { success, error, data } = CollectorSchema.safeParse(payload)
+
+  if (!success) {
+    let formErrors = {}
+    error.issues.forEach((issue) => {
+      formErrors = { ...formErrors, [issue.path[0]]: issue.message }
+    })
+
+    return {
+      success: false,
+      error_message: formErrors,
+    }
   }
+
+  const result = await postCollectorAPI(data)
+
+  if (!result.success) {
+    return {
+      success: false,
+      error_message: result.error_message,
+    }
+  }
+
+  return { success: true, data: result.data }
 }

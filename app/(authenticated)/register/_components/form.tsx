@@ -16,13 +16,13 @@ import {
 } from "@/lib/enums"
 import { Beneficiary, Member, MemberSchema, Zone } from "@/lib/schema"
 import { Form } from "@/components/ui/form"
-import { createMember } from "@/app/actions"
+import { createMemberAction } from "@/app/actions"
 
+import { SubmitButton } from "../../../../components/submit-button"
 import EditMemberRelations from "./edit-relations"
 import Dependents from "./form-dependents-section"
 import LocationInformation from "./form-location-section"
 import PersonalInformation from "./form-personal-information-section"
-import { SubmitButton } from "./submit-button"
 
 export default function RegistrationForm() {
   const queryClient = useQueryClient()
@@ -64,7 +64,7 @@ export default function RegistrationForm() {
   })
 
   const onSubmit = async (data: Member) => {
-    const response = await createMember(data)
+    const response = await createMemberAction(data)
     if (response.success) {
       toast("Successful Member Registration", {
         description: formatDate(new Date(), "PPPPp"),

@@ -1,10 +1,9 @@
 "use client"
 
 import React from "react"
-import { useQuery } from "@tanstack/react-query"
 import {
+  ColumnDef,
   ColumnFiltersState,
-  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -17,8 +16,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { fetchMembers } from "@/lib/utils"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Collector, Coordinator } from "@/lib/schema"
 import {
   Table,
   TableBody,
@@ -29,11 +27,15 @@ import {
 } from "@/components/ui/table"
 import { DataTablePagination } from "@/components/table/table-pagination"
 
-import { columns } from "./table-columns"
-import TableRowsSkeleton from "./table-rows-loading"
 import { DataTableToolbar } from "./table-toolbar"
 
-export function MembersTable(): JSX.Element {
+export function OfficersTable({
+  data,
+  columns,
+}: {
+  data: Collector[] | Coordinator[]
+  columns: ColumnDef<Collector>[] | ColumnDef<Coordinator>[]
+}): JSX.Element {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -42,33 +44,8 @@ export function MembersTable(): JSX.Element {
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
-  // const [{ pageIndex, pageSize }, setPagination] =
-  //   React.useState<PaginationState>({
-  //     pageIndex: 0,
-  //     pageSize: 10,
-  //   })
-  // const pagination = React.useMemo(
-  //   () => ({
-  //     pageIndex,
-  //     pageSize,
-  //   }),
-  //   [pageIndex, pageSize]
-  // )
-
-  // const fetchDataOptions = {
-  //   pageIndex,
-  //   pageSize,
-  // }
-
-  const { status, data } = useQuery({
-    queryKey: ["members"],
-    queryFn: () => fetchMembers(),
-  })
-
-  const defaultData = React.useMemo(() => [], [])
-
   const table = useReactTable({
-    data: data ?? defaultData,
+    data: data,
     columns: columns,
     state: {
       sorting,
@@ -76,9 +53,6 @@ export function MembersTable(): JSX.Element {
       columnVisibility,
       rowSelection,
     },
-    // manualPagination: true,
-    // pageCount: dataQuery.data?.pageCount ?? -1,
-    // onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -113,20 +87,15 @@ export function MembersTable(): JSX.Element {
             ))}
           </TableHeader>
           <TableBody>
-            {status === "pending" && <TableRowsSkeleton />}
-            {status === "success" &&
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>

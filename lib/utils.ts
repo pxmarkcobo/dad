@@ -141,15 +141,13 @@ export async function updateMemberRelations(payload: unknown) {
       "beneficiaries",
       data.primaryBeneficiary.id as string
     ),
-    collector: doc(firestore, "collectors", data.collector.id),
+    collector: doc(firestore, "collectors", data.collector.id as string),
   }
   console.log("Fields", fields)
   await updateDoc(memberRef, fields)
   console.log(`Member with ID ${data.memberID} relation updated`)
 
-  return {
-    success: true,
-  }
+  return { success: true }
 }
 
 export async function fetchZones() {
@@ -210,4 +208,36 @@ export async function fetchCoordinators() {
     }
   })
   return coordinators
+}
+
+export async function postCollectorAPI(payload: unknown) {
+  const { success, error, data } = CollectorSchema.safeParse(payload)
+
+  if (!success) {
+    let formErrors = {}
+    error.issues.forEach((issue) => {
+      formErrors = { ...formErrors, [issue.path[0]]: issue.message }
+    })
+
+    return {
+      success: false,
+      error_message: formErrors,
+    }
+  }
+
+  let { id, ...fields } = data
+
+  if (id === "") {
+    // create collector
+    const collectorCollection = collection(firestore, "collectors")
+    const docRef = await addDoc(collectorCollection, fields)
+    id = docRef.id
+    console.log("Collector document written with ID: ", id)
+  } else {
+    // update collector
+    const collectorRef = doc(firestore, "collectors", id as string)
+    await updateDoc(collectorRef, fields)
+    console.log(`Collector with ID ${id} updated`)
+  }
+  return { success: true, data: { id, ...fields } }
 }

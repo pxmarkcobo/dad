@@ -1,19 +1,14 @@
 "use client"
 
-import { useEffect } from "react"
 import { useGlobalData } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { CheckIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { z } from "zod"
 
 import {
   Beneficiary,
-  BeneficiarySchema,
-  CollectorSchema,
-  CoordinatorSchema,
   MemberRelationsSchema,
   TMemberRelationsSchema,
   Zone,
@@ -32,7 +27,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
@@ -44,15 +38,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { updateMemberRelations } from "@/app/actions"
+import { updateMemberRelationsAction } from "@/app/actions"
 
-import { SubmitButton } from "./submit-button"
+import { SubmitButton } from "../../../../components/submit-button"
 
 export default function EditMemberRelations({
   open,
@@ -82,7 +75,7 @@ export default function EditMemberRelations({
   })
 
   const onSubmit = async (data: TMemberRelationsSchema) => {
-    const response = await updateMemberRelations(data)
+    const response = await updateMemberRelationsAction(data)
     if (response.success) {
       toast("Successful Member Update", {
         description: formatDate(new Date(), "PPPPp"),

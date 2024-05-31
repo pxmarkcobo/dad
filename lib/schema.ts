@@ -33,15 +33,17 @@ export const BeneficiarySchema = z.object({
 export type Beneficiary = z.infer<typeof BeneficiarySchema>
 
 export const CollectorSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
   zone: ZoneSchema,
+  area: z.string(),
+  chapel: z.string(),
 })
 
 export type Collector = z.infer<typeof CollectorSchema>
 
 export const CoordinatorSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
   zone: ZoneSchema,
 })

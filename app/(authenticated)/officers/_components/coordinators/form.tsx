@@ -8,7 +8,12 @@ import { CheckIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-import { Collector, CollectorSchema } from "@/lib/schema"
+import {
+  Collector,
+  CollectorSchema,
+  Coordinator,
+  CoordinatorSchema,
+} from "@/lib/schema"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -34,43 +39,41 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { SubmitButton } from "@/components/submit-button"
-import { postCollectorAction } from "@/app/actions"
+import { postCoordinatorAction } from "@/app/actions"
 
-export function CollectorForm({
+export function CoordinatorForm({
   initial,
   callback,
 }: {
-  initial?: Collector
+  initial?: Coordinator
   callback(): void
 }) {
-  const { zones, modifyCollector, addCollector } = useGlobalData()
+  const { zones, modifyCoordinator, addCoordinator } = useGlobalData()
   const create = initial === undefined
 
-  const form = useForm<Collector>({
-    resolver: zodResolver(CollectorSchema),
+  const form = useForm<Coordinator>({
+    resolver: zodResolver(CoordinatorSchema),
     defaultValues: {
       id: initial?.id ?? "",
       name: initial?.name ?? "",
       zone: initial?.zone ?? zones[0],
-      area: initial?.area ?? "",
-      chapel: initial?.chapel ?? "",
     },
   })
 
-  const onSubmit = async (data: Collector) => {
+  const onSubmit = async (data: Coordinator) => {
     const {
       success,
       error_message,
-      data: collector,
-    } = await postCollectorAction(data)
+      data: coordinator,
+    } = await postCoordinatorAction(data)
     let message = ""
     if (success) {
       if (!create) {
-        modifyCollector(collector)
-        message = "Successful Collector Update"
+        modifyCoordinator(coordinator)
+        message = "Successful Coordinator Update"
       } else {
-        addCollector(collector)
-        message = "Successful Collector Registration"
+        addCoordinator(coordinator)
+        message = "Successful Coordinator Registration"
       }
       toast(message, {
         description: formatDate(new Date(), "PPPPp"),
@@ -158,48 +161,6 @@ export function CollectorForm({
                       {...field}
                       className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 col-span-3 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                       placeholder="Please set the full name"
-                      required={true}
-                      autoComplete="off"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="area"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 place-items-center gap-2 space-y-0">
-                  <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
-                    Sitio
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 col-span-3 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                      placeholder="Please set the sitio"
-                      required={true}
-                      autoComplete="off"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="chapel"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 place-items-center gap-2 space-y-0">
-                  <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
-                    Chapel
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 col-span-3 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                      placeholder="Please set the chapel"
                       required={true}
                       autoComplete="off"
                     />

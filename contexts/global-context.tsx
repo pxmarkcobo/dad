@@ -12,6 +12,7 @@ import {
   Collector,
   CollectorSchema,
   Coordinator,
+  CoordinatorSchema,
   Member,
   Zone,
 } from "@/lib/schema"
@@ -23,6 +24,8 @@ interface GlobalDataInterface {
   coordinators: Coordinator[]
   modifyCollector(data: unknown): void
   addCollector(data: unknown): void
+  modifyCoordinator(data: unknown): void
+  addCoordinator(data: unknown): void
   hydrated: boolean
 }
 
@@ -69,6 +72,7 @@ export function GlobalDataProvider({
     fetchData()
   }, []) // Empty dependency array ensures this runs once when component mounts
 
+  // Collector Handlers
   const modifyCollector = (payload: unknown) => {
     const { success, error, data } = CollectorSchema.safeParse(payload)
     if (!success) return
@@ -82,12 +86,32 @@ export function GlobalDataProvider({
       })
     )
   }
-
   const addCollector = (payload: unknown) => {
     const { success, error, data } = CollectorSchema.safeParse(payload)
     if (!success) return
 
     setCollectors((prev) => [...prev, data])
+  }
+
+  // Coordinator Handlers
+  const modifyCoordinator = (payload: unknown) => {
+    const { success, error, data } = CoordinatorSchema.safeParse(payload)
+    if (!success) return
+
+    setCoordinators((prev) =>
+      prev.map((coordinator) => {
+        if (coordinator.id == data.id) {
+          return data
+        }
+        return coordinator
+      })
+    )
+  }
+  const addCoordinator = (payload: unknown) => {
+    const { success, error, data } = CoordinatorSchema.safeParse(payload)
+    if (!success) return
+
+    setCoordinators((prev) => [...prev, data])
   }
 
   return (
@@ -98,6 +122,8 @@ export function GlobalDataProvider({
         coordinators,
         modifyCollector,
         addCollector,
+        modifyCoordinator,
+        addCoordinator,
         hydrated,
       }}
     >

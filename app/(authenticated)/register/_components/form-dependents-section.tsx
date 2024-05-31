@@ -74,6 +74,7 @@ export default function Dependents() {
                           placeholder="Full Name"
                           {...field}
                           required={true}
+                          autoComplete="off"
                         />
                       </FormControl>
                       <FormMessage />
@@ -92,6 +93,7 @@ export default function Dependents() {
                           placeholder="Contact Number"
                           {...field}
                           required={true}
+                          autoComplete="off"
                         />
                       </FormControl>
                       <FormMessage />

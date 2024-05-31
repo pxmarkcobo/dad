@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { RegisterCollector } from "./collectors/register"
 import { columns as CollectorColumns } from "./collectors/table-columns"
+import { RegisterCoordinator } from "./coordinators/register"
 import { columns as CoordinatorColumns } from "./coordinators/table-columns"
 import { OfficersTable } from "./table"
 
@@ -41,10 +42,7 @@ export function OfficerTabs() {
       </TabsList>
       <TabsContent value="coordinators">
         <div className="pt-6">
-          <Button variant="outline" size="sm" className="mb-4 h-8">
-            <UserPlus className="mr-2 size-4" />
-            Register Coordinator
-          </Button>
+          <RegisterCoordinator />
           <OfficersTable data={coordinators} columns={CoordinatorColumns} />
         </div>
       </TabsContent>

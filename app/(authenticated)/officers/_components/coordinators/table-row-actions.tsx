@@ -1,31 +1,33 @@
 "use client"
 
+import { useState } from "react"
 import { Row } from "@tanstack/react-table"
 
+import { Collector } from "@/lib/schema"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
+import { CoordinatorForm } from "./form"
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: Row<Collector>
 }
 
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>): JSX.Element {
-  // const { original } = row
+  const [open, onOpenChange] = useState(false)
+  const { original } = row
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline" size="default">
           Edit
@@ -33,28 +35,15 @@ export function DataTableRowActions<TData>({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Coordinator</DialogTitle>
+          <DialogTitle>Edit Coordinator </DialogTitle>
           <DialogDescription>
             Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        <CoordinatorForm
+          initial={original}
+          callback={() => onOpenChange(false)}
+        />
       </DialogContent>
     </Dialog>
   )

@@ -241,3 +241,35 @@ export async function postCollectorAPI(payload: unknown) {
   }
   return { success: true, data: { id, ...fields } }
 }
+
+export async function postCoordinatorAPI(payload: unknown) {
+  const { success, error, data } = CoordinatorSchema.safeParse(payload)
+
+  if (!success) {
+    let formErrors = {}
+    error.issues.forEach((issue) => {
+      formErrors = { ...formErrors, [issue.path[0]]: issue.message }
+    })
+
+    return {
+      success: false,
+      error_message: formErrors,
+    }
+  }
+
+  let { id, ...fields } = data
+
+  if (id === "") {
+    // create coordinator
+    const coordinatorCollection = collection(firestore, "coordinators")
+    const docRef = await addDoc(coordinatorCollection, fields)
+    id = docRef.id
+    console.log("Coordinator document written with ID: ", id)
+  } else {
+    // update coordinator
+    const coordinatorRef = doc(firestore, "coordinators", id as string)
+    await updateDoc(coordinatorRef, fields)
+    console.log(`Coordinator with ID ${id} updated`)
+  }
+  return { success: true, data: { id, ...fields } }
+}

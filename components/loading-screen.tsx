@@ -1,13 +1,9 @@
-import { HeartPulse } from "lucide-react"
+import { HeartHandshake } from "lucide-react"
 
 export default function LoadingScreen() {
   return (
     <div className="h-m-screen fixed left-1/2 top-1/2">
-      <HeartPulse
-        className="size-10 animate-pulse"
-        fill="black"
-        color="black"
-      />
+      <HeartHandshake className="size-12 animate-pulse" />
     </div>
   )
 }

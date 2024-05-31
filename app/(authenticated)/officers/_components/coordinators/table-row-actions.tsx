@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Row } from "@tanstack/react-table"
 
-import { Collector } from "@/lib/schema"
+import { Coordinator } from "@/lib/schema"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -17,7 +17,7 @@ import {
 import { CoordinatorForm } from "./form"
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<Collector>
+  row: Row<Coordinator>
 }
 
 export function DataTableRowActions<TData>({

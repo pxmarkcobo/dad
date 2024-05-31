@@ -1,15 +1,42 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import avatar from "@/assets/avatar.jpg"
 import { useAuthContext } from "@/contexts/auth-context"
-import { BriefcaseBusiness, Home, Settings, Users2 } from "lucide-react"
+import { auth } from "@/services/firebase"
+import { signOut } from "firebase/auth"
+import {
+  BriefcaseBusiness,
+  ChevronUp,
+  Home,
+  Settings,
+  Users2,
+} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
 import { Icons } from "./icons"
 import { ThemeToggle } from "./theme-toggle"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
+
+const logout = async () => {
+  try {
+    await signOut(auth)
+    console.log("User signed out")
+  } catch (error) {
+    console.error("Error signing out: ", error)
+  }
+}
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -191,7 +218,9 @@ export default function Sidebar() {
                 <span
                   data-slot="avatar"
                   className="inline-grid size-10 shrink-0 rounded-[--avatar-radius] align-middle outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 *:rounded-[--avatar-radius] dark:outline-white/[--ring-opacity]"
-                ></span>
+                >
+                  <Image src={avatar} alt="" />
+                </span>
                 <span className="min-w-0">
                   <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
                     {user?.displayName}
@@ -201,19 +230,19 @@ export default function Sidebar() {
                   </span>
                 </span>
               </span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                aria-hidden="true"
-                data-slot="icon"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M11.78 9.78a.75.75 0 0 1-1.06 0L8 7.06 5.28 9.78a.75.75 0 0 1-1.06-1.06l3.25-3.25a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06Z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <ChevronUp />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuItem>Support</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </button>
           </span>
         </div>

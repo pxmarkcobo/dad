@@ -8,12 +8,7 @@ import { CheckIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-import {
-  Collector,
-  CollectorSchema,
-  Coordinator,
-  CoordinatorSchema,
-} from "@/lib/schema"
+import { Coordinator, CoordinatorSchema } from "@/lib/schema"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {

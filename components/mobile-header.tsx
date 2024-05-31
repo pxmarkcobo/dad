@@ -1,10 +1,7 @@
-import Image from "next/image"
 import Link from "next/link"
-import avatar from "@/assets/avatar.jpg"
 
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -17,7 +14,7 @@ export default function MobileHeader() {
         <div className="flex gap-6 md:gap-10">
           <div className="flex gap-2">
             <MobileSidebar />
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="home" className="flex items-center space-x-2">
               <Icons.logo className="size-6" />
             </Link>
           </div>

@@ -1,5 +1,8 @@
 "use client"
 
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuthContext } from "@/contexts/auth-context"
 import { useGlobalData } from "@/contexts/global-context"
 import QueryClientProvider from "@/contexts/query-client-context"
 
@@ -13,6 +16,15 @@ export default function AuthenticatedLayout({
   children: React.ReactNode
 }) {
   const { hydrated } = useGlobalData()
+
+  const router = useRouter()
+  const { user } = useAuthContext()
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/") // redirect to login
+    }
+  }, [user, router])
 
   if (!hydrated) {
     return <LoadingScreen />

@@ -1,19 +1,13 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import avatar from "@/assets/avatar.jpg"
 import {
   BriefcaseBusiness,
   Home,
-  LineChart,
-  Package,
-  Package2,
   PanelLeft,
   Settings,
-  ShoppingCart,
   Users2,
 } from "lucide-react"
 

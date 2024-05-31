@@ -2,7 +2,6 @@
 
 import React from "react"
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -34,7 +33,7 @@ export function OfficersTable({
   columns,
 }: {
   data: Collector[] | Coordinator[]
-  columns: ColumnDef<Collector>[] | ColumnDef<Coordinator>[]
+  columns: any[] // ColumnDef<Collector>[] or ColumnDef<Coordinator>[] use this when separated
 }): JSX.Element {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

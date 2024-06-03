@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
@@ -16,6 +17,22 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>): JSX.Element {
   const isFiltered = table.getState().columnFilters.length > 0
 
+  const uniqueAreas = useMemo(() => {
+    const values = table
+      .getCoreRowModel()
+      .flatRows.map((row) => row.getValue("area")) as string[]
+    const unique = Array.from(new Set(values))
+    return unique.map((item) => ({ label: item, value: item }))
+  }, [table])
+
+  const uniqueChapels = useMemo(() => {
+    const values = table
+      .getCoreRowModel()
+      .flatRows.map((row) => row.getValue("chapel")) as string[]
+    const unique = Array.from(new Set(values))
+    return unique.map((item) => ({ label: item, value: item }))
+  }, [table])
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -32,6 +49,20 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("zone")}
             title="Zone"
             options={zones}
+          />
+        )}
+        {table.getColumn("area") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("area")}
+            title="Barangay"
+            options={uniqueAreas}
+          />
+        )}
+        {table.getColumn("chapel") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("chapel")}
+            title="Chapel"
+            options={uniqueChapels}
           />
         )}
         {isFiltered && (

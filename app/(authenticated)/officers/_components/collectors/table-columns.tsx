@@ -47,7 +47,7 @@ export const columns: ColumnDef<Collector>[] = [
   },
   {
     accessorKey: "area",
-    header: "Sitio",
+    header: "Barangay",
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
@@ -56,6 +56,10 @@ export const columns: ColumnDef<Collector>[] = [
           </span>
         </div>
       )
+    },
+    filterFn: (row, id, value) => {
+      const cell: string = row.getValue(id)
+      return value.includes(cell)
     },
   },
   {
@@ -69,6 +73,10 @@ export const columns: ColumnDef<Collector>[] = [
           </span>
         </div>
       )
+    },
+    filterFn: (row, id, value) => {
+      const cell: string = row.getValue(id)
+      return value.includes(cell)
     },
   },
   {

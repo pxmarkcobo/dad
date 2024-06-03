@@ -37,10 +37,13 @@ export default function Login() {
   const router = useRouter()
   const { user } = useAuthContext()
   const [submitting, setSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (user) {
       router.replace("/home")
+    } else {
+      setLoading(false)
     }
   }, [user, router])
 
@@ -69,6 +72,10 @@ export default function Login() {
       })
     }
     setSubmitting(false)
+  }
+
+  if (loading) {
+    return null
   }
 
   return (

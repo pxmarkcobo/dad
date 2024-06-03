@@ -32,11 +32,11 @@ export default function EmptyCard() {
         </div>
       </CardHeader>
       <CardContent className="my-6 p-6 text-sm">
-        <button className="flex h-[560px] w-full items-center justify-center rounded-md">
+        <div className="flex h-[560px] w-full items-center justify-center rounded-md">
           <p className="text-sm text-muted-foreground">
             Tip: Select a member to display information
           </p>
-        </button>
+        </div>
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-5">
         <div className="text-xs text-muted-foreground"></div>

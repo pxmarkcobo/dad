@@ -65,7 +65,7 @@ export const MemberSchema = z.object({
     coordinator: z.boolean(),
   }),
   chapel: z.string(),
-  address: z.string(),
+  barangay: z.string(),
   selda: z.string(),
   remarks: z.string(),
   zone: ZoneSchema,

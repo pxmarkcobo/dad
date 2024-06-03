@@ -234,9 +234,9 @@ export default function MemberCardInformation() {
               <div className="text-muted-foreground">{member.chapel}</div>
             </div>
             <div className="grid gap-3">
-              <div className="font-semibold">Address</div>
+              <div className="font-semibold">Barangay</div>
               <address className="grid gap-0.5 not-italic text-muted-foreground">
-                <span>{member.address}</span>
+                <span>{member.barangay}</span>
               </address>
             </div>
             <div className="grid auto-rows-max gap-3">

@@ -36,9 +36,7 @@ export default function PersonalInformation() {
   return (
     <>
       <div className="space-y-4">
-        <h2 className="text-l font-semibold text-gray-900 dark:text-white">
-          Basic Information
-        </h2>
+        <h2 className="text-l font-semibold">Basic Information</h2>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField
@@ -46,13 +44,12 @@ export default function PersonalInformation() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                <FormLabel className="mb-2 block text-sm font-medium">
                   Full Name
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                     placeholder="Please indicate member's full name"
                     autoComplete="off"
                     required={true}
@@ -68,7 +65,7 @@ export default function PersonalInformation() {
             name="sex"
             render={({ field }) => (
               <FormItem className="space-y-0">
-                <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                <FormLabel className="mb-2 block text-sm font-medium">
                   Sex
                 </FormLabel>
                 <Popover modal={true}>
@@ -77,7 +74,7 @@ export default function PersonalInformation() {
                       <Button
                         variant="outline"
                         role="combobox"
-                        className="w-full justify-between bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
+                        className="w-full justify-between"
                       >
                         {field.value
                           ? field.value
@@ -119,7 +116,6 @@ export default function PersonalInformation() {
                     </Command>
                   </PopoverContent>
                 </Popover>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -129,15 +125,10 @@ export default function PersonalInformation() {
             name="birth_date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                <FormLabel className="mb-2 block text-sm font-medium">
                   Date of Birth
                 </FormLabel>
-                <input
-                  {...field}
-                  type="date"
-                  className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                  required
-                />
+                <Input {...field} type="date" required />
                 <FormMessage />
               </FormItem>
             )}
@@ -147,16 +138,10 @@ export default function PersonalInformation() {
             name="registration_date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                <FormLabel className="mb-2 block text-sm font-medium">
                   Registration Date
                 </FormLabel>
-                <input
-                  {...field}
-                  value={field.value}
-                  type="date"
-                  className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                  required
-                />
+                <Input {...field} value={field.value} type="date" required />
                 <FormMessage />
               </FormItem>
             )}
@@ -164,9 +149,7 @@ export default function PersonalInformation() {
         </div>
       </div>
       <div className="space-y-4">
-        <h1 className="text-sm font-medium leading-none text-gray-900 dark:text-white">
-          Situation
-        </h1>
+        <h1 className="text-sm font-medium leading-none">Situation</h1>
         <p className="text-xs font-normal text-gray-500 dark:text-gray-400">
           Please select all that applies
         </p>
@@ -185,7 +168,7 @@ export default function PersonalInformation() {
                   />
                 </FormControl>
                 <div className="ms-4 text-sm">
-                  <FormLabel className="font-medium leading-none text-gray-900 dark:text-white">
+                  <FormLabel className="font-medium leading-none">
                     Isolated
                   </FormLabel>
                   <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -210,7 +193,7 @@ export default function PersonalInformation() {
                   />
                 </FormControl>
                 <div className="ms-4 text-sm">
-                  <FormLabel className="font-medium leading-none text-gray-900 dark:text-white">
+                  <FormLabel className="font-medium leading-none">
                     Widowed
                   </FormLabel>
                   <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -235,7 +218,7 @@ export default function PersonalInformation() {
                   />
                 </FormControl>
                 <div className="ms-4 text-sm">
-                  <FormLabel className="font-medium leading-none text-gray-900 dark:text-white">
+                  <FormLabel className="font-medium leading-none">
                     Live In
                   </FormLabel>
                   <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -251,7 +234,7 @@ export default function PersonalInformation() {
           name="civil_status"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium leading-none text-gray-900 dark:text-white">
+              <FormLabel className="text-sm font-medium leading-none">
                 Civil Status
               </FormLabel>
               <p className="text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -267,7 +250,7 @@ export default function PersonalInformation() {
                   <FormItem>
                     <FormControl>
                       <FormLabel htmlFor="single">
-                        <div className="h-full cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                        <div className="h-full cursor-pointer items-center rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
                           <div className="flex items-center">
                             <div className="flex h-5 items-center">
                               <RadioGroupItem
@@ -278,7 +261,7 @@ export default function PersonalInformation() {
                               />
                             </div>
                             <div className="ms-4 text-sm">
-                              <label className="cursor-pointer font-medium leading-none text-gray-900 dark:text-white">
+                              <label className="cursor-pointer font-medium">
                                 Single
                               </label>
                               <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
@@ -306,7 +289,7 @@ export default function PersonalInformation() {
                             <div className="ms-4 text-sm">
                               <label
                                 htmlFor="church_marriage"
-                                className="cursor-pointer font-medium leading-none text-gray-900 dark:text-white"
+                                className="cursor-pointer font-medium"
                               >
                                 Church Marriage
                               </label>
@@ -333,7 +316,7 @@ export default function PersonalInformation() {
                               />
                             </div>
                             <div className="ms-4 text-sm">
-                              <label className="cursor-pointer font-medium leading-none text-gray-900 dark:text-white">
+                              <label className="cursor-pointer font-medium">
                                 Civil Marriage
                               </label>
                               <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">

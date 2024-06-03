@@ -32,25 +32,21 @@ export default function LocationInformation() {
 
   return (
     <div className="space-y-4 pb-4">
-      <h1 className="text-l font-semibold text-gray-900 dark:text-white">
-        Location Information
-      </h1>
+      <h1 className="text-l font-semibold">Location Information</h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FormField
           control={control}
           name="zone"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                Zone
-              </FormLabel>
+              <FormLabel className="mb-2 block text-sm">Zone</FormLabel>
               <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
                       variant="outline"
                       role="combobox"
-                      className="w-full justify-between bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
+                      className="w-full justify-between"
                     >
                       {field.value ? field.value.name : "Select zone"}
                       <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
@@ -99,13 +95,10 @@ export default function LocationInformation() {
           name="chapel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                Chapel
-              </FormLabel>
+              <FormLabel className="mb-2 block text-sm">Chapel</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                   placeholder="Please set the chapel"
                   required={true}
                 />
@@ -116,17 +109,14 @@ export default function LocationInformation() {
         />
         <FormField
           control={control}
-          name="address"
+          name="barangay"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                Address
-              </FormLabel>
+              <FormLabel className="mb-2 block text-sm">Barangay</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                  placeholder="Please set the address"
+                  placeholder="Please set the barangay"
                   required={true}
                 />
               </FormControl>
@@ -139,13 +129,10 @@ export default function LocationInformation() {
           name="selda"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                Selda
-              </FormLabel>
+              <FormLabel className="mb-2 block text-sm">Selda</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                   placeholder="Please set the selda"
                   required={true}
                 />
@@ -162,7 +149,7 @@ export default function LocationInformation() {
           <FormItem className="flex grow flex-col">
             <FormLabel>Remarks</FormLabel>
             <FormControl>
-              <Textarea {...field} />
+              <Textarea {...field} className="focus-visible:ring-0" />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -70,7 +70,6 @@ export default function Dependents() {
                     <FormItem className="col-span-2 md:col-span-1">
                       <FormControl>
                         <Input
-                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                           placeholder="Full Name"
                           {...field}
                           required={true}
@@ -89,7 +88,6 @@ export default function Dependents() {
                     <FormItem className="col-span-2 md:col-span-1">
                       <FormControl>
                         <Input
-                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                           placeholder="Contact Number"
                           {...field}
                           required={true}
@@ -105,14 +103,9 @@ export default function Dependents() {
                   key={`${field.id}.${index}.birth_date`}
                   name={`dependents.${index}.birth_date`}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <FormControl>
-                        <input
-                          {...field}
-                          type="date"
-                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                          required
-                        />
+                        <Input {...field} type="date" required />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -123,7 +116,7 @@ export default function Dependents() {
                   key={`dependents.${index}.relation`}
                   name={`dependents.${index}.relation`}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="col-span-2 md:col-span-1">
                       <Popover modal={true}>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -131,7 +124,7 @@ export default function Dependents() {
                               variant="outline"
                               role="combobox"
                               className={cn(
-                                "w-full justify-between bg-gray-50 text-left font-normal dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400",
+                                "size-full justify-between",
                                 !field.value && "text-muted-foreground"
                               )}
                             >

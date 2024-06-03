@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -202,7 +203,13 @@ export default function Settings() {
                 />
               </div>
             </div>
-            <SubmitButton text="Save Changes" className="float-left mt-2" />
+            <Button
+              className="float-left mt-2"
+              type="submit"
+              disabled={form.formState.isSubmitting}
+            >
+              Save Changes
+            </Button>
           </form>
         </Form>
       </section>

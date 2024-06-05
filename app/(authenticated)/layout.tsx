@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthContext } from "@/contexts/auth-context"
-import { useGlobalData } from "@/contexts/global-context"
+import { useGlobalContext } from "@/contexts/global-context"
 import QueryClientProvider from "@/contexts/query-client-context"
 
 import { Toaster } from "@/components/ui/sonner"
@@ -15,7 +15,7 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { hydrated } = useGlobalData()
+  const { hydrated } = useGlobalContext()
 
   const router = useRouter()
   const { user } = useAuthContext()

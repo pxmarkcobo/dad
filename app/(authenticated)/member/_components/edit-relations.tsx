@@ -1,6 +1,6 @@
 "use client"
 
-import { useGlobalData } from "@/contexts/global-context"
+import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { CheckIcon } from "lucide-react"
@@ -9,6 +9,7 @@ import { toast } from "sonner"
 
 import {
   Beneficiary,
+  Collector,
   MemberRelationsSchema,
   TMemberRelationsSchema,
   Zone,
@@ -53,6 +54,7 @@ export default function EditMemberRelations({
   memberID,
   zone,
   dependents,
+  collector,
   reset,
 }: {
   open: boolean
@@ -60,16 +62,17 @@ export default function EditMemberRelations({
   memberID: string
   zone: Zone
   dependents: Beneficiary[]
+  collector: Collector | undefined
   reset(): void
 }) {
-  const { collectors } = useGlobalData()
+  const { collectors } = useGlobalContext()
   const collectorChoices = collectors.filter((c) => c.zone.id == zone.id)
 
   const form = useForm<TMemberRelationsSchema>({
     resolver: zodResolver(MemberRelationsSchema),
     defaultValues: {
       memberID: memberID,
-      collector: collectorChoices[0],
+      collector: collector ?? collectorChoices[0],
       primaryBeneficiary: dependents[0],
     },
   })

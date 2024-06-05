@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useMemberInfo } from "@/contexts/member-info-context"
 import { DocumentReference, getDoc } from "firebase/firestore"
 import { MoreVertical, UserCircle } from "lucide-react"
@@ -124,10 +126,9 @@ export default function MemberCardInformation() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Export</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Trash</DropdownMenuItem>
+                <Link href={`/member/${member.id}`}>
+                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                </Link>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

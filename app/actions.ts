@@ -7,14 +7,13 @@ import {
   MemberSchema,
 } from "@/lib/schema"
 import {
-  createMember as createMemberAPI,
   postCollectorAPI,
   postCoordinatorAPI,
+  postMemberAPI,
   updateMemberRelations as updateMemberRelationsAPI,
 } from "@/lib/utils"
 
-export async function createMemberAction(payload: unknown) {
-  // TODO: check if logged in user has the correct permission
+export async function postMemberAction(payload: unknown) {
   const { success, error, data } = MemberSchema.safeParse(payload)
 
   if (!success) {
@@ -29,7 +28,7 @@ export async function createMemberAction(payload: unknown) {
     }
   }
 
-  const result = await createMemberAPI(data)
+  const result = await postMemberAPI(data)
 
   if (!result.success) {
     return {

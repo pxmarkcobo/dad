@@ -4,7 +4,6 @@ import React from "react"
 import { useQuery } from "@tanstack/react-query"
 import {
   ColumnFiltersState,
-  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -18,7 +17,6 @@ import {
 } from "@tanstack/react-table"
 
 import { fetchMembers } from "@/lib/utils"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
   TableBody,

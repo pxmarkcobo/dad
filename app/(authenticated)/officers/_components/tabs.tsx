@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useGlobalData } from "@/contexts/global-context"
+import { useGlobalContext } from "@/contexts/global-context"
 import { UserPlus } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -14,7 +14,7 @@ import { columns as CoordinatorColumns } from "./coordinators/table-columns"
 import { OfficersTable } from "./table"
 
 export function OfficerTabs() {
-  const { collectors, coordinators } = useGlobalData()
+  const { collectors, coordinators } = useGlobalContext()
   const router = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()

@@ -64,7 +64,7 @@ export default function SkeletonCard() {
                 htmlFor="isolated"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                isolated
+                Nag-inusara
               </label>
             </div>
             <div className="flex items-center space-x-2">
@@ -131,9 +131,8 @@ export default function SkeletonCard() {
             </div>
           </div>
           <div className="grid gap-3">
-            <div className="font-semibold">Address</div>
+            <div className="font-semibold">Barangay</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <Skeleton className="h-[20px] w-[250px]" />
               <Skeleton className="h-[20px] w-[250px]" />
             </address>
           </div>

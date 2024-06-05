@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useGlobalData } from "@/contexts/global-context"
+import { useRouter } from "next/navigation"
+import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { formatDate } from "date-fns"
@@ -14,9 +15,15 @@ import {
   FamilyRelationChoices,
   SexChoices,
 } from "@/lib/enums"
-import { Beneficiary, Member, MemberSchema, Zone } from "@/lib/schema"
+import {
+  Beneficiary,
+  Collector,
+  Member,
+  MemberSchema,
+  Zone,
+} from "@/lib/schema"
 import { Form } from "@/components/ui/form"
-import { createMemberAction } from "@/app/actions"
+import { postMemberAction } from "@/app/actions"
 
 import { SubmitButton } from "../../../../components/submit-button"
 import EditMemberRelations from "./edit-relations"
@@ -24,47 +31,53 @@ import Dependents from "./form-dependents-section"
 import LocationInformation from "./form-location-section"
 import PersonalInformation from "./form-personal-information-section"
 
-export default function RegistrationForm() {
+export default function MemberForm({ initial }: { initial?: Member }) {
+  const router = useRouter()
   const queryClient = useQueryClient()
-  const { zones } = useGlobalData()
+  const { zones } = useGlobalContext()
+
+  const [memberID, setMemberID] = useState<string>("")
   const [open, setOpen] = useState(false)
   const [zone, setZone] = useState<Zone>(zones[0])
   const [dependents, setDependents] = useState<Beneficiary[]>([])
-  const [memberID, setMemberID] = useState<string>("")
+  const [collector, setCollector] = useState<Collector | undefined>(
+    initial?.collector
+  )
 
+  const defaultValues = {
+    registration_date: formatDate(new Date(), "yyyy-MM-dd"),
+    birth_date: "",
+    name: "",
+    sex: SexChoices.Male,
+    isolated: false,
+    widowed: false,
+    live_in: false,
+    barangay: "",
+    chapel: "",
+    selda: "",
+    zone: zones[0],
+    civil_status: CivilStatusChoices.Single,
+    dependents: [
+      {
+        name: "",
+        relation: FamilyRelationChoices.Mother,
+        birth_date: "",
+        contact_number: "",
+      },
+    ],
+    roles: {
+      collector: false,
+      coordinator: false,
+    },
+    remarks: "",
+  }
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),
-    defaultValues: {
-      registration_date: formatDate(new Date(), "yyyy-MM-dd"),
-      birth_date: "",
-      name: "",
-      sex: SexChoices.Male,
-      isolated: false,
-      widowed: false,
-      live_in: false,
-      address: "",
-      chapel: "",
-      selda: "",
-      zone: zones[0],
-      civil_status: CivilStatusChoices.Single,
-      dependents: [
-        {
-          name: "",
-          relation: FamilyRelationChoices.Mother,
-          birth_date: "",
-          contact_number: "",
-        },
-      ],
-      roles: {
-        collector: false,
-        coordinator: false,
-      },
-      remarks: "",
-    },
+    defaultValues: initial ?? defaultValues,
   })
 
   const onSubmit = async (data: Member) => {
-    const response = await createMemberAction(data)
+    const response = await postMemberAction(data)
     if (response.success) {
       toast("Successful Member Registration", {
         description: formatDate(new Date(), "PPPPp"),
@@ -80,16 +93,23 @@ export default function RegistrationForm() {
   }
 
   const reset = async () => {
-    setMemberID("")
-    form.reset()
     await queryClient.invalidateQueries({
       queryKey: ["members"],
       refetchType: "active",
     })
 
-    const element = document.getElementById("page-header")
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+    if (initial) {
+      router.back()
+    } else {
+      form.reset()
+      setMemberID("")
+      setDependents([])
+      setCollector(undefined)
+
+      const element = document.getElementById("page-header")
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" })
+      }
     }
   }
 
@@ -116,6 +136,7 @@ export default function RegistrationForm() {
           memberID={memberID}
           zone={zone}
           dependents={dependents}
+          collector={collector}
           reset={reset}
         />
       )}

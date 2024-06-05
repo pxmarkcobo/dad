@@ -17,12 +17,14 @@ export function DataTableRowActions<TData>({
   const { original } = row
 
   return (
-    <Button
-      variant="outline"
-      size="default"
-      onClick={() => setMemberInfo(original as Member)}
-    >
-      Show
-    </Button>
+    <div className="flex w-full justify-center">
+      <Button
+        variant="outline"
+        size="default"
+        onClick={() => setMemberInfo(original as Member)}
+      >
+        Show
+      </Button>
+    </div>
   )
 }

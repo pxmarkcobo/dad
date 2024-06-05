@@ -33,10 +33,10 @@ export const GlobalDataContext = createContext<GlobalDataInterface | undefined>(
   undefined
 )
 
-export const useGlobalData = (): GlobalDataInterface => {
+export const useGlobalContext = (): GlobalDataInterface => {
   const context = useContext(GlobalDataContext)
   if (!context) {
-    throw new Error("useGlobalData must be used within a GlobalDataProvider")
+    throw new Error("useGlobalContext must be used within a GlobalDataProvider")
   }
   return context
 }

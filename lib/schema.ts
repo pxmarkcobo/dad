@@ -25,7 +25,7 @@ export type Zone = z.infer<typeof ZoneSchema>
 export const BeneficiarySchema = z.object({
   id: z.string().optional(),
   name: z.string(),
-  birth_date: z.coerce.date().transform((val) => formatDate(val, "P")),
+  birth_date: z.coerce.date().transform((val) => formatDate(val, "yyyy-MM-dd")),
   contact_number: z.string().optional(),
   relation: z.nativeEnum(FamilyRelationChoices),
 })
@@ -54,8 +54,10 @@ export const MemberSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
   sex: z.nativeEnum(SexChoices),
-  registration_date: z.coerce.date().transform((val) => formatDate(val, "P")),
-  birth_date: z.coerce.date().transform((val) => formatDate(val, "P")),
+  registration_date: z.coerce
+    .date()
+    .transform((val) => formatDate(val, "yyyy-MM-dd")),
+  birth_date: z.coerce.date().transform((val) => formatDate(val, "yyyy-MM-dd")),
   isolated: z.boolean(),
   widowed: z.boolean(),
   live_in: z.boolean(),
@@ -73,7 +75,7 @@ export const MemberSchema = z.object({
     .union([DocumentReferenceSchema, BeneficiarySchema])
     .optional(),
   dependents: z.array(z.union([DocumentReferenceSchema, BeneficiarySchema])),
-  collector: z.union([DocumentReferenceSchema, CollectorSchema]).optional(),
+  collector: CollectorSchema.optional(),
   _resolved: z.boolean().default(false),
 })
 

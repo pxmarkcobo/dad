@@ -26,17 +26,17 @@ async function addCollectorAreaChapel() {
   }
 }
 
-async function addMemberLiveIn() {
+export async function addMemberBarangay() {
   const members = await fetchMembers()
   for (const member of members) {
     console.log("Updating member:", member.id, member.name)
 
     const memberRef = doc(firestore, "members", member.id)
     const fields = {
-      live_in: faker.datatype.boolean(),
+      barangay: faker.word.sample(1),
     }
     console.log("fields", fields)
     await updateDoc(memberRef, fields)
-    console.log(`Member with ID ${member.id} live_in field added`)
+    console.log(`Member with ID ${member.id} barangay field added`)
   }
 }

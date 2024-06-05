@@ -46,7 +46,7 @@ export default function MobileSidebar() {
               Home
             </Link>
             <Link
-              href="register"
+              href="member"
               className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
               <span

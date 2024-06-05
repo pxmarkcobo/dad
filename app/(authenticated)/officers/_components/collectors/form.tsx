@@ -1,6 +1,6 @@
 "use client"
 
-import { useGlobalData } from "@/contexts/global-context"
+import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { formatDate } from "date-fns"
@@ -43,7 +43,7 @@ export function CollectorForm({
   initial?: Collector
   callback(): void
 }) {
-  const { zones, modifyCollector, addCollector } = useGlobalData()
+  const { zones, modifyCollector, addCollector } = useGlobalContext()
   const create = initial === undefined
 
   const form = useForm<Collector>({

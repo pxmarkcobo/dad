@@ -39,9 +39,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("name")}
-          </span>
+          <span className="truncate font-medium">{row.getValue("name")}</span>
           {row.original.roles.collector ? (
             <Badge variant="secondary">Collector</Badge>
           ) : row.original.roles.coordinator ? (
@@ -51,48 +49,53 @@ export const columns: ColumnDef<Member>[] = [
       )
     },
   },
-  // {
-  //   accessorKey: "address",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         className="p-0"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Address
-  //         <CaretSortIcon className="ml-2 size-4" />
-  //       </Button>
-  //     )
-  //   },
-  //   cell: ({ row }) => (
-  //     <div className="capitalize">{row.getValue("address") || "-"}</div>
-  //   ),
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id))
-  //   },
-  // },
-  // {
-  //   accessorKey: "chapel",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         className="p-0"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Chapel
-  //         <CaretSortIcon className="ml-2 size-4" />
-  //       </Button>
-  //     )
-  //   },
-  //   cell: ({ row }) => (
-  //     <div className="capitalize">{row.getValue("chapel") || "-"}</div>
-  //   ),
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id))
-  //   },
-  // },
+  {
+    id: "barangay",
+    accessorKey: "barangay",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Barangay
+          <CaretSortIcon className="ml-2 size-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("barangay")}</div>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    id: "collector",
+    accessorKey: "collector",
+    accessorFn: (originalRow, index) => originalRow.collector?.name,
+    header: ({ column }) => {
+      return (
+        <Button
+          className="p-0"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Collector
+          <CaretSortIcon className="ml-2 size-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const value: string = row.getValue("collector")
+      return <div className="truncate text-nowrap capitalize">{value}</div>
+    },
+    filterFn: (row, id, value) => {
+      const cell: string = row.getValue(id)
+      return value.includes(cell)
+    },
+  },
   {
     id: "actions",
     enableHiding: false,

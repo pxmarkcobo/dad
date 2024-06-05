@@ -18,6 +18,7 @@ import { twMerge } from "tailwind-merge"
 
 import {
   Beneficiary,
+  BeneficiarySchema,
   Collector,
   CollectorSchema,
   Coordinator,
@@ -48,9 +49,10 @@ export const formatDate = (
   dateFormat: string = "MMMM do, yyy"
 ): string => {
   // Parse the date if it's a string
+  console.log("date", date)
 
   const dateObj =
-    typeof date === "string" ? parse(date, "MM/dd/yyyy", new Date()) : date
+    typeof date === "string" ? parse(date, "yyyy-MM-dd", new Date()) : date
 
   // Format the date using the specified format
   return format(dateObj, dateFormat)
@@ -61,22 +63,84 @@ export async function fetchMembers() {
   const q = query(memberCollection, orderBy("name"))
 
   const querySnapshot = await getDocs(q)
-  const members: any[] = querySnapshot.docs.map((doc) => {
+  const members: any[] = querySnapshot.docs.map(async (doc) => {
+    const collectorDoc = await getDoc(doc.data().collector as DocumentReference)
+
+    const collector = CollectorSchema.parse({
+      id: collectorDoc.id,
+      ...collectorDoc.data(),
+    })
+
     const { success, error, data } = MemberSchema.safeParse({
       id: doc.id,
       ...doc.data(),
+      collector: collector,
     })
+
     if (success) {
-      data.id = doc.id
       return data as Member
     } else {
       console.error(error.issues)
     }
   })
-  return members
+  const response = await Promise.all(members)
+  return response
 }
 
-export async function createMember(payload: unknown) {
+export async function fetchMemberByID(id: string) {
+  const memberRef = doc(firestore, "members", id)
+  const memberDoc = await getDoc(memberRef)
+
+  console.log(memberDoc.data())
+
+  if (!memberDoc.exists()) {
+    return null
+  }
+
+  const collectorDoc = await getDoc(
+    memberDoc.data().collector as DocumentReference
+  )
+  const collector = CollectorSchema.parse({
+    id: collectorDoc.id,
+    ...collectorDoc.data(),
+  })
+
+  const primaryBeneficiaryDoc = await getDoc(
+    memberDoc.data().primary_beneficiary as DocumentReference
+  )
+  const beneficiary = BeneficiarySchema.parse({
+    id: primaryBeneficiaryDoc.id,
+    ...primaryBeneficiaryDoc.data(),
+  })
+
+  const dependentPromises = memberDoc
+    .data()
+    .dependents.map((ref: DocumentReference) => getDoc(ref))
+  console.log(dependentPromises)
+
+  const dependentDocs = await Promise.all(dependentPromises)
+  let dependents: any[] = dependentDocs.map((doc) => {
+    return BeneficiarySchema.parse({
+      id: doc.id,
+      ...doc.data(),
+    })
+  })
+
+  const { success, error, data } = MemberSchema.safeParse({
+    id: memberDoc.id,
+    ...memberDoc.data(),
+    collector: collector,
+    primary_beneficiary: beneficiary,
+    dependents: dependents,
+  })
+
+  if (!success) {
+    console.error(error.issues)
+  }
+  return data as Member
+}
+
+export async function postMemberAPI(payload: unknown) {
   const { success, error, data } = MemberSchema.safeParse(payload)
 
   if (!success) {
@@ -91,33 +155,65 @@ export async function createMember(payload: unknown) {
     }
   }
 
-  // Create beneficiaries
-  const dependents: any[] = [...data.dependents]
-  const beneficiaryCollection = collection(firestore, "beneficiaries")
+  let { id: memberID, ...memberFields } = data
+  const dependents: any[] = [...memberFields.dependents]
 
-  const dependentRefs = []
-  for (const dependent of dependents) {
-    const beneficiaryRef = await addDoc(beneficiaryCollection, dependent)
-    console.log("Beneficiary document written with ID: ", beneficiaryRef.id)
-    dependentRefs.push(beneficiaryRef)
-    dependent.id = beneficiaryRef.id
+  if (!memberID) {
+    // Create beneficiaries
+    const beneficiaryCollection = collection(firestore, "beneficiaries")
+
+    const dependentRefs = []
+    for (const dependent of dependents) {
+      const dependentRef = await addDoc(beneficiaryCollection, dependent)
+      console.log("Beneficiary document written with ID: ", dependentRef.id)
+      dependentRefs.push(dependentRef)
+      dependent.id = dependentRef.id
+    }
+
+    memberFields.dependents = dependentRefs
+
+    // Create member
+    const memberCollection = collection(firestore, "members")
+    const memberRef = await addDoc(memberCollection, memberFields)
+    memberID = memberRef.id
+    console.log("Member document written with ID: ", memberRef.id)
+  } else {
+    // Update beneficiaries
+    const beneficiaryCollection = collection(firestore, "beneficiaries")
+
+    const dependentRefs = []
+    for (const dependent of dependents) {
+      const { id, ...data } = dependent
+      if (!id) {
+        const dependentRef = await addDoc(beneficiaryCollection, dependent)
+        console.log("Beneficiary document written with ID: ", dependentRef.id)
+        dependentRefs.push(dependentRef)
+        dependent.id = dependentRef.id
+        // create
+      } else {
+        // update
+        const dependentRef = doc(firestore, "beneficiaries", id as string)
+        await updateDoc(dependentRef, data)
+        console.log("Beneficiary document updated with ID: ", dependentRef.id)
+        dependentRefs.push(dependentRef)
+      }
+    }
+
+    memberFields.dependents = dependentRefs
+    // Update member
+    const memberRef = doc(firestore, "members", memberID as string)
+    await updateDoc(memberRef, memberFields)
+    console.log("Member document updated with ID: ", memberRef.id)
   }
-
-  data.dependents = dependentRefs
-
-  // TODO: try-catch
-  const memberCollection = collection(firestore, "members")
-  console.log(data)
-  const docRef = await addDoc(memberCollection, data)
-  console.log("Member document written with ID: ", docRef.id)
   return {
     success: true,
     data: {
-      memberID: docRef.id,
+      memberID: memberID,
       dependents: dependents,
     },
   }
 }
+
 export async function updateMemberRelations(payload: unknown) {
   const { success, error, data } = MemberRelationsSchema.safeParse(payload)
 
@@ -227,7 +323,7 @@ export async function postCollectorAPI(payload: unknown) {
 
   let { id, ...fields } = data
 
-  if (id === "") {
+  if (!id?.trim()) {
     // create collector
     const collectorCollection = collection(firestore, "collectors")
     const docRef = await addDoc(collectorCollection, fields)

@@ -26,8 +26,6 @@ import {
   Member,
   MemberRelationsSchema,
   MemberSchema,
-  Zone,
-  ZoneSchema,
 } from "./schema"
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,8 +47,6 @@ export const formatDate = (
   dateFormat: string = "MMMM do, yyy"
 ): string => {
   // Parse the date if it's a string
-  console.log("date", date)
-
   const dateObj =
     typeof date === "string" ? parse(date, "yyyy-MM-dd", new Date()) : date
 
@@ -244,26 +240,6 @@ export async function updateMemberRelations(payload: unknown) {
   console.log(`Member with ID ${data.memberID} relation updated`)
 
   return { success: true }
-}
-
-export async function fetchZones() {
-  const zoneCollection = collection(firestore, "zones")
-  const q = query(zoneCollection, orderBy("name"))
-
-  const querySnapshot = await getDocs(q)
-  const zones: any[] = querySnapshot.docs.map((doc) => {
-    const { success, error, data } = ZoneSchema.safeParse({
-      id: doc.id,
-      ...doc.data(),
-    })
-    if (success) {
-      data.id = doc.id
-      return data as Zone
-    } else {
-      console.error(error.issues)
-    }
-  })
-  return zones
 }
 
 export async function fetchCollectors() {

@@ -65,7 +65,7 @@ export default function Sidebar() {
               <span
                 className={cn(
                   "flex size-8 items-center justify-center rounded-full",
-                  pathname == "/register"
+                  pathname == "/member"
                     ? "bg-primary text-primary-foreground"
                     : "bg-accent text-accent-foreground"
                 )}

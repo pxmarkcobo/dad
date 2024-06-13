@@ -12,7 +12,6 @@ import {
   Collector,
   MemberRelationsSchema,
   TMemberRelationsSchema,
-  Zone,
 } from "@/lib/schema"
 import { cn, formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -60,13 +59,13 @@ export default function EditMemberRelations({
   open: boolean
   onOpenChange(open: boolean): void
   memberID: string
-  zone: Zone
+  zone: string
   dependents: Beneficiary[]
   collector: Collector | undefined
   reset(): void
 }) {
   const { collectors } = useGlobalContext()
-  const collectorChoices = collectors.filter((c) => c.zone.id == zone.id)
+  const collectorChoices = collectors.filter((c) => c.zone == zone)
 
   const form = useForm<TMemberRelationsSchema>({
     resolver: zodResolver(MemberRelationsSchema),
@@ -157,7 +156,7 @@ export default function EditMemberRelations({
                                     <CheckIcon
                                       className={cn(
                                         "ml-auto size-4",
-                                        zone.id === field.value?.id
+                                        dependent.name === field.value?.name
                                           ? "opacity-100"
                                           : "opacity-0"
                                       )}
@@ -219,7 +218,7 @@ export default function EditMemberRelations({
                                     <CheckIcon
                                       className={cn(
                                         "ml-auto size-4",
-                                        zone.id === field.value?.id
+                                        collector.id === field.value?.id
                                           ? "opacity-100"
                                           : "opacity-0"
                                       )}

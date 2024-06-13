@@ -10,7 +10,7 @@ export const siteConfig = {
     },
     {
       title: "Register",
-      href: "/register",
+      href: "/member",
     },
     {
       title: "Officers",

@@ -87,6 +87,27 @@ export function CoordinatorForm({
           <div className="min-w-0 flex-1 space-y-8">
             <FormField
               control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 place-items-center gap-2 space-y-0">
+                  <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
+                    Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 col-span-3 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
+                      placeholder="Please set the full name"
+                      required={true}
+                      autoComplete="off"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="zone"
               render={({ field }) => (
                 <FormItem className="grid grid-cols-4 place-items-center gap-2 space-y-0">
@@ -101,7 +122,7 @@ export function CoordinatorForm({
                           role="combobox"
                           className="col-span-3 w-full justify-between bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                         >
-                          {field.value ? field.value.name : "Select zone"}
+                          {field.value ? field.value : "Select zone"}
                           <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
@@ -117,17 +138,17 @@ export function CoordinatorForm({
                           <CommandGroup>
                             {zones.map((zone) => (
                               <CommandItem
-                                key={zone.id}
-                                value={zone.name}
+                                key={zone}
+                                value={zone}
                                 onSelect={() => {
                                   form.setValue("zone", zone)
                                 }}
                               >
-                                {zone.name}
+                                {zone}
                                 <CheckIcon
                                   className={cn(
                                     "ml-auto size-4",
-                                    zone.id === field.value?.id
+                                    zone === field.value
                                       ? "opacity-100"
                                       : "opacity-0"
                                   )}
@@ -139,27 +160,6 @@ export function CoordinatorForm({
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 place-items-center gap-2 space-y-0">
-                  <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
-                    Full Name
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 col-span-3 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
-                      placeholder="Please set the full name"
-                      required={true}
-                      autoComplete="off"
-                    />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

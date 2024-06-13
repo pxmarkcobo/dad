@@ -15,13 +15,7 @@ import {
   FamilyRelationChoices,
   SexChoices,
 } from "@/lib/enums"
-import {
-  Beneficiary,
-  Collector,
-  Member,
-  MemberSchema,
-  Zone,
-} from "@/lib/schema"
+import { Beneficiary, Collector, Member, MemberSchema } from "@/lib/schema"
 import { Form } from "@/components/ui/form"
 import { postMemberAction } from "@/app/actions"
 
@@ -38,7 +32,7 @@ export default function MemberForm({ initial }: { initial?: Member }) {
 
   const [memberID, setMemberID] = useState<string>("")
   const [open, setOpen] = useState(false)
-  const [zone, setZone] = useState<Zone>(zones[0])
+  const [zone, setZone] = useState<string>(zones[0])
   const [dependents, setDependents] = useState<Beneficiary[]>([])
   const [collector, setCollector] = useState<Collector | undefined>(
     initial?.collector

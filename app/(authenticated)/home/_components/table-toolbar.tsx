@@ -15,27 +15,12 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>): JSX.Element {
-  const { zones, collectors } = useGlobalContext()
+  const { zones, barangays, collectors } = useGlobalContext()
   const isFiltered = table.getState().columnFilters.length > 0
-
-  const uniqueAreas = useMemo(() => {
-    const values = table
-      .getCoreRowModel()
-      .flatRows.map((row) => row.getValue("barangay")) as string[]
-    const unique = Array.from(new Set(values))
-    return unique.map((item) => ({ label: item, value: item }))
-  }, [table])
-
-  const uniqueZones = useMemo(() => {
-    const values = zones.map((zone) => zone.name) as string[]
-    const unique = Array.from(new Set(values))
-    return unique.map((item) => ({ label: item, value: item }))
-  }, [zones])
 
   const uniqueCollectors = useMemo(() => {
     const values = collectors.map((collector) => collector.name) as string[]
-    const unique = Array.from(new Set(values))
-    return unique.map((item) => ({ label: item, value: item }))
+    return values
   }, [collectors])
 
   return (
@@ -53,14 +38,14 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("zone")}
             title="Zone"
-            options={uniqueZones}
+            options={zones}
           />
         )}
         {table.getColumn("barangay") && (
           <DataTableFacetedFilter
             column={table.getColumn("barangay")}
             title="Barangay"
-            options={uniqueAreas}
+            options={barangays}
           />
         )}
         {table.getColumn("collector") && (

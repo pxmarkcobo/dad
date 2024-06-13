@@ -227,7 +227,7 @@ export default function MemberCardInformation() {
             <div className="grid gap-3">
               <div className="font-semibold">Zone</div>
               <address className="grid gap-0.5 not-italic text-muted-foreground">
-                <span>{member.zone.name}</span>
+                <span>{member.zone}</span>
               </address>
             </div>
             <div className="grid auto-rows-max gap-3">

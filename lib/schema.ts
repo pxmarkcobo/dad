@@ -13,15 +13,6 @@ export const DocumentReferenceSchema = z.custom<DocumentReference>(
   }
 )
 
-export const ZoneSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  value: z.string().optional(),
-  label: z.string().optional(),
-})
-
-export type Zone = z.infer<typeof ZoneSchema>
-
 export const BeneficiarySchema = z.object({
   id: z.string().optional(),
   name: z.string(),
@@ -35,8 +26,8 @@ export type Beneficiary = z.infer<typeof BeneficiarySchema>
 export const CollectorSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
-  zone: ZoneSchema,
-  area: z.string(),
+  zone: z.string(),
+  sitio: z.string(),
   chapel: z.string(),
 })
 
@@ -45,7 +36,7 @@ export type Collector = z.infer<typeof CollectorSchema>
 export const CoordinatorSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
-  zone: ZoneSchema,
+  zone: z.string(),
 })
 
 export type Coordinator = z.infer<typeof CoordinatorSchema>
@@ -68,9 +59,10 @@ export const MemberSchema = z.object({
   }),
   chapel: z.string(),
   barangay: z.string(),
+  sitio: z.string().optional(),
   selda: z.string(),
   remarks: z.string(),
-  zone: ZoneSchema,
+  zone: z.string(),
   primary_beneficiary: z
     .union([DocumentReferenceSchema, BeneficiarySchema])
     .optional(),

@@ -1,8 +1,7 @@
-import { useMemo } from "react"
+import { useGlobalContext } from "@/contexts/global-context"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
-import zones from "@/lib/zones"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter"
@@ -15,23 +14,8 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>): JSX.Element {
+  const { zones, sitios, chapels } = useGlobalContext()
   const isFiltered = table.getState().columnFilters.length > 0
-
-  const uniqueAreas = useMemo(() => {
-    const values = table
-      .getCoreRowModel()
-      .flatRows.map((row) => row.getValue("area")) as string[]
-    const unique = Array.from(new Set(values))
-    return unique.map((item) => ({ label: item, value: item }))
-  }, [table])
-
-  const uniqueChapels = useMemo(() => {
-    const values = table
-      .getCoreRowModel()
-      .flatRows.map((row) => row.getValue("chapel")) as string[]
-    const unique = Array.from(new Set(values))
-    return unique.map((item) => ({ label: item, value: item }))
-  }, [table])
 
   return (
     <div className="flex items-center justify-between">
@@ -51,18 +35,18 @@ export function DataTableToolbar<TData>({
             options={zones}
           />
         )}
-        {table.getColumn("area") && (
+        {table.getColumn("sitio") && (
           <DataTableFacetedFilter
-            column={table.getColumn("area")}
-            title="Barangay"
-            options={uniqueAreas}
+            column={table.getColumn("sitio")}
+            title="Sitio"
+            options={sitios}
           />
         )}
         {table.getColumn("chapel") && (
           <DataTableFacetedFilter
             column={table.getColumn("chapel")}
             title="Chapel"
-            options={uniqueChapels}
+            options={chapels}
           />
         )}
         {isFiltered && (

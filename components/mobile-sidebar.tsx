@@ -30,7 +30,7 @@ export default function MobileSidebar() {
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="home"
+              href="/home"
               className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
               <span
@@ -46,13 +46,13 @@ export default function MobileSidebar() {
               Home
             </Link>
             <Link
-              href="member"
+              href="/member"
               className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
               <span
                 className={cn(
                   "flex size-8 items-center justify-center rounded-full",
-                  pathname == "/register"
+                  pathname == "/member"
                     ? "bg-primary text-primary-foreground"
                     : "bg-accent text-accent-foreground"
                 )}
@@ -62,7 +62,7 @@ export default function MobileSidebar() {
               Register
             </Link>
             <Link
-              href="officers"
+              href="/officers"
               className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
               <span
@@ -78,7 +78,7 @@ export default function MobileSidebar() {
               Officers
             </Link>
             <Link
-              href="settings"
+              href="/settings"
               className="text-md flex items-center gap-2 px-2.5 font-medium text-muted-foreground hover:text-foreground"
             >
               <span

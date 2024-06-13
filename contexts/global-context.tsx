@@ -8,18 +8,24 @@ import {
   useState,
 } from "react"
 
+import { barangays, sitios } from "@/lib/data/barangays"
+import { chapels } from "@/lib/data/chapels"
+import zones from "@/lib/data/zones"
 import {
   Collector,
   CollectorSchema,
   Coordinator,
   CoordinatorSchema,
-  Member,
-  Zone,
 } from "@/lib/schema"
-import { fetchCollectors, fetchCoordinators, fetchZones } from "@/lib/utils"
+import { fetchCollectors, fetchCoordinators } from "@/lib/utils"
+
+chapels
 
 interface GlobalDataInterface {
-  zones: Zone[]
+  zones: string[]
+  barangays: string[]
+  sitios: string[]
+  chapels: string[]
   collectors: Collector[]
   coordinators: Coordinator[]
   modifyCollector(data: unknown): void
@@ -46,7 +52,6 @@ export function GlobalDataProvider({
 }: {
   children: ReactNode
 }): JSX.Element {
-  const [zones, setZones] = useState<Zone[]>([])
   const [collectors, setCollectors] = useState<Collector[]>([])
   const [coordinators, setCoordinators] = useState<Coordinator[]>([])
   const [hydrated, hydrate] = useState<boolean>(false)
@@ -54,9 +59,6 @@ export function GlobalDataProvider({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const zones = await fetchZones()
-        setZones(zones)
-
         const collectors = await fetchCollectors()
         setCollectors(collectors)
 
@@ -68,9 +70,8 @@ export function GlobalDataProvider({
         console.error("Failed to fetch data", error)
       }
     }
-
     fetchData()
-  }, []) // Empty dependency array ensures this runs once when component mounts
+  }, [])
 
   // Collector Handlers
   const modifyCollector = (payload: unknown) => {
@@ -118,6 +119,9 @@ export function GlobalDataProvider({
     <GlobalDataContext.Provider
       value={{
         zones,
+        barangays,
+        sitios,
+        chapels,
         collectors,
         coordinators,
         modifyCollector,

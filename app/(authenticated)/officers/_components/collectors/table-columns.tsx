@@ -10,7 +10,7 @@ export const columns: ColumnDef<Collector>[] = [
   {
     id: "zone",
     accessorKey: "zone",
-    accessorFn: (originalRow, index) => originalRow.zone.label,
+    accessorFn: (originalRow, index) => originalRow.zone,
     header: ({ column }) => {
       return (
         <Button
@@ -25,7 +25,7 @@ export const columns: ColumnDef<Collector>[] = [
     },
     cell: ({ row }) => {
       const value: string = row.getValue("zone")
-      return <div className="capitalize">{value}</div>
+      return <div className="capitalize">Zone {value}</div>
     },
     filterFn: (row, id, value) => {
       const cell: string = row.getValue(id)
@@ -46,13 +46,13 @@ export const columns: ColumnDef<Collector>[] = [
     },
   },
   {
-    accessorKey: "area",
-    header: "Barangay",
+    accessorKey: "sitio",
+    header: "Sitio",
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("area")}
+            {row.getValue("sitio")}
           </span>
         </div>
       )

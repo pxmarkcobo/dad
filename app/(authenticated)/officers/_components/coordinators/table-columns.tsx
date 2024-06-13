@@ -10,7 +10,7 @@ export const columns: ColumnDef<Coordinator>[] = [
   {
     id: "zone",
     accessorKey: "zone",
-    accessorFn: (originalRow, index) => originalRow.zone.label,
+    accessorFn: (originalRow, index) => originalRow.zone,
     header: ({ column }) => {
       return (
         <Button

@@ -1,7 +1,7 @@
 import { CaretSortIcon } from "@radix-ui/react-icons"
 import { ColumnDef } from "@tanstack/react-table"
 
-import { Member, Zone } from "@/lib/schema"
+import { Member } from "@/lib/schema"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -11,7 +11,7 @@ export const columns: ColumnDef<Member>[] = [
   {
     id: "zone",
     accessorKey: "zone",
-    accessorFn: (originalRow, index) => originalRow.zone.label,
+    accessorFn: (originalRow, index) => originalRow.zone,
     header: ({ column }) => {
       return (
         <Button
@@ -29,8 +29,7 @@ export const columns: ColumnDef<Member>[] = [
       return <div className="capitalize">{value}</div>
     },
     filterFn: (row, id, value) => {
-      const cell: string = row.getValue(id)
-      return value.includes(cell)
+      return value.includes(row.getValue(id))
     },
   },
   {

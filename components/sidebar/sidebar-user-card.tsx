@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import carmela from "@/assets/carmela.jpeg"
 import { useAuthContext } from "@/contexts/auth-context"
 import { auth } from "@/services/firebase"
@@ -54,6 +55,7 @@ export default function UserCard() {
                   alt=""
                   width={100}
                   height={100}
+                  className="w-100 h-100"
                 />
               </span>
               <span className="min-w-0">
@@ -72,8 +74,9 @@ export default function UserCard() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
+                <Link href="/settings">
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                </Link>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

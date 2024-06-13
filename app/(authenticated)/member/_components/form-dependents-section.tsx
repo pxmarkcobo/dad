@@ -1,30 +1,16 @@
-import { CaretSortIcon } from "@radix-ui/react-icons"
-import { CheckIcon } from "lucide-react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 
 import { FamilyRelationChoices } from "@/lib/enums"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
 import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import FormSelectDropdown from "@/components/form/form-select-dropdown"
 
 export default function Dependents() {
   const relations = Object.values(FamilyRelationChoices)
@@ -56,7 +42,7 @@ export default function Dependents() {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="mb-1 flex items-center justify-center gap-4"
+              className="mb-6 flex items-center justify-center gap-4"
             >
               <Button variant="ghost" size="icon" disabled>
                 {index + 1}
@@ -68,9 +54,10 @@ export default function Dependents() {
                   name={`dependents.${index}.name`}
                   render={({ field }) => (
                     <FormItem className="col-span-2 md:col-span-1">
+                      <FormLabel className="mb-2 block text-sm">Name</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Full Name"
+                          placeholder="Full name"
                           {...field}
                           required={true}
                           autoComplete="off"
@@ -86,6 +73,9 @@ export default function Dependents() {
                   name={`dependents.${index}.contact_number`}
                   render={({ field }) => (
                     <FormItem className="col-span-2 md:col-span-1">
+                      <FormLabel className="mb-2 block text-sm">
+                        Contact number
+                      </FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Contact Number"
@@ -104,6 +94,9 @@ export default function Dependents() {
                   name={`dependents.${index}.birth_date`}
                   render={({ field }) => (
                     <FormItem className="col-span-2 md:col-span-1">
+                      <FormLabel className="mb-2 block text-sm">
+                        Date of Birth
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} type="date" required />
                       </FormControl>
@@ -111,63 +104,12 @@ export default function Dependents() {
                     </FormItem>
                   )}
                 />
-                <FormField
+
+                <FormSelectDropdown
                   control={control}
-                  key={`dependents.${index}.relation`}
                   name={`dependents.${index}.relation`}
-                  render={({ field }) => (
-                    <FormItem className="col-span-2 md:col-span-1">
-                      <Popover modal={true}>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              className={cn(
-                                "size-full justify-between",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              <span className="truncate">
-                                {field.value ? field.value : "Relation"}
-                              </span>
-                              <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
-                          <Command>
-                            <CommandList>
-                              <CommandInput
-                                placeholder="Search relation..."
-                                className="h-9"
-                              />
-                              <CommandEmpty>No relation found.</CommandEmpty>
-                              <CommandGroup>
-                                {relations.map((relation) => (
-                                  <CommandItem
-                                    value={relation}
-                                    key={`${index}-${relation}`}
-                                    onSelect={field.onChange}
-                                  >
-                                    {relation}
-                                    <CheckIcon
-                                      className={cn(
-                                        "ml-auto size-4",
-                                        relation === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </FormItem>
-                  )}
+                  options={relations}
+                  label="Relation"
                 />
               </div>
               <Button

@@ -22,8 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import PageHeader from "@/components/page-header"
-import { SubmitButton } from "@/components/submit-button"
+import PageHeader from "@/components/header/page-header"
 
 const FileSchema = z.object({
   name: z.string(),
@@ -183,7 +182,7 @@ export default function Settings() {
                           <div className="flex flex-col text-sm leading-6 text-gray-600">
                             <label
                               htmlFor="file-upload"
-                              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500"
+                              className="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500"
                             >
                               <span>Upload a file</span>
                               <Input

@@ -7,7 +7,7 @@ import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/themes/theme-provider"
 
 export const viewport = {
   themeColor: [

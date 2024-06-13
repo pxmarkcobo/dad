@@ -32,39 +32,41 @@ export function DataTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-48"
+          className="max-w-64 md:max-w-48"
         />
-        {table.getColumn("zone") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("zone")}
-            title="Zone"
-            options={zones}
-          />
-        )}
-        {table.getColumn("barangay") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("barangay")}
-            title="Barangay"
-            options={barangays}
-          />
-        )}
-        {table.getColumn("collector") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("collector")}
-            title="Collector"
-            options={uniqueCollectors}
-          />
-        )}
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="ml-2 size-4" />
-          </Button>
-        )}
+        <div className="hidden flex-1 items-center space-x-2 md:flex">
+          {table.getColumn("zone") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("zone")}
+              title="Zone"
+              options={zones}
+            />
+          )}
+          {table.getColumn("barangay") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("barangay")}
+              title="Barangay"
+              options={barangays}
+            />
+          )}
+          {table.getColumn("collector") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("collector")}
+              title="Collector"
+              options={uniqueCollectors}
+            />
+          )}
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <Cross2Icon className="ml-2 size-4" />
+            </Button>
+          )}
+        </div>
       </div>
       <DataTableViewOptions table={table} />
     </div>

@@ -7,10 +7,9 @@ import { BriefcaseBusiness, Home, Settings, Users2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-import { Icons } from "./icons"
-import { CommandDialogDemo } from "./search"
+import { Icons } from "../icons"
+import { ThemeToggle } from "../themes/theme-toggle"
 import UserCard from "./sidebar-user-card"
-import { ThemeToggle } from "./theme-toggle"
 
 export default function Sidebar() {
   const pathname = usePathname()

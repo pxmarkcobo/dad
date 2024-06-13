@@ -8,7 +8,7 @@ import QueryClientProvider from "@/contexts/query-client-context"
 
 import { Toaster } from "@/components/ui/sonner"
 import LoadingScreen from "@/components/loading-screen"
-import Sidebar from "@/components/sidebar"
+import Sidebar from "@/components/sidebar/sidebar"
 
 export default function AuthenticatedLayout({
   children,

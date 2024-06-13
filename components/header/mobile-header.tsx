@@ -3,9 +3,9 @@ import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { ThemeToggle } from "@/components/themes/theme-toggle"
 
-import MobileSidebar from "./mobile-sidebar"
+import MobileSidebar from "../sidebar/mobile-sidebar"
 
 export default function MobileHeader() {
   return (

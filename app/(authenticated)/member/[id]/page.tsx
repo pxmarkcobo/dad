@@ -5,8 +5,8 @@ import { notFound, useRouter } from "next/navigation"
 
 import { Member } from "@/lib/schema"
 import { fetchMemberByID } from "@/lib/utils"
+import PageHeader from "@/components/header/page-header"
 import LoadingScreen from "@/components/loading-screen"
-import PageHeader from "@/components/page-header"
 
 import MemberForm from "../_components/form"
 

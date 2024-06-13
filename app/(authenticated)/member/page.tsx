@@ -1,4 +1,4 @@
-import PageHeader from "@/components/page-header"
+import PageHeader from "@/components/header/page-header"
 
 import MemberForm from "./_components/form"
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -19,7 +19,7 @@ import { Beneficiary, Collector, Member, MemberSchema } from "@/lib/schema"
 import { Form } from "@/components/ui/form"
 import { postMemberAction } from "@/app/actions"
 
-import { SubmitButton } from "../../../../components/submit-button"
+import { SubmitButton } from "../../../../components/form/form-submit-button"
 import EditMemberRelations from "./edit-relations"
 import Dependents from "./form-dependents-section"
 import LocationInformation from "./form-location-section"

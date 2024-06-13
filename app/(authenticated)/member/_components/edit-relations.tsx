@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CaretSortIcon } from "@radix-ui/react-icons"
@@ -45,7 +46,7 @@ import {
 } from "@/components/ui/popover"
 import { updateMemberRelationsAction } from "@/app/actions"
 
-import { SubmitButton } from "../../../../components/submit-button"
+import { SubmitButton } from "../../../../components/form/form-submit-button"
 
 export default function EditMemberRelations({
   open,
@@ -90,6 +91,9 @@ export default function EditMemberRelations({
     }
   }
 
+  const [dependentOpen, dependentOnOpenChange] = useState(false)
+  const [collectorOpen, collectorOnOpenChange] = useState(false)
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -117,7 +121,11 @@ export default function EditMemberRelations({
                       <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
                         Primary Beneficiary
                       </FormLabel>
-                      <Popover modal={true}>
+                      <Popover
+                        modal={true}
+                        open={dependentOpen}
+                        onOpenChange={dependentOnOpenChange}
+                      >
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
@@ -150,6 +158,7 @@ export default function EditMemberRelations({
                                         "primaryBeneficiary",
                                         dependent
                                       )
+                                      dependentOnOpenChange(false)
                                     }}
                                   >
                                     {dependent.name}
@@ -182,7 +191,11 @@ export default function EditMemberRelations({
                       <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
                         Collector
                       </FormLabel>
-                      <Popover modal={true}>
+                      <Popover
+                        modal={true}
+                        open={collectorOpen}
+                        onOpenChange={collectorOnOpenChange}
+                      >
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
@@ -212,6 +225,7 @@ export default function EditMemberRelations({
                                     value={collector.name}
                                     onSelect={() => {
                                       form.setValue("collector", collector)
+                                      collectorOnOpenChange(false)
                                     }}
                                   >
                                     {collector.name}

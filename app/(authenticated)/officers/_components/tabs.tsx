@@ -2,9 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useGlobalContext } from "@/contexts/global-context"
-import { UserPlus } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { RegisterCollector } from "./collectors/register"

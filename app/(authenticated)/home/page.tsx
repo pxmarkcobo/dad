@@ -1,7 +1,7 @@
 import * as React from "react"
 import { MemberInfoProvider } from "@/contexts/member-info-context"
 
-import PageHeader from "@/components/page-header"
+import PageHeader from "@/components/header/page-header"
 
 import MemberCardInformation from "./_components/member-card"
 import { MembersTable } from "./_components/table"

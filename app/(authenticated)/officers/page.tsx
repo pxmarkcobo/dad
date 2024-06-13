@@ -1,4 +1,4 @@
-import PageHeader from "@/components/page-header"
+import PageHeader from "@/components/header/page-header"
 
 import { OfficerTabs } from "./_components/tabs"
 

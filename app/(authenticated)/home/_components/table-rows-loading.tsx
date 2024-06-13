@@ -15,6 +15,12 @@ export default function TableRowsSkeleton() {
           <TableCell>
             <Skeleton className="h-[40px] w-full rounded-full" />
           </TableCell>
+          <TableCell>
+            <Skeleton className="h-[40px] w-full rounded-full" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-[40px] w-full rounded-full" />
+          </TableCell>
         </TableRow>
       ))}
     </>

@@ -77,7 +77,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="start">
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
@@ -110,7 +110,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     >
                       <CheckIcon className={cn("size-4")} />
                     </div>
-                    <span className="truncate text-nowrap">{option}</span>
+                    <span className="text-nowrap">{option}</span>
                     {facets?.get(option) && (
                       <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
                         {facets.get(option)}

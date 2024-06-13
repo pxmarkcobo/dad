@@ -26,39 +26,41 @@ export function DataTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-md"
+          className="max-w-xs md:max-w-md"
         />
-        {table.getColumn("zone") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("zone")}
-            title="Zone"
-            options={zones}
-          />
-        )}
-        {table.getColumn("sitio") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("sitio")}
-            title="Sitio"
-            options={sitios}
-          />
-        )}
-        {table.getColumn("chapel") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("chapel")}
-            title="Chapel"
-            options={chapels}
-          />
-        )}
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
-          >
-            Reset
-            <Cross2Icon className="ml-2 size-4" />
-          </Button>
-        )}
+        <div className="hidden flex-1 items-center space-x-2 md:flex">
+          {table.getColumn("zone") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("zone")}
+              title="Zone"
+              options={zones}
+            />
+          )}
+          {table.getColumn("sitio") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("sitio")}
+              title="Sitio"
+              options={sitios}
+            />
+          )}
+          {table.getColumn("chapel") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("chapel")}
+              title="Chapel"
+              options={chapels}
+            />
+          )}
+          {isFiltered && (
+            <Button
+              variant="ghost"
+              onClick={() => table.resetColumnFilters()}
+              className="h-8 px-2 lg:px-3"
+            >
+              Reset
+              <Cross2Icon className="ml-2 size-4" />
+            </Button>
+          )}
+        </div>
       </div>
       <DataTableViewOptions table={table} />
     </div>

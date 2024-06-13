@@ -226,9 +226,9 @@ export default function MemberCardInformation() {
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-3">
               <div className="font-semibold">Zone</div>
-              <address className="grid gap-0.5 not-italic text-muted-foreground">
+              <div className="grid gap-0.5 not-italic text-muted-foreground">
                 <span>{member.zone}</span>
-              </address>
+              </div>
             </div>
             <div className="grid auto-rows-max gap-3">
               <div className="font-semibold">Chapel</div>
@@ -236,13 +236,23 @@ export default function MemberCardInformation() {
             </div>
             <div className="grid gap-3">
               <div className="font-semibold">Barangay</div>
-              <address className="grid gap-0.5 not-italic text-muted-foreground">
+              <div className="grid gap-0.5 not-italic text-muted-foreground">
                 <span>{member.barangay}</span>
-              </address>
+              </div>
             </div>
             <div className="grid auto-rows-max gap-3">
               <div className="font-semibold">Selda</div>
               <div className="text-muted-foreground">{member.selda}</div>
+            </div>
+            <div className="grid auto-rows-max gap-3">
+              <div className="font-semibold">Sitio</div>
+              <div className="text-muted-foreground">{member.sitio}</div>
+            </div>
+            <div className="grid auto-rows-max gap-3">
+              <div className="font-semibold">Collector</div>
+              <div className="text-muted-foreground">
+                {member.collector?.name}
+              </div>
             </div>
           </div>
           <Separator className="my-4" />
@@ -291,11 +301,6 @@ export default function MemberCardInformation() {
           <div className="my-4 font-semibold">Remarks</div>
           <p>{member.remarks}</p>
         </CardContent>
-        <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-          <div className="text-xs text-muted-foreground">
-            Updated <time dateTime="2023-11-23">November 23, 2023</time>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   )

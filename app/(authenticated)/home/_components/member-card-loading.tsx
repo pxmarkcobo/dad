@@ -45,13 +45,13 @@ export default function SkeletonCard() {
           <div className="grid gap-3">
             <div className="font-semibold">Petsang Natawhan</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <Skeleton className="h-[23px] w-[250px]" />
+              <Skeleton className="h-[23px] w-[150px]" />
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
             <div className="font-semibold">Registration Date</div>
             <div className="text-muted-foreground">
-              <Skeleton className="h-[23px] w-[250px]" />
+              <Skeleton className="h-[23px] w-[150px]" />
             </div>
           </div>
         </div>
@@ -121,25 +121,37 @@ export default function SkeletonCard() {
           <div className="grid gap-3">
             <div className="font-semibold">Zone</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <Skeleton className="h-[20px] w-[250px]" />
+              <Skeleton className="h-[20px] w-[150px]" />
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
             <div className="font-semibold">Chapel</div>
             <div className="text-muted-foreground">
-              <Skeleton className="h-[20px] w-[250px]" />
+              <Skeleton className="h-[20px] w-[150px]" />
             </div>
           </div>
           <div className="grid gap-3">
             <div className="font-semibold">Barangay</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <Skeleton className="h-[20px] w-[250px]" />
+              <Skeleton className="h-[20px] w-[150px]" />
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
             <div className="font-semibold">Selda</div>
             <div className="text-muted-foreground">
-              <Skeleton className="h-[20px] w-[250px]" />
+              <Skeleton className="h-[20px] w-[150px]" />
+            </div>
+          </div>
+          <div className="grid auto-rows-max gap-3">
+            <div className="font-semibold">Sitio</div>
+            <div className="text-muted-foreground">
+              <Skeleton className="h-[20px] w-[150px]" />
+            </div>
+          </div>
+          <div className="grid auto-rows-max gap-3">
+            <div className="font-semibold">Collector</div>
+            <div className="text-muted-foreground">
+              <Skeleton className="h-[20px] w-[150px]" />
             </div>
           </div>
         </div>
@@ -151,13 +163,13 @@ export default function SkeletonCard() {
             <div className="flex items-center justify-between">
               <dt className="flex items-center gap-1">
                 <Skeleton className="size-4" />
-                <Skeleton className="h-[20px] w-[150px]" />
+                <Skeleton className="h-[20px] w-[100px]" />
               </dt>
               <dd>
-                <Skeleton className="h-[20px] w-[150px]" />
+                <Skeleton className="h-[20px] w-[100px]" />
               </dd>
               <dd>
-                <Skeleton className="h-[20px] w-[150px]" />
+                <Skeleton className="h-[20px] w-[100px]" />
               </dd>
             </div>
           </dl>
@@ -176,13 +188,13 @@ export default function SkeletonCard() {
           <tbody>
             <tr>
               <td className="text-muted-foreground">
-                <Skeleton className="h-[20px] w-[150px]" />
+                <Skeleton className="h-[20px] w-[100px]" />
               </td>
               <td className="text-muted-foreground">
-                <Skeleton className="h-[20px] w-[150px]" />
+                <Skeleton className="h-[20px] w-[100px]" />
               </td>
               <td className="text-muted-foreground">
-                <Skeleton className="h-[20px] w-[150px]" />
+                <Skeleton className="h-[20px] w-[100px]" />
               </td>
             </tr>
           </tbody>
@@ -191,11 +203,6 @@ export default function SkeletonCard() {
         <div className="my-4 font-semibold">Remarks</div>
         <Skeleton className="h-[23px] w-[350px]" />
       </CardContent>
-      <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
-        <div className="text-xs text-muted-foreground">
-          Updated <time dateTime="2023-11-23">November 23, 2023</time>
-        </div>
-      </CardFooter>
     </Card>
   )
 }

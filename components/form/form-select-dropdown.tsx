@@ -58,7 +58,7 @@ const FormSelectDropdown: React.FC<SelectDropdownProps> = ({
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className="w-auto p-0">
               <Command>
                 <CommandInput
                   placeholder={`Search ${label.toLowerCase()}...`}

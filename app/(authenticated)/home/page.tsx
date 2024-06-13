@@ -10,11 +10,13 @@ export default function Home() {
   return (
     <MemberInfoProvider>
       <PageHeader title="Dashboard" />
-      <div className=" grid items-start gap-4 p-4 md:gap-8 xl:grid-cols-3">
-        <div className="grid auto-rows-max items-start gap-4 md:gap-8 xl:col-span-2">
+      <div className=" grid items-start gap-4 p-4 md:gap-8 xl:grid-cols-5">
+        <div className="grid auto-rows-max items-start gap-4 md:gap-8 xl:col-span-3">
           <MembersTable />
         </div>
-        <MemberCardInformation />
+        <div className="xl:col-span-2">
+          <MemberCardInformation />
+        </div>
       </div>
     </MemberInfoProvider>
   )

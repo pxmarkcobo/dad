@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { useGlobalContext } from "@/contexts/global-context"
 import {
   ColumnFiltersState,
   SortingState,
@@ -15,7 +16,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { Collector, Coordinator } from "@/lib/schema"
 import {
   Table,
   TableBody,
@@ -26,15 +26,12 @@ import {
 } from "@/components/ui/table"
 import { DataTablePagination } from "@/components/table/table-pagination"
 
-import { DataTableToolbar } from "./table-toolbar"
+import { columns } from "./table-columns"
+import { CoordinatorTableToolbar } from "./table-toolbar"
 
-export function OfficersTable({
-  data,
-  columns,
-}: {
-  data: Collector[] | Coordinator[]
-  columns: any[] // ColumnDef<Collector>[] or ColumnDef<Coordinator>[] use this when separated
-}): JSX.Element {
+export function CoordinatorsTable(): JSX.Element {
+  const { collectors } = useGlobalContext()
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -44,7 +41,7 @@ export function OfficersTable({
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data: data,
+    data: collectors,
     columns: columns,
     state: {
       sorting,
@@ -66,7 +63,7 @@ export function OfficersTable({
 
   return (
     <div className="w-full space-y-4">
-      <DataTableToolbar table={table} />
+      <CoordinatorTableToolbar table={table} />
       <div className="rounded-md border">
         <Table className="table-fixed">
           <TableHeader>

@@ -6,9 +6,9 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import cover from "@/assets/login-cover.jpg"
 import { useAuthContext } from "@/contexts/auth-context"
-import { auth } from "@/services/firebase"
+import { auth, googleAuthProvider } from "@/services/firebase"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { signInWithEmailAndPassword } from "firebase/auth"
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -56,7 +56,7 @@ export default function Login() {
     mode: "onBlur",
   })
 
-  async function login(data: LoginFormType) {
+  const login = async (data: LoginFormType) => {
     const { email, password } = data
 
     form.clearErrors()
@@ -72,6 +72,14 @@ export default function Login() {
       })
     }
     setSubmitting(false)
+  }
+
+  const loginWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleAuthProvider)
+    } catch (error) {
+      console.error("Login failed", error)
+    }
   }
 
   if (loading) {
@@ -141,7 +149,11 @@ export default function Login() {
               </Button>
             </form>
           </Form>
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => loginWithGoogle()}
+          >
             Login with Google
           </Button>
           <div className="mt-4 text-center text-sm">

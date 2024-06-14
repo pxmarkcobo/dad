@@ -7,13 +7,13 @@ import { Input } from "@/components/ui/input"
 import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter"
 import { DataTableViewOptions } from "@/components/table/table-view-options"
 
-interface DataTableToolbarProps<TData> {
+interface CollectorTableToolbarProps<TData> {
   table: Table<TData>
 }
 
-export function DataTableToolbar<TData>({
+export function CollectorTableToolbar<TData>({
   table,
-}: DataTableToolbarProps<TData>): JSX.Element {
+}: CollectorTableToolbarProps<TData>): JSX.Element {
   const { zones, sitios, chapels } = useGlobalContext()
   const isFiltered = table.getState().columnFilters.length > 0
 
@@ -21,7 +21,7 @@ export function DataTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search officer..."
+          placeholder="Search collector..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

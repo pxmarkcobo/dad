@@ -1,18 +1,15 @@
 "use client"
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useGlobalContext } from "@/contexts/global-context"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { RegisterCollector } from "./collectors/register"
-import { columns as CollectorColumns } from "./collectors/table-columns"
+import { CollectorsTable } from "./collectors/table"
 import { RegisterCoordinator } from "./coordinators/register"
-import { columns as CoordinatorColumns } from "./coordinators/table-columns"
-import { OfficersTable } from "./table"
+import { CoordinatorsTable } from "./coordinators/table"
 
 export function OfficerTabs() {
-  const { collectors, coordinators } = useGlobalContext()
   const router = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()
@@ -41,13 +38,13 @@ export function OfficerTabs() {
       <TabsContent value="coordinators">
         <div className="pt-6">
           <RegisterCoordinator />
-          <OfficersTable data={coordinators} columns={CoordinatorColumns} />
+          <CoordinatorsTable />
         </div>
       </TabsContent>
       <TabsContent value="collectors">
         <div className="pt-6">
           <RegisterCollector />
-          <OfficersTable data={collectors} columns={CollectorColumns} />
+          <CollectorsTable />
         </div>
       </TabsContent>
     </Tabs>

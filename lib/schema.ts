@@ -75,7 +75,7 @@ export type Member = z.infer<typeof MemberSchema>
 
 export const MemberRelationsSchema = z.object({
   memberID: z.string(),
-  primaryBeneficiary: BeneficiarySchema,
+  primaryBeneficiary: BeneficiarySchema.optional(),
   collector: CollectorSchema,
 })
 

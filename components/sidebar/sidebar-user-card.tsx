@@ -18,6 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { Skeleton } from "../ui/skeleton"
+
 const logout = async () => {
   try {
     await signOut(auth)
@@ -29,6 +31,10 @@ const logout = async () => {
 
 export default function UserCard() {
   const { user } = useAuthContext()
+
+  if (!user) {
+    return <></>
+  }
   return (
     <div className="flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
       <div data-slot="section" className="flex flex-col gap-0.5">
@@ -50,13 +56,19 @@ export default function UserCard() {
                 data-slot="avatar"
                 className="inline-grid size-10 shrink-0 overflow-hidden rounded-[--avatar-radius] align-middle outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 *:rounded-[--avatar-radius] dark:outline-white/[--ring-opacity]"
               >
-                <Image
-                  src={user?.photoURL ?? ""}
-                  alt=""
-                  width={100}
-                  height={100}
-                  className="w-100 h-100"
-                />
+                {user ? (
+                  <Image
+                    src={user?.photoURL ?? ""}
+                    alt="profile-pic"
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN0qQcAAQ0AxblT1HMAAAAASUVORK5CYII="
+                    width={100}
+                    height={100}
+                    className="w-100 h-100"
+                  />
+                ) : (
+                  <Skeleton className="w-100 h-100" />
+                )}
               </span>
               <span className="min-w-0">
                 <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">

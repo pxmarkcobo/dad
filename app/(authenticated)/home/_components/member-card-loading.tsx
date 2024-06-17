@@ -149,7 +149,7 @@ export default function SkeletonCard() {
             </div>
           </div>
           <div className="grid auto-rows-max gap-3">
-            <div className="font-semibold">Collector</div>
+            <div className="font-semibold">Alagad</div>
             <div className="text-muted-foreground">
               <Skeleton className="h-[20px] w-[150px]" />
             </div>

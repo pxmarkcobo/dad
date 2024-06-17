@@ -81,7 +81,7 @@ export const columns: ColumnDef<Member>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Collector
+          Alagad
           <CaretSortIcon className="ml-2 size-4" />
         </Button>
       )

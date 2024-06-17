@@ -13,7 +13,7 @@ export function OfficerTabs() {
   const router = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()
-  const tab = params.get("tab") || "coordinators"
+  const tab = params.get("tab") || "collectors"
 
   const updateTabSearchParam = (value: string) => {
     router.push(`${pathname}?tab=${value}`)
@@ -32,7 +32,7 @@ export function OfficerTabs() {
           value="collectors"
           onClick={() => updateTabSearchParam("collectors")}
         >
-          Collectors
+          Alagad
         </TabsTrigger>
       </TabsList>
       <TabsContent value="coordinators">

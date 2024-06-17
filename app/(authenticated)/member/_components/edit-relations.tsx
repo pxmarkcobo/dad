@@ -189,7 +189,7 @@ export default function EditMemberRelations({
                   render={({ field }) => (
                     <FormItem className="grid grid-cols-3 place-items-center gap-2 space-y-0">
                       <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
-                        Collector
+                        Alagad
                       </FormLabel>
                       <Popover
                         modal={true}
@@ -203,9 +203,7 @@ export default function EditMemberRelations({
                               role="combobox"
                               className="col-span-2 w-full justify-between bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400"
                             >
-                              {field.value
-                                ? field.value.name
-                                : "Select collector"}
+                              {field.value ? field.value.name : "Select alagad"}
                               <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
                             </Button>
                           </FormControl>
@@ -213,11 +211,11 @@ export default function EditMemberRelations({
                         <PopoverContent className="w-full p-0">
                           <Command>
                             <CommandInput
-                              placeholder="Search collector..."
+                              placeholder="Search alagad..."
                               className="h-9"
                             />
                             <CommandList>
-                              <CommandEmpty>No collector found.</CommandEmpty>
+                              <CommandEmpty>No alagad found.</CommandEmpty>
                               <CommandGroup>
                                 {collectorChoices.map((collector) => (
                                   <CommandItem

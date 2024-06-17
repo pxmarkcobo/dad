@@ -22,12 +22,12 @@ export function RegisterCollector() {
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="mb-4 h-8">
           <UserPlus className="mr-2 size-4" />
-          Register Collector
+          Register Alagad
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Register Collector </DialogTitle>
+          <DialogTitle>Register Alagad </DialogTitle>
         </DialogHeader>
         <CollectorForm callback={() => onOpenChange(false)} />
       </DialogContent>

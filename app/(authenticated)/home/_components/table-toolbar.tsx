@@ -52,7 +52,7 @@ export function DataTableToolbar<TData>({
           {table.getColumn("collector") && (
             <DataTableFacetedFilter
               column={table.getColumn("collector")}
-              title="Collector"
+              title="Alagad"
               options={uniqueCollectors}
             />
           )}

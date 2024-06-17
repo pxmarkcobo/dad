@@ -43,7 +43,7 @@ const FormSelectDropdown: React.FC<SelectDropdownProps> = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="space-y-0">
+        <FormItem className="w-full space-y-0">
           <FormLabel className="mb-2 block text-sm">{label}</FormLabel>
           <Popover modal={true} open={open} onOpenChange={onOpenChange}>
             <PopoverTrigger asChild>

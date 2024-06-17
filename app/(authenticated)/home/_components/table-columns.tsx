@@ -33,12 +33,16 @@ export const columns: ColumnDef<Member>[] = [
     },
   },
   {
-    accessorKey: "name",
+    id: "fullName",
+    accessorFn: (row, index) =>
+      `${row.last_name}, ${row.first_name} ${row.middle_initial}.`,
     header: "Name",
     cell: ({ row }) => {
+      const { last_name, first_name, middle_initial } = row.original
+      const value = `${last_name}, ${first_name} ${middle_initial}.`
       return (
         <div className="flex space-x-2">
-          <span className="truncate font-medium">{row.getValue("name")}</span>
+          <span className="truncate font-medium">{value}</span>
           {row.original.roles.collector ? (
             <Badge variant="secondary">Collector</Badge>
           ) : row.original.roles.coordinator ? (

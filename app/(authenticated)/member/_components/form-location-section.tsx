@@ -45,7 +45,7 @@ export default function LocationInformation() {
             <FormItem>
               <FormLabel className="mb-2 block text-sm">Selda</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Please set the selda" />
+                <Input {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -59,9 +59,28 @@ export default function LocationInformation() {
         />
         <FormField
           control={control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="mb-2 block text-sm">Amount</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="number"
+                  onChange={(event) =>
+                    field.onChange(parseInt(event.target.value))
+                  }
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
           name="remarks"
           render={({ field }) => (
-            <FormItem className="space-y-0">
+            <FormItem className="col-span-2 space-y-0">
               <FormLabel className="mb-2 block text-sm">Remarks</FormLabel>
               <FormControl>
                 <Textarea

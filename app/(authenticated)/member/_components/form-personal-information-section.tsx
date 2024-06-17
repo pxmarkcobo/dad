@@ -58,27 +58,54 @@ export default function PersonalInformation() {
     <>
       <div className="space-y-4">
         <h2 className="text-l font-semibold">Basic Information</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <FormField
             control={control}
-            name="name"
+            name="first_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="mb-2 block text-sm font-medium">
-                  Full Name
+                  First Name
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="Please indicate member's full name"
-                    autoComplete="off"
-                    required={true}
-                  />
+                  <Input {...field} autoComplete="off" required={true} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <FormField
+            control={control}
+            name="middle_initial"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="mb-2 block text-sm font-medium">
+                  Middle Initial
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} autoComplete="off" required={true} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="mb-2 block text-sm font-medium">
+                  Last Name
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} autoComplete="off" required={true} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormSelectDropdown
             control={control}
             name="sex"
@@ -94,6 +121,21 @@ export default function PersonalInformation() {
                   Date of Birth
                 </FormLabel>
                 <Input {...field} type="date" required />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="contact_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="mb-2 block text-sm font-medium">
+                  Contact Number
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} autoComplete="off" />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

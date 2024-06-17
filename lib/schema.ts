@@ -43,7 +43,11 @@ export type Coordinator = z.infer<typeof CoordinatorSchema>
 
 export const MemberSchema = z.object({
   id: z.string().optional(),
+  last_name: z.string(),
+  first_name: z.string(),
+  middle_initial: z.string(),
   name: z.string(),
+  contact_number: z.string().optional(),
   sex: z.nativeEnum(SexChoices),
   registration_date: z.coerce
     .date()
@@ -61,6 +65,7 @@ export const MemberSchema = z.object({
   barangay: z.string(),
   sitio: z.string().optional(),
   selda: z.string(),
+  amount: z.number(),
   remarks: z.string(),
   zone: z.string(),
   primary_beneficiary: z

@@ -103,7 +103,6 @@ export default function Dependents() {
                     </FormItem>
                   )}
                 />
-
                 <FormSelectDropdown
                   control={control}
                   name={`dependents.${index}.relation`}

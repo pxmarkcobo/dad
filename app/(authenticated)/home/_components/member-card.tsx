@@ -117,7 +117,9 @@ export default function MemberCardInformation() {
     <div>
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between bg-muted/50 px-6 py-2 ">
-          <CardTitle className="text-lg">{member.name}</CardTitle>
+          <CardTitle className="text-lg">
+            {member.last_name}, {member.first_name} {member.middle_initial}.
+          </CardTitle>
           <div className="flex items-center gap-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -146,6 +148,16 @@ export default function MemberCardInformation() {
               <div className="font-semibold">Registration Date</div>
               <div className="text-muted-foreground">
                 {formatDate(member.registration_date)}
+              </div>
+            </div>
+            <div className="grid auto-rows-max gap-3">
+              <div className="font-semibold">Sex</div>
+              <div className="text-muted-foreground">{member.sex}</div>
+            </div>
+            <div className="grid auto-rows-max gap-3">
+              <div className="font-semibold">Contact Number</div>
+              <div className="text-muted-foreground">
+                {member.contact_number}
               </div>
             </div>
           </div>
@@ -298,9 +310,19 @@ export default function MemberCardInformation() {
               ))}
             </tbody>
           </table>
-
-          <div className="my-4 font-semibold">Remarks</div>
-          <p>{member.remarks}</p>
+          <Separator className="my-4" />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid place-items-start justify-items-start gap-3	">
+              <div className="font-semibold">Amount Paid</div>
+              <div className="grid gap-0.5 not-italic text-muted-foreground">
+                <span>{member.amount}</span>
+              </div>
+            </div>
+            <div className="grid auto-rows-max gap-3">
+              <div className="font-semibold">Remarks</div>
+              <div className="text-muted-foreground">{member.remarks}</div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

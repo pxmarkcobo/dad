@@ -42,6 +42,10 @@ export default function MemberForm({ initial }: { initial?: Member }) {
     registration_date: formatDate(new Date(), "yyyy-MM-dd"),
     birth_date: "",
     name: "",
+    first_name: "",
+    last_name: "",
+    middle_initial: "",
+    contact_number: "",
     sex: SexChoices.Male,
     isolated: false,
     widowed: false,
@@ -63,6 +67,7 @@ export default function MemberForm({ initial }: { initial?: Member }) {
       collector: false,
       coordinator: false,
     },
+    amount: 160,
     remarks: "",
   }
   const form = useForm<Member>({

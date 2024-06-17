@@ -227,13 +227,17 @@ export async function updateMemberRelations(payload: unknown) {
 
   // TODO: try-catch
   const memberRef = doc(firestore, "members", data.memberID)
-  const fields = {
-    primary_beneficiary: doc(
+  const fields: any = {
+    primary_beneficiary: "",
+    collector: doc(firestore, "collectors", data.collector.id as string),
+  }
+
+  if (data.primaryBeneficiary) {
+    fields.primary_beneficiary = doc(
       firestore,
       "beneficiaries",
       data.primaryBeneficiary.id as string
-    ),
-    collector: doc(firestore, "collectors", data.collector.id as string),
+    )
   }
   console.log("Fields", fields)
   await updateDoc(memberRef, fields)

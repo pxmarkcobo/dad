@@ -30,7 +30,7 @@ import { columns } from "./table-columns"
 import { CoordinatorTableToolbar } from "./table-toolbar"
 
 export function CoordinatorsTable(): JSX.Element {
-  const { collectors } = useGlobalContext()
+  const { coordinators } = useGlobalContext()
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -41,7 +41,7 @@ export function CoordinatorsTable(): JSX.Element {
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data: collectors,
+    data: coordinators,
     columns: columns,
     state: {
       sorting,

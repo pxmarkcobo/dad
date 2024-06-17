@@ -80,7 +80,6 @@ export default function Dependents() {
                         <Input
                           placeholder="Contact Number"
                           {...field}
-                          required={true}
                           autoComplete="off"
                         />
                       </FormControl>
@@ -98,7 +97,7 @@ export default function Dependents() {
                         Date of Birth
                       </FormLabel>
                       <FormControl>
-                        <Input {...field} type="date" required />
+                        <Input {...field} type="date" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -63,10 +63,11 @@ export default function MemberCardInformation() {
           member.primary_beneficiary as DocumentReference
         )
 
-        const { success, data } = BeneficiarySchema.safeParse({
+        const { success, error, data } = BeneficiarySchema.safeParse({
           id: doc.id,
           ...doc.data(),
         })
+
         if (success) {
           member.primary_beneficiary = data
           setPrimary(data)

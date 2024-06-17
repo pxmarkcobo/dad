@@ -90,7 +90,6 @@ export const zone_chapels = [
   {
     zone: "1",
     chapels: [
-      "Birhen sa Fatima Chapel",
       "San Isidro Chapel",
       "San Vicente Ferrer Chapel",
       "Santa Cruz Chapel",

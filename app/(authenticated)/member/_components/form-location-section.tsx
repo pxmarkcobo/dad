@@ -45,11 +45,7 @@ export default function LocationInformation() {
             <FormItem>
               <FormLabel className="mb-2 block text-sm">Selda</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="Please set the selda"
-                  required={true}
-                />
+                <Input {...field} placeholder="Please set the selda" />
               </FormControl>
               <FormMessage />
             </FormItem>

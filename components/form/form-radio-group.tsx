@@ -40,7 +40,7 @@ const FormRadioGroup: React.FC<RadioFieldProps> = ({
                 <FormItem key={option.value}>
                   <FormControl>
                     <FormLabel htmlFor={option.value}>
-                      <div className="cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
+                      <div className="h-full cursor-pointer rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
                         <div className="flex items-center">
                           <div className="flex h-5 items-center">
                             <RadioGroupItem

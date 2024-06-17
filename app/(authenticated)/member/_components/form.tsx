@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useAuthContext } from "@/contexts/auth-context"
 import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
@@ -27,6 +28,7 @@ import PersonalInformation from "./form-personal-information-section"
 
 export default function MemberForm({ initial }: { initial?: Member }) {
   const router = useRouter()
+  const { user } = useAuthContext()
   const queryClient = useQueryClient()
   const { zones } = useGlobalContext()
 
@@ -69,6 +71,7 @@ export default function MemberForm({ initial }: { initial?: Member }) {
     },
     amount: 160,
     remarks: "",
+    history: [`Member registered by ${user?.email}`],
   }
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),

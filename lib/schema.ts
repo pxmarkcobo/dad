@@ -73,6 +73,7 @@ export const MemberSchema = z.object({
     .optional(),
   dependents: z.array(z.union([DocumentReferenceSchema, BeneficiarySchema])),
   collector: CollectorSchema.optional(),
+  history: z.array(z.string()).optional(),
   _resolved: z.boolean().default(false),
 })
 

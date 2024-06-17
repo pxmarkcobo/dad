@@ -115,7 +115,7 @@ export default function Settings() {
     <>
       <PageHeader title="Settings" />
       <section className="p-4 sm:px-6">
-        <Button onClick={() => addMemberBarangay()}>Run Script</Button>
+        {/* <Button onClick={() => addMemberBarangay()}>Run Script</Button> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4 pb-4">

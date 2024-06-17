@@ -250,7 +250,7 @@ export default function MemberCardInformation() {
               <div className="text-muted-foreground">{member.sitio}</div>
             </div>
             <div className="grid auto-rows-max gap-3">
-              <div className="font-semibold">Collector</div>
+              <div className="font-semibold">Alagad</div>
               <div className="text-muted-foreground">
                 {member.collector?.name}
               </div>

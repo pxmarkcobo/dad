@@ -57,14 +57,35 @@ export default function PersonalInformation() {
   return (
     <>
       <div className="space-y-4">
-        <h2 className="text-l font-semibold">Basic Information</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="flex w-full items-end justify-between">
+          <h2 className="text-l font-semibold">Basic Information</h2>
+          <FormField
+            control={control}
+            name="registration_date"
+            render={({ field }) => (
+              <FormItem className="col-span-1 col-start-4 place-items-end	place-self-center">
+                <FormLabel className="block text-xs">
+                  Registration Date
+                </FormLabel>
+                <Input
+                  {...field}
+                  value={field.value}
+                  type="date"
+                  required
+                  className="m-0 border-0 p-0"
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <FormField
             control={control}
             name="first_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium">
+                <FormLabel className="mb-2 block text-xs font-medium">
                   First Name
                 </FormLabel>
                 <FormControl>
@@ -76,11 +97,11 @@ export default function PersonalInformation() {
           />
           <FormField
             control={control}
-            name="middle_initial"
+            name="middle_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium">
-                  Middle Initial
+                <FormLabel className="mb-2 block text-xs font-medium">
+                  Middle Name
                 </FormLabel>
                 <FormControl>
                   <Input {...field} autoComplete="off" required={true} />
@@ -94,7 +115,7 @@ export default function PersonalInformation() {
             name="last_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium">
+                <FormLabel className="mb-2 block text-xs font-medium">
                   Last Name
                 </FormLabel>
                 <FormControl>
@@ -104,20 +125,12 @@ export default function PersonalInformation() {
               </FormItem>
             )}
           />
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormSelectDropdown
-            control={control}
-            name="sex"
-            options={sexChoices}
-            label="Sex"
-          />
           <FormField
             control={control}
             name="birth_date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium">
+                <FormLabel className="mb-2 block text-xs font-medium">
                   Date of Birth
                 </FormLabel>
                 <Input {...field} type="date" required />
@@ -125,12 +138,20 @@ export default function PersonalInformation() {
               </FormItem>
             )}
           />
+
+          <FormSelectDropdown
+            control={control}
+            name="sex"
+            options={sexChoices}
+            label="Sex"
+          />
+
           <FormField
             control={control}
             name="contact_number"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium">
+                <FormLabel className="mb-2 block text-xs font-medium">
                   Contact Number
                 </FormLabel>
                 <FormControl>
@@ -142,13 +163,15 @@ export default function PersonalInformation() {
           />
           <FormField
             control={control}
-            name="registration_date"
+            name="primary_beneficiary"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className="mb-2 block text-sm font-medium">
-                  Registration Date
+              <FormItem className="col-span-2">
+                <FormLabel className="mb-2 block text-xs font-medium">
+                  Primary Beneficiary
                 </FormLabel>
-                <Input {...field} value={field.value} type="date" required />
+                <FormControl>
+                  <Input {...field} autoComplete="off" />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

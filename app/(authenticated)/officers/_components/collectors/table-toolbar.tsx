@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react"
 import { useGlobalContext } from "@/contexts/global-context"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
@@ -5,7 +6,6 @@ import { Table } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableFacetedFilter } from "@/components/table/table-faceted-filter"
-import { DataTableViewOptions } from "@/components/table/table-view-options"
 
 interface CollectorTableToolbarProps<TData> {
   table: Table<TData>
@@ -14,8 +14,16 @@ interface CollectorTableToolbarProps<TData> {
 export function CollectorTableToolbar<TData>({
   table,
 }: CollectorTableToolbarProps<TData>): JSX.Element {
-  const { zones, sitios, chapels } = useGlobalContext()
+  const { zones, sitios, chapels, barangays } = useGlobalContext()
   const isFiltered = table.getState().columnFilters.length > 0
+
+  useEffect(() => {
+    console.log(table.getState().columnFilters)
+  }, [table, table.getState()])
+  const zoneOptions = useMemo(() => {
+    const values = zones.map((zone) => zone.name)
+    return values
+  }, [zones])
 
   return (
     <div className="flex items-center justify-between">
@@ -33,7 +41,7 @@ export function CollectorTableToolbar<TData>({
             <DataTableFacetedFilter
               column={table.getColumn("zone")}
               title="Zone"
-              options={zones}
+              options={zoneOptions}
             />
           )}
           {table.getColumn("sitio") && (
@@ -41,6 +49,13 @@ export function CollectorTableToolbar<TData>({
               column={table.getColumn("sitio")}
               title="Sitio"
               options={sitios}
+            />
+          )}
+          {table.getColumn("sitio") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("barangay")}
+              title="Barangay"
+              options={barangays}
             />
           )}
           {table.getColumn("chapel") && (
@@ -62,7 +77,6 @@ export function CollectorTableToolbar<TData>({
           )}
         </div>
       </div>
-      <DataTableViewOptions table={table} />
     </div>
   )
 }

@@ -1,7 +1,6 @@
 import { DocumentReference } from "firebase/firestore"
 import { z } from "zod"
 
-import { CivilStatusChoices, FamilyRelationChoices, SexChoices } from "./enums"
 import { formatDate } from "./utils"
 
 export const DocumentReferenceSchema = z.custom<DocumentReference>(
@@ -13,12 +12,19 @@ export const DocumentReferenceSchema = z.custom<DocumentReference>(
   }
 )
 
+export type Zone = {
+  name: string
+  barangays: string[]
+  sitios: string[]
+  chapels: string[]
+}
+
 export const BeneficiarySchema = z.object({
   id: z.string().optional(),
   name: z.string(),
   birth_date: z.coerce.date().transform((val) => formatDate(val, "yyyy-MM-dd")),
   contact_number: z.string().optional(),
-  relation: z.nativeEnum(FamilyRelationChoices),
+  relation: z.string(),
 })
 
 export type Beneficiary = z.infer<typeof BeneficiarySchema>
@@ -27,6 +33,7 @@ export const CollectorSchema = z.object({
   id: z.string().optional(),
   name: z.string(),
   zone: z.string(),
+  barangay: z.string().min(1),
   sitio: z.string(),
   chapel: z.string(),
 })
@@ -45,10 +52,9 @@ export const MemberSchema = z.object({
   id: z.string().optional(),
   last_name: z.string(),
   first_name: z.string(),
-  middle_initial: z.string(),
-  name: z.string(),
-  contact_number: z.string().optional(),
-  sex: z.nativeEnum(SexChoices),
+  middle_name: z.string(),
+  contact_number: z.string(),
+  sex: z.string(),
   registration_date: z.coerce
     .date()
     .transform((val) => formatDate(val, "yyyy-MM-dd")),
@@ -56,24 +62,22 @@ export const MemberSchema = z.object({
   isolated: z.boolean(),
   widowed: z.boolean(),
   live_in: z.boolean(),
-  civil_status: z.nativeEnum(CivilStatusChoices),
-  roles: z.object({
-    collector: z.boolean(),
-    coordinator: z.boolean(),
-  }),
+  civil_status: z.string(),
+  primary_beneficiary: z.string(),
+  dependents: z.array(BeneficiarySchema),
   chapel: z.string(),
   barangay: z.string(),
-  sitio: z.string().optional(),
+  sitio: z.string(),
   selda: z.string(),
   amount: z.number(),
   remarks: z.string(),
   zone: z.string(),
-  primary_beneficiary: z
-    .union([DocumentReferenceSchema, BeneficiarySchema])
-    .optional(),
-  dependents: z.array(z.union([DocumentReferenceSchema, BeneficiarySchema])),
-  collector: CollectorSchema.optional(),
-  history: z.array(z.string()).optional(),
+  collector: z.string(),
+  history: z.array(z.string()),
+  roles: z.object({
+    collector: z.boolean(),
+    coordinator: z.boolean(),
+  }),
   _resolved: z.boolean().default(false),
 })
 

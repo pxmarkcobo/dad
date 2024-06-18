@@ -1,124 +1,35 @@
 "use client"
 
-import * as React from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useMemberInfo } from "@/contexts/member-info-context"
-import { DocumentReference, getDoc } from "firebase/firestore"
-import { MoreVertical, UserCircle } from "lucide-react"
+import { MoreVertical } from "lucide-react"
 
 import { CivilStatusChoices } from "@/lib/enums"
-import { Beneficiary, BeneficiarySchema } from "@/lib/schema"
 import { formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
 
 import EmptyCard from "./member-card-empty"
-import SkeletonCard from "./member-card-loading"
 import StatusIcon from "./status-icon"
 
 export default function MemberCardInformation() {
   const { memberInfo: member } = useMemberInfo()
-  const [isLoading, setIsLoading] = React.useState(true)
-  const [primary, setPrimary] = React.useState<Beneficiary>()
-  const [dependents, setDependents] = React.useState<Beneficiary[]>()
-
-  React.useEffect(() => {
-    setIsLoading(true)
-
-    if (!member) {
-      setIsLoading(false)
-      return
-    }
-
-    if (member._resolved) {
-      setIsLoading(false)
-      setPrimary(member.primary_beneficiary as Beneficiary)
-      setDependents(member.dependents as Beneficiary[])
-    }
-
-    if (!(member.primary_beneficiary instanceof DocumentReference)) {
-      setIsLoading(false)
-      return
-    }
-
-    const resolveDocumentReferences = async () => {
-      try {
-        // Resolve primary beneficiary
-        const doc = await getDoc(
-          member.primary_beneficiary as DocumentReference
-        )
-
-        const { success, error, data } = BeneficiarySchema.safeParse({
-          id: doc.id,
-          ...doc.data(),
-        })
-
-        if (success) {
-          member.primary_beneficiary = data
-          setPrimary(data)
-        }
-
-        // Resolve dependents
-        const dependentPromises = member.dependents.map((ref) =>
-          getDoc(ref as DocumentReference)
-        )
-        const dependentDocs = await Promise.all(dependentPromises)
-        let dependents: any[] = dependentDocs.map((doc) => {
-          if (!doc.exists()) return null
-          const { success, error, data } = BeneficiarySchema.safeParse({
-            id: doc.id,
-            ...doc.data(),
-          })
-          if (error) {
-            console.error(error.issues)
-          }
-          if (!success) return null
-          return data
-        })
-
-        dependents = dependents.filter((d) => d !== null) as Beneficiary[]
-
-        member.dependents = dependents
-        setDependents(dependents)
-      } catch (err) {
-        console.error("Error resolving document reference:", err)
-      } finally {
-        setIsLoading(false)
-        member._resolved = true
-      }
-    }
-    resolveDocumentReferences()
-  }, [member])
-
   if (!member) {
     return <EmptyCard />
   }
-
-  if (isLoading) {
-    return <SkeletonCard />
-  }
-
   return (
     <div>
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between bg-muted/50 px-6 py-2 ">
           <CardTitle className="text-lg">
-            {member.last_name}, {member.first_name} {member.middle_initial}.
+            {member.last_name}, {member.first_name} {member.middle_name}
           </CardTitle>
           <div className="flex items-center gap-1">
             <DropdownMenu>
@@ -130,7 +41,7 @@ export default function MemberCardInformation() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <Link href={`/member/${member.id}`}>
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>Edit Member</DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -254,65 +165,60 @@ export default function MemberCardInformation() {
               </div>
             </div>
             <div className="grid auto-rows-max gap-3">
-              <div className="font-semibold">Selda</div>
-              <div className="text-muted-foreground">{member.selda}</div>
+              <div className="font-semibold">Alagad</div>
+              <div className="text-muted-foreground">{member.collector}</div>
             </div>
             <div className="grid auto-rows-max gap-3">
               <div className="font-semibold">Sitio</div>
               <div className="text-muted-foreground">{member.sitio}</div>
             </div>
             <div className="grid auto-rows-max gap-3">
-              <div className="font-semibold">Alagad</div>
-              <div className="text-muted-foreground">
-                {member.collector?.name}
-              </div>
+              <div className="font-semibold">Selda</div>
+              <div className="text-muted-foreground">{member.selda}</div>
             </div>
           </div>
           <Separator className="my-4" />
-          {primary && (
-            <>
-              <div className="grid gap-3">
-                <div className="font-semibold">Primary Beneficiary</div>
-                <dl className="grid gap-3">
-                  <div className="flex items-center justify-between">
-                    <dt className="flex items-center gap-1">
-                      <UserCircle className="size-4" />
-                      {primary.name}
-                    </dt>
-                    <dd>{primary.relation}</dd>
-                    <dd>{primary.contact_number}</dd>
-                  </div>
-                </dl>
+          {member.primary_beneficiary && (
+            <div className="grid auto-rows-max gap-3">
+              <div className="font-semibold">Primary Beneficiary</div>
+              <div className="text-muted-foreground">
+                {member.primary_beneficiary}
               </div>
+            </div>
+          )}
+          <Separator className="my-4" />
+          {member.dependents.length != 0 && (
+            <>
+              <div className="my-4 font-semibold">Dependents</div>
+              <table className="size-full table-auto">
+                <thead>
+                  <tr>
+                    <th className="text-left">Name</th>
+                    <th className="text-left">Birthdate</th>
+                    <th className="text-left">Relation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {member.dependents.map((dependent, index) => (
+                    <tr key={index}>
+                      <td className="text-muted-foreground">
+                        {dependent.name}
+                      </td>
+                      <td className="text-muted-foreground">
+                        {formatDate(dependent.birth_date)}
+                      </td>
+                      <td className="text-muted-foreground">
+                        {dependent.relation}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
               <Separator className="my-4" />
             </>
           )}
-          <div className="my-4 font-semibold">Dependents</div>
-          <table className="size-full table-auto">
-            <thead>
-              <tr>
-                <th className="text-left">Name</th>
-                <th className="text-left">Birthdate</th>
-                <th className="text-left">Relation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dependents?.map((dependent) => (
-                <tr key={dependent.id}>
-                  <td className="text-muted-foreground">{dependent.name}</td>
-                  <td className="text-muted-foreground">
-                    {formatDate(dependent.birth_date)}
-                  </td>
-                  <td className="text-muted-foreground">
-                    {dependent.relation}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Separator className="my-4" />
           <div className="grid grid-cols-2 gap-4">
-            <div className="grid place-items-start justify-items-start gap-3	">
+            <div className="grid place-items-start justify-items-start gap-3">
               <div className="font-semibold">Amount Paid</div>
               <div className="grid gap-0.5 not-italic text-muted-foreground">
                 <span>{member.amount}</span>

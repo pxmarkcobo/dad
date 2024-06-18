@@ -31,8 +31,10 @@ const FormCheckboxField: React.FC<CheckboxFieldProps> = ({
               size="6"
             />
           </FormControl>
-          <div className="ms-4 text-sm">
-            <FormLabel className="font-medium leading-none">{label}</FormLabel>
+          <div className="ms-4 text-xs">
+            <FormLabel className="text-xs font-medium leading-none">
+              {label}
+            </FormLabel>
             <p className="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
               {description}
             </p>

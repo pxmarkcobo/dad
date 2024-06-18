@@ -46,6 +46,23 @@ export const columns: ColumnDef<Collector>[] = [
     },
   },
   {
+    accessorKey: "barangay",
+    header: "Barangay",
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue("barangay")}
+          </span>
+        </div>
+      )
+    },
+    filterFn: (row, id, value) => {
+      const cell: string = row.getValue(id)
+      return value.includes(cell)
+    },
+  },
+  {
     accessorKey: "sitio",
     header: "Sitio",
     cell: ({ row }) => {

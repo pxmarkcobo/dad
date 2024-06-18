@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react"
 import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { formatDate } from "date-fns"
@@ -27,7 +28,7 @@ export function CollectorForm({
   initial?: Collector
   callback(): void
 }) {
-  const { zones, sitios, chapels, modifyCollector, addCollector } =
+  const { zones, barangays, sitios, chapels, modifyCollector, addCollector } =
     useGlobalContext()
   const create = initial === undefined
 
@@ -36,7 +37,8 @@ export function CollectorForm({
     defaultValues: {
       id: initial?.id ?? "",
       name: initial?.name ?? "",
-      zone: initial?.zone ?? zones[0],
+      zone: initial?.zone ?? zones[0].name,
+      barangay: initial?.barangay ?? "",
       sitio: initial?.sitio ?? "",
       chapel: initial?.chapel ?? "",
     },
@@ -67,6 +69,11 @@ export function CollectorForm({
     }
   }
 
+  const zoneOptions = useMemo(() => {
+    const values = zones.map((zone) => zone.name)
+    return values
+  }, [zones])
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -90,8 +97,14 @@ export function CollectorForm({
             <FormSelectDropdown
               control={form.control}
               name="zone"
-              options={zones}
+              options={zoneOptions}
               label="Zone"
+            />
+            <FormSelectDropdown
+              control={form.control}
+              name="barangay"
+              options={barangays}
+              label="Barangay"
             />
             <FormSelectDropdown
               control={form.control}

@@ -50,7 +50,7 @@ const FormRadioGroup: React.FC<RadioFieldProps> = ({
                               innerSize="3.5"
                             />
                           </div>
-                          <div className="ms-4 text-sm">
+                          <div className="ms-4 text-xs">
                             <label className="cursor-pointer font-medium">
                               {option.label}
                             </label>

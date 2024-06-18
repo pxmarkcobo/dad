@@ -44,7 +44,7 @@ const FormSelectDropdown: React.FC<SelectDropdownProps> = ({
       name={name}
       render={({ field }) => (
         <FormItem className="w-full space-y-0">
-          <FormLabel className="mb-2 block text-sm">{label}</FormLabel>
+          <FormLabel className="mb-2 block text-xs">{label}</FormLabel>
           <Popover modal={true} open={open} onOpenChange={onOpenChange}>
             <PopoverTrigger asChild>
               <FormControl>
@@ -53,7 +53,12 @@ const FormSelectDropdown: React.FC<SelectDropdownProps> = ({
                   role="combobox"
                   className="w-full justify-between"
                 >
-                  {field.value ? field.value : `Select ${label.toLowerCase()}`}
+                  <span className="truncate text-nowrap">
+                    {field.value
+                      ? field.value
+                      : `Select ${label.toLowerCase()}`}
+                  </span>
+
                   <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
               </FormControl>

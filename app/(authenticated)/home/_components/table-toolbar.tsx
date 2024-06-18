@@ -23,6 +23,11 @@ export function DataTableToolbar<TData>({
     return values
   }, [collectors])
 
+  const zoneOptions = useMemo(() => {
+    const values = zones.map((zone) => zone.name)
+    return values
+  }, [zones])
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -41,7 +46,7 @@ export function DataTableToolbar<TData>({
             <DataTableFacetedFilter
               column={table.getColumn("zone")}
               title="Zone"
-              options={zones}
+              options={zoneOptions}
             />
           )}
           {table.getColumn("barangay") && (
@@ -70,7 +75,7 @@ export function DataTableToolbar<TData>({
           )}
         </div>
       </div>
-      <DataTableViewOptions table={table} />
+      {/* <DataTableViewOptions table={table} /> */}
     </div>
   )
 }

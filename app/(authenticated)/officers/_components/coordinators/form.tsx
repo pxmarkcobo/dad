@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react"
 import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { formatDate } from "date-fns"
@@ -35,9 +36,14 @@ export function CoordinatorForm({
     defaultValues: {
       id: initial?.id ?? "",
       name: initial?.name ?? "",
-      zone: initial?.zone ?? zones[0],
+      zone: initial?.zone ?? zones[0].name,
     },
   })
+
+  const zoneOptions = useMemo(() => {
+    const values = zones.map((zone) => zone.name)
+    return values
+  }, [zones])
 
   const onSubmit = async (data: Coordinator) => {
     const {
@@ -87,7 +93,7 @@ export function CoordinatorForm({
             <FormSelectDropdown
               control={form.control}
               name="zone"
-              options={zones}
+              options={zoneOptions}
               label="Zone"
             />
           </div>

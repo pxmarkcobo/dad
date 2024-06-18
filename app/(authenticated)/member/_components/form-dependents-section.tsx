@@ -42,26 +42,21 @@ export default function Dependents() {
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className="mb-6 flex items-center justify-center gap-4"
+              className="mb-6 flex items-end justify-center gap-4"
             >
               <Button variant="ghost" size="icon" disabled>
                 {index + 1}
               </Button>
-              <div className="grid w-full grid-cols-2 place-content-center gap-3 xl:grid-cols-4">
+              <div className="grid w-full grid-cols-2 place-content-center gap-3 md:grid-cols-4">
                 <FormField
                   control={control}
                   key={`${field.id}.${index}.name`}
                   name={`dependents.${index}.name`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel className="mb-2 block text-sm">Name</FormLabel>
+                    <FormItem className="">
+                      <FormLabel className="mb-2 block text-xs">Name</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Full name"
-                          {...field}
-                          required={true}
-                          autoComplete="off"
-                        />
+                        <Input {...field} required={true} autoComplete="off" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -72,16 +67,12 @@ export default function Dependents() {
                   key={`${field.id}.${index}.contact_number`}
                   name={`dependents.${index}.contact_number`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel className="mb-2 block text-sm">
+                    <FormItem className="">
+                      <FormLabel className="mb-2 block text-xs">
                         Contact number
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Contact Number"
-                          {...field}
-                          autoComplete="off"
-                        />
+                        <Input {...field} autoComplete="off" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -92,8 +83,8 @@ export default function Dependents() {
                   key={`${field.id}.${index}.birth_date`}
                   name={`dependents.${index}.birth_date`}
                   render={({ field }) => (
-                    <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel className="mb-2 block text-sm">
+                    <FormItem className="">
+                      <FormLabel className="mb-2 block text-xs">
                         Date of Birth
                       </FormLabel>
                       <FormControl>

@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { useGlobalContext } from "@/contexts/global-context"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
@@ -14,8 +15,13 @@ interface CoordinatorTableToolbarProps<TData> {
 export function CoordinatorTableToolbar<TData>({
   table,
 }: CoordinatorTableToolbarProps<TData>): JSX.Element {
-  const { zones, sitios, chapels } = useGlobalContext()
+  const { zones } = useGlobalContext()
   const isFiltered = table.getState().columnFilters.length > 0
+
+  const zoneOptions = useMemo(() => {
+    const values = zones.map((zone) => zone.name)
+    return values
+  }, [zones])
 
   return (
     <div className="flex items-center justify-between">
@@ -33,7 +39,7 @@ export function CoordinatorTableToolbar<TData>({
             <DataTableFacetedFilter
               column={table.getColumn("zone")}
               title="Zone"
-              options={zones}
+              options={zoneOptions}
             />
           )}
           {isFiltered && (
@@ -48,7 +54,7 @@ export function CoordinatorTableToolbar<TData>({
           )}
         </div>
       </div>
-      <DataTableViewOptions table={table} />
+      {/* <DataTableViewOptions table={table} /> */}
     </div>
   )
 }

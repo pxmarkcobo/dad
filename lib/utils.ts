@@ -56,21 +56,13 @@ export const formatDate = (
 
 export async function fetchMembers() {
   const memberCollection = collection(firestore, "members")
-  const q = query(memberCollection, orderBy("name"))
+  const q = query(memberCollection)
 
   const querySnapshot = await getDocs(q)
   const members: any[] = querySnapshot.docs.map(async (doc) => {
-    const collectorDoc = await getDoc(doc.data().collector as DocumentReference)
-
-    const collector = CollectorSchema.parse({
-      id: collectorDoc.id,
-      ...collectorDoc.data(),
-    })
-
     const { success, error, data } = MemberSchema.safeParse({
       id: doc.id,
       ...doc.data(),
-      collector: collector,
     })
 
     if (success) {
@@ -87,47 +79,13 @@ export async function fetchMemberByID(id: string) {
   const memberRef = doc(firestore, "members", id)
   const memberDoc = await getDoc(memberRef)
 
-  console.log(memberDoc.data())
-
   if (!memberDoc.exists()) {
     return null
   }
 
-  const collectorDoc = await getDoc(
-    memberDoc.data().collector as DocumentReference
-  )
-  const collector = CollectorSchema.parse({
-    id: collectorDoc.id,
-    ...collectorDoc.data(),
-  })
-
-  const primaryBeneficiaryDoc = await getDoc(
-    memberDoc.data().primary_beneficiary as DocumentReference
-  )
-  const beneficiary = BeneficiarySchema.parse({
-    id: primaryBeneficiaryDoc.id,
-    ...primaryBeneficiaryDoc.data(),
-  })
-
-  const dependentPromises = memberDoc
-    .data()
-    .dependents.map((ref: DocumentReference) => getDoc(ref))
-  console.log(dependentPromises)
-
-  const dependentDocs = await Promise.all(dependentPromises)
-  let dependents: any[] = dependentDocs.map((doc) => {
-    return BeneficiarySchema.parse({
-      id: doc.id,
-      ...doc.data(),
-    })
-  })
-
   const { success, error, data } = MemberSchema.safeParse({
     id: memberDoc.id,
     ...memberDoc.data(),
-    collector: collector,
-    primary_beneficiary: beneficiary,
-    dependents: dependents,
   })
 
   if (!success) {
@@ -152,21 +110,21 @@ export async function postMemberAPI(payload: unknown) {
   }
 
   let { id: memberID, ...memberFields } = data
-  const dependents: any[] = [...memberFields.dependents]
+  // const dependents: any[] = [...memberFields.dependents]
 
   if (!memberID) {
     // Create beneficiaries
     const beneficiaryCollection = collection(firestore, "beneficiaries")
 
-    const dependentRefs = []
-    for (const dependent of dependents) {
-      const dependentRef = await addDoc(beneficiaryCollection, dependent)
-      console.log("Beneficiary document written with ID: ", dependentRef.id)
-      dependentRefs.push(dependentRef)
-      dependent.id = dependentRef.id
-    }
+    // const dependentRefs = []
+    // for (const dependent of dependents) {
+    //   const dependentRef = await addDoc(beneficiaryCollection, dependent)
+    //   console.log("Beneficiary document written with ID: ", dependentRef.id)
+    //   dependentRefs.push(dependentRef)
+    //   dependent.id = dependentRef.id
+    // }
 
-    memberFields.dependents = dependentRefs
+    // memberFields.dependents = dependentRefs
 
     // Create member
     const memberCollection = collection(firestore, "members")
@@ -175,27 +133,27 @@ export async function postMemberAPI(payload: unknown) {
     console.log("Member document written with ID: ", memberRef.id)
   } else {
     // Update beneficiaries
-    const beneficiaryCollection = collection(firestore, "beneficiaries")
+    // const beneficiaryCollection = collection(firestore, "beneficiaries")
 
-    const dependentRefs = []
-    for (const dependent of dependents) {
-      const { id, ...data } = dependent
-      if (!id) {
-        const dependentRef = await addDoc(beneficiaryCollection, dependent)
-        console.log("Beneficiary document written with ID: ", dependentRef.id)
-        dependentRefs.push(dependentRef)
-        dependent.id = dependentRef.id
-        // create
-      } else {
-        // update
-        const dependentRef = doc(firestore, "beneficiaries", id as string)
-        await updateDoc(dependentRef, data)
-        console.log("Beneficiary document updated with ID: ", dependentRef.id)
-        dependentRefs.push(dependentRef)
-      }
-    }
+    // const dependentRefs = []
+    // for (const dependent of dependents) {
+    //   const { id, ...data } = dependent
+    //   if (!id) {
+    //     const dependentRef = await addDoc(beneficiaryCollection, dependent)
+    //     console.log("Beneficiary document written with ID: ", dependentRef.id)
+    //     dependentRefs.push(dependentRef)
+    //     dependent.id = dependentRef.id
+    //     // create
+    //   } else {
+    //     // update
+    //     const dependentRef = doc(firestore, "beneficiaries", id as string)
+    //     await updateDoc(dependentRef, data)
+    //     console.log("Beneficiary document updated with ID: ", dependentRef.id)
+    //     dependentRefs.push(dependentRef)
+    //   }
+    // }
 
-    memberFields.dependents = dependentRefs
+    // memberFields.dependents = dependentRefs
     // Update member
     const memberRef = doc(firestore, "members", memberID as string)
     await updateDoc(memberRef, memberFields)
@@ -204,8 +162,9 @@ export async function postMemberAPI(payload: unknown) {
   return {
     success: true,
     data: {
-      memberID: memberID,
-      dependents: dependents,
+      id: memberID,
+      ...memberFields,
+      // dependents: dependents,
     },
   }
 }

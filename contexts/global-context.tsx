@@ -16,13 +16,14 @@ import {
   CollectorSchema,
   Coordinator,
   CoordinatorSchema,
+  Zone,
 } from "@/lib/schema"
 import { fetchCollectors, fetchCoordinators } from "@/lib/utils"
 
 chapels
 
 interface GlobalDataInterface {
-  zones: string[]
+  zones: Zone[]
   barangays: string[]
   sitios: string[]
   chapels: string[]

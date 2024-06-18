@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthContext } from "@/contexts/auth-context"
-import { useGlobalContext } from "@/contexts/global-context"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { formatDate } from "date-fns"
@@ -16,12 +15,11 @@ import {
   FamilyRelationChoices,
   SexChoices,
 } from "@/lib/enums"
-import { Beneficiary, Collector, Member, MemberSchema } from "@/lib/schema"
+import { Member, MemberSchema } from "@/lib/schema"
 import { Form } from "@/components/ui/form"
 import { postMemberAction } from "@/app/actions"
 
 import { SubmitButton } from "../../../../components/form/form-submit-button"
-import EditMemberRelations from "./edit-relations"
 import Dependents from "./form-dependents-section"
 import LocationInformation from "./form-location-section"
 import PersonalInformation from "./form-personal-information-section"
@@ -30,15 +28,6 @@ export default function MemberForm({ initial }: { initial?: Member }) {
   const router = useRouter()
   const { user } = useAuthContext()
   const queryClient = useQueryClient()
-  const { zones } = useGlobalContext()
-
-  const [memberID, setMemberID] = useState<string>("")
-  const [open, setOpen] = useState(false)
-  const [zone, setZone] = useState<string>(zones[0])
-  const [dependents, setDependents] = useState<Beneficiary[]>([])
-  const [collector, setCollector] = useState<Collector | undefined>(
-    initial?.collector
-  )
 
   const defaultValues = {
     registration_date: formatDate(new Date(), "yyyy-MM-dd"),
@@ -46,17 +35,20 @@ export default function MemberForm({ initial }: { initial?: Member }) {
     name: "",
     first_name: "",
     last_name: "",
-    middle_initial: "",
+    middle_name: "",
     contact_number: "",
     sex: SexChoices.Male,
     isolated: false,
     widowed: false,
     live_in: false,
-    barangay: "",
+    zone: "1",
     chapel: "",
+    barangay: "",
+    sitio: "",
     selda: "",
-    zone: zones[0],
+    collector: "",
     civil_status: CivilStatusChoices.Single,
+    primary_beneficiary: "",
     dependents: [
       {
         name: "",
@@ -78,17 +70,18 @@ export default function MemberForm({ initial }: { initial?: Member }) {
     defaultValues: initial ?? defaultValues,
   })
 
+  useEffect(() => {
+    console.log(form.formState.errors)
+  }, [form.formState])
+
   const onSubmit = async (data: Member) => {
     const response = await postMemberAction(data)
     if (response.success) {
-      toast("Successful Member Registration", {
+      toast("Successful member registration", {
         description: formatDate(new Date(), "PPPPp"),
         duration: 3000,
       })
-      setMemberID(response.data?.memberID as string)
-      setZone(data.zone)
-      setDependents(response.data?.dependents as Beneficiary[])
-      setOpen(true)
+      reset()
     } else {
       toast(`Error: ${response.error_message}`)
     }
@@ -104,10 +97,6 @@ export default function MemberForm({ initial }: { initial?: Member }) {
       router.back()
     } else {
       form.reset()
-      setMemberID("")
-      setDependents([])
-      setCollector(undefined)
-
       const element = document.getElementById("page-header")
       if (element) {
         element.scrollIntoView({ behavior: "smooth" })
@@ -128,20 +117,9 @@ export default function MemberForm({ initial }: { initial?: Member }) {
               <LocationInformation />
             </div>
           </div>
-          <SubmitButton text="Next" />
+          <SubmitButton text="Submit" />
         </form>
       </Form>
-      {memberID && (
-        <EditMemberRelations
-          open={open}
-          onOpenChange={setOpen}
-          memberID={memberID}
-          zone={zone}
-          dependents={dependents}
-          collector={collector}
-          reset={reset}
-        />
-      )}
     </FormProvider>
   )
 }

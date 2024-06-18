@@ -35,11 +35,11 @@ export const columns: ColumnDef<Member>[] = [
   {
     id: "fullName",
     accessorFn: (row, index) =>
-      `${row.last_name}, ${row.first_name} ${row.middle_initial}.`,
+      `${row.last_name}, ${row.first_name} ${row.middle_name}`,
     header: "Name",
     cell: ({ row }) => {
-      const { last_name, first_name, middle_initial } = row.original
-      const value = `${last_name}, ${first_name} ${middle_initial}.`
+      const { last_name, first_name, middle_name } = row.original
+      const value = `${last_name}, ${first_name} ${middle_name}`
       return (
         <div className="flex space-x-2">
           <span className="truncate font-medium">{value}</span>
@@ -77,7 +77,7 @@ export const columns: ColumnDef<Member>[] = [
   {
     id: "collector",
     accessorKey: "collector",
-    accessorFn: (originalRow, index) => originalRow.collector?.name,
+    accessorFn: (originalRow, index) => originalRow.collector,
     header: ({ column }) => {
       return (
         <Button

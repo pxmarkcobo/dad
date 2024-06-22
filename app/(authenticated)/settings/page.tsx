@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { addMemberBarangay } from "@/lib/commands"
+import { start } from "@/lib/commands"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -115,14 +115,12 @@ export default function Settings() {
     <>
       <PageHeader title="Settings" />
       <section className="p-4 sm:px-6">
-        {/* <Button onClick={() => addMemberBarangay()}>Run Script</Button> */}
+        {/* <Button onClick={() => start()}>Run Script</Button> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4 pb-4">
               <div className="min-w-0 flex-1 space-y-8">
-                <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Profile
-                </h2>
+                <h2 className="font-semibold">Profile</h2>
                 <FormField
                   control={form.control}
                   name="displayName"

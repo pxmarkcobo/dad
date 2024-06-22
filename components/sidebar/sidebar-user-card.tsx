@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { Button } from "../ui/button"
 import { Skeleton } from "../ui/skeleton"
 
 const logout = async () => {
@@ -33,69 +34,54 @@ export default function UserCard() {
   const { user } = useAuthContext()
 
   if (!user) {
-    return <></>
+    return (
+      <div className="flex flex-row items-center border-t p-2">
+        <div className="mr-4 size-10 min-w-[40px] overflow-hidden rounded outline outline-1 outline-slate-300">
+          <Skeleton className="size-10 rounded-none bg-slate-300" />
+        </div>
+        <div className="flex flex-col gap-1">
+          <Skeleton className="h-4 w-32 bg-slate-300" />
+          <Skeleton className="h-4 w-32 bg-slate-300" />
+        </div>
+        <Skeleton className="ml-4 size-6 bg-slate-300" />
+      </div>
+    )
   }
+
   return (
-    <div className="flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5">
-      <div data-slot="section" className="flex flex-col gap-0.5">
-        <span className="relative">
-          <button
-            id="headlessui-menu-button-:Rfjfalta:"
-            type="button"
-            aria-haspopup="menu"
-            aria-expanded="false"
-            data-headlessui-state=""
-            className="flex w-full cursor-default items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-zinc-950 data-[active]:bg-zinc-950/5 data-[hover]:bg-zinc-950/5 data-[slot=avatar]:*:-m-0.5 data-[slot=avatar]:*:size-7 data-[slot=icon]:*:size-6 data-[slot=icon]:*:shrink-0 data-[slot=icon]:*:data-[active]:fill-zinc-950 data-[slot=icon]:*:data-[current]:fill-zinc-950 data-[slot=icon]:*:data-[hover]:fill-zinc-950 data-[slot=icon]:*:fill-zinc-500 data-[slot=avatar]:*:[--ring-opacity:10%] data-[slot=icon]:last:*:ml-auto data-[slot=icon]:last:*:size-5 dark:text-white dark:data-[active]:bg-white/5 dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white dark:data-[slot=icon]:*:data-[current]:fill-white dark:data-[slot=icon]:*:data-[hover]:fill-white dark:data-[slot=icon]:*:fill-zinc-400 sm:py-2 sm:text-sm/5 sm:data-[slot=avatar]:*:size-6 sm:data-[slot=icon]:*:size-5 sm:data-[slot=icon]:last:*:size-4"
-          >
-            <span
-              className="absolute left-1/2 top-1/2 size-[max(100%,2.75rem)] -translate-x-1/2 -translate-y-1/2 [@media(pointer:fine)]:hidden"
-              aria-hidden="true"
-            ></span>
-            <span className="flex min-w-0 items-center gap-3">
-              <span
-                data-slot="avatar"
-                className="inline-grid size-10 shrink-0 overflow-hidden rounded-[--avatar-radius] align-middle outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 *:rounded-[--avatar-radius] dark:outline-white/[--ring-opacity]"
-              >
-                {user ? (
-                  <Image
-                    src={user?.photoURL ?? ""}
-                    alt="profile-pic"
-                    placeholder="blur"
-                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN0qQcAAQ0AxblT1HMAAAAASUVORK5CYII="
-                    width={100}
-                    height={100}
-                    className="w-100 h-100"
-                  />
-                ) : (
-                  <Skeleton className="w-100 h-100" />
-                )}
-              </span>
-              <span className="min-w-0">
-                <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">
-                  {user?.displayName}
-                </span>
-                <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
-                  {user?.email}
-                </span>
-              </span>
-            </span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <ChevronUp />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link href="/settings">
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                </Link>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </button>
+    <div className="flex flex-row items-center border-t p-4">
+      <div className="mr-3 size-8 min-h-[36px] min-w-[36px] overflow-hidden rounded outline outline-1 outline-slate-300">
+        <Image
+          src={user.photoURL ?? ""}
+          alt="profile-pic"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN0qQcAAQ0AxblT1HMAAAAASUVORK5CYII="
+          width={100}
+          height={100}
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="truncate text-sm font-medium">{user.displayName}</span>
+        <span className="truncate text-xs font-light text-zinc-500 dark:text-zinc-400">
+          {user.email}
         </span>
       </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="outline-none">
+            <ChevronUp />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <Link href="/settings">
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+          </Link>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }

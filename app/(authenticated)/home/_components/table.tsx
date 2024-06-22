@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { useMemberInfo } from "@/contexts/member-info-context"
 import { useQuery } from "@tanstack/react-query"
 import {
   ColumnFiltersState,
@@ -16,6 +17,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import { Member } from "@/lib/schema"
 import { fetchMembers } from "@/lib/utils"
 import {
   Table,
@@ -32,6 +34,8 @@ import TableRowsSkeleton from "./table-rows-loading"
 import { DataTableToolbar } from "./table-toolbar"
 
 export function MembersTable(): JSX.Element {
+  const { setMemberInfo } = useMemberInfo()
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -90,9 +94,9 @@ export function MembersTable(): JSX.Element {
   })
 
   return (
-    <div className="w-full space-y-4">
+    <div className="space-y-4">
       <DataTableToolbar table={table} />
-      <div className="rounded-md border">
+      <div className="rounded-sm border">
         <Table className="table-fixed">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup, index) => (
@@ -112,9 +116,14 @@ export function MembersTable(): JSX.Element {
           </TableHeader>
           <TableBody>
             {status === "pending" && <TableRowsSkeleton />}
-            {status === "success" &&
+            {status === "success" && table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow
+                  className="cursor-pointer	"
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  onClick={() => setMemberInfo(row.original as Member)}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -124,7 +133,17 @@ export function MembersTable(): JSX.Element {
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>

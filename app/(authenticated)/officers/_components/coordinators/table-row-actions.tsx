@@ -29,7 +29,7 @@ export function DataTableRowActions<TData>({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="default">
+        <Button variant="ghost" size="default">
           Edit
         </Button>
       </DialogTrigger>

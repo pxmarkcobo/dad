@@ -2,10 +2,19 @@ import { firestore } from "@/services/firebase"
 import { faker } from "@faker-js/faker"
 import { doc, updateDoc } from "firebase/firestore"
 
-import { fetchCollectors, fetchMembers } from "./utils"
+import { alagads } from "./data/collectors"
+import { fetchCollectors, fetchMembers, postCollectorAPI } from "./utils"
 
 export async function start() {
-  await addCollectorAreaChapel()
+  await populateCollectors()
+}
+
+async function populateCollectors() {
+  for (const alagad of alagads) {
+    console.log("Creating collector:", alagad.name)
+    const response = await postCollectorAPI(alagad)
+    console.log(response)
+  }
 }
 
 async function addCollectorAreaChapel() {

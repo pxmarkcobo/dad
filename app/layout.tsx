@@ -39,16 +39,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          "min-h-screen overflow-auto bg-background font-sans antialiased",
+          "box-border select-none overflow-hidden bg-background font-sans antialiased	",
           fontSans.variable
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthProvider>
             <GlobalDataProvider>
-              <div className="relative flex min-h-screen flex-col">
-                {children}
-              </div>
+              {children}
               <TailwindIndicator />
             </GlobalDataProvider>
           </AuthProvider>

@@ -16,8 +16,8 @@ import {
 
 export default function EmptyCard() {
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="flex flex-row items-center justify-between bg-muted/50 px-6 py-2 ">
+    <Card className="flex h-full flex-col">
+      <CardHeader className="border-1 flex flex-row items-center justify-between border-b bg-muted/50 px-6 py-1">
         <CardTitle className="text-lg"></CardTitle>
         <div className="flex items-center gap-1">
           <DropdownMenu>
@@ -31,12 +31,10 @@ export default function EmptyCard() {
           </DropdownMenu>
         </div>
       </CardHeader>
-      <CardContent className="my-6 p-6 text-sm">
-        <div className="flex h-[560px] w-full items-center justify-center rounded-md">
-          <p className="text-center text-sm text-muted-foreground">
-            Tip: Select a member to display information
-          </p>
-        </div>
+      <CardContent className="flex w-full flex-1 items-center justify-center rounded-md p-6 text-sm">
+        <p className="text-center text-sm text-muted-foreground">
+          Tip: Select a member to display information
+        </p>
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-5">
         <div className="text-xs text-muted-foreground"></div>

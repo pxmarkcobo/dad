@@ -44,7 +44,7 @@ export const delay = (ms: number) =>
  */
 export const formatDate = (
   date: string | Date,
-  dateFormat: string = "MMMM do, yyy"
+  dateFormat: string = "MMMM d, yyy"
 ): string => {
   // Parse the date if it's a string
   const dateObj =

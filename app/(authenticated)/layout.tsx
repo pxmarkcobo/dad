@@ -1,12 +1,20 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthContext } from "@/contexts/auth-context"
 import { useGlobalContext } from "@/contexts/global-context"
 import QueryClientProvider from "@/contexts/query-client-context"
 
+import { cn } from "@/lib/utils"
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Toaster } from "@/components/ui/sonner"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import LoadingScreen from "@/components/loading-screen"
 import Sidebar from "@/components/sidebar/sidebar"
 
@@ -15,6 +23,8 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode
 }) {
+  const [isCollapsed, setIsCollapsed] = useState(true)
+
   const { hydrated } = useGlobalContext()
 
   const router = useRouter()
@@ -30,18 +40,43 @@ export default function AuthenticatedLayout({
     return <LoadingScreen />
   }
   return (
-    <QueryClientProvider>
-      <div className="relative isolate flex min-h-svh w-full bg-white dark:bg-zinc-900 max-lg:flex-col lg:bg-zinc-100 dark:lg:bg-zinc-950">
-        <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">
-          <Sidebar />
-        </div>
-        <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-64 lg:pr-2 lg:pt-2">
-          <div className="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
-            <div className="max-w-8xl mx-auto">{children}</div>
-          </div>
-        </main>
-      </div>
-      <Toaster />
-    </QueryClientProvider>
+    <TooltipProvider delayDuration={0}>
+      <QueryClientProvider>
+        <ResizablePanelGroup
+          direction="horizontal"
+          className="bg-zinc-100 dark:bg-zinc-950"
+        >
+          <ResizablePanel
+            defaultSize={4}
+            minSize={15}
+            maxSize={20}
+            collapsedSize={4}
+            defaultChecked
+            collapsible={true}
+            onCollapse={() => {
+              setIsCollapsed(true)
+            }}
+            onExpand={() => {
+              setIsCollapsed(false)
+            }}
+            className={cn(
+              isCollapsed && "min-w-[50px]",
+              "h-screen max-w-[240px] transition-all duration-300 ease-in-out max-lg:hidden"
+            )}
+          >
+            <Sidebar collapsed={isCollapsed} />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel
+            className="m-1 h-screen bg-white p-4 dark:bg-zinc-900 lg:rounded-lg lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:ring-white/10"
+            defaultSize={80}
+            minSize={80}
+          >
+            {children}
+          </ResizablePanel>
+        </ResizablePanelGroup>
+        <Toaster />
+      </QueryClientProvider>
+    </TooltipProvider>
   )
 }

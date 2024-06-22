@@ -5,6 +5,7 @@ import { notFound, useRouter } from "next/navigation"
 
 import { Member } from "@/lib/schema"
 import { fetchMemberByID } from "@/lib/utils"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import PageHeader from "@/components/header/page-header"
 import LoadingScreen from "@/components/loading-screen"
 
@@ -34,11 +35,11 @@ export default function EditMember({ params }: { params: { id: string } }) {
     fetchData()
   }, [params.id, router])
   return (
-    <>
+    <div className="flex h-full flex-col">
       <PageHeader title="Edit Member" />
-      <section className="p-4 sm:px-6">
+      <ScrollArea className="flex-1 p-4 sm:px-6">
         {loading ? <LoadingScreen /> : <MemberForm initial={member} />}
-      </section>
-    </>
+      </ScrollArea>
+    </div>
   )
 }

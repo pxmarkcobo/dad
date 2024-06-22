@@ -36,13 +36,13 @@ export function OfficerTabs() {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="coordinators">
-        <div className="pt-6">
+        <div className="pt-2">
           <RegisterCoordinator />
           <CoordinatorsTable />
         </div>
       </TabsContent>
       <TabsContent value="collectors">
-        <div className="pt-6">
+        <div className="pt-2">
           <RegisterCollector />
           <CollectorsTable />
         </div>

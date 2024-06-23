@@ -1,10 +1,11 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useMemberInfo } from "@/contexts/member-info-context"
-import { useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import {
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -16,9 +17,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { DocumentSnapshot } from "firebase/firestore"
 
 import { Member } from "@/lib/schema"
-import { fetchMembers } from "@/lib/utils"
+import { fetchMembers, fetchTotalMembersCount } from "@/lib/utils"
 import {
   Table,
   TableBody,
@@ -35,6 +37,16 @@ import { DataTableToolbar } from "./table-toolbar"
 
 export function MembersTable(): JSX.Element {
   const { setMemberInfo } = useMemberInfo()
+  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null)
+  const [pageCount, setPageCount] = useState<number>(-1)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const total = await fetchTotalMembersCount()
+      setPageCount(Math.ceil(total / 10))
+    }
+    fetch()
+  }, [])
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -44,50 +56,59 @@ export function MembersTable(): JSX.Element {
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
-  // const [{ pageIndex, pageSize }, setPagination] =
-  //   React.useState<PaginationState>({
-  //     pageIndex: 0,
-  //     pageSize: 10,
-  //   })
-  // const pagination = React.useMemo(
-  //   () => ({
-  //     pageIndex,
-  //     pageSize,
-  //   }),
-  //   [pageIndex, pageSize]
-  // )
+  const [{ pageIndex, pageSize }, setPagination] =
+    React.useState<PaginationState>({
+      pageIndex: 0,
+      pageSize: 10,
+    })
+  const pagination = React.useMemo(
+    () => ({
+      pageIndex,
+      pageSize,
+    }),
+    [pageIndex, pageSize]
+  )
 
-  // const fetchDataOptions = {
-  //   pageIndex,
-  //   pageSize,
-  // }
+  const fetchDataOptions = {
+    pageIndex,
+    pageSize,
+    lastDoc,
+  }
 
   const { status, data } = useQuery({
-    queryKey: ["members"],
-    queryFn: () => fetchMembers(),
+    queryKey: ["members", pagination],
+    queryFn: () => fetchMembers(fetchDataOptions),
+    placeholderData: keepPreviousData,
   })
+
+  useEffect(() => {
+    if (status == "success") {
+      setLastDoc(data.lastDoc ?? null)
+    }
+  }, [status, data])
 
   const defaultData = React.useMemo(() => [], [])
 
   const table = useReactTable({
-    data: data ?? defaultData,
+    data: data?.rows ?? defaultData,
     columns: columns,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination,
     },
-    // manualPagination: true,
-    // pageCount: dataQuery.data?.pageCount ?? -1,
-    // onPaginationChange: setPagination,
+    manualPagination: true,
+    pageCount: pageCount,
+    onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),

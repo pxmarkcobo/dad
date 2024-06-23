@@ -4,14 +4,17 @@ import { clsx, type ClassValue } from "clsx"
 import { format, parse, parseISO } from "date-fns"
 import {
   DocumentReference,
+  DocumentSnapshot,
   addDoc,
   collection,
   doc,
+  getCountFromServer,
   getDoc,
   getDocs,
   limit,
   orderBy,
   query,
+  startAfter,
   updateDoc,
 } from "firebase/firestore"
 import { twMerge } from "tailwind-merge"
@@ -54,11 +57,28 @@ export const formatDate = (
   return format(dateObj, dateFormat)
 }
 
-export async function fetchMembers() {
+export async function fetchTotalMembersCount() {
   const memberCollection = collection(firestore, "members")
-  const q = query(memberCollection)
+  const snapshot = await getCountFromServer(memberCollection)
+  const total = snapshot.data().count
+  return total
+}
 
+export async function fetchMembers(options: {
+  pageIndex: number
+  pageSize: number
+  lastDoc: DocumentSnapshot | null
+}) {
+  const memberCollection = collection(firestore, "members")
+
+  const q = query(
+    memberCollection,
+    orderBy("zone"),
+    startAfter(options.lastDoc),
+    limit(options.pageSize)
+  )
   const querySnapshot = await getDocs(q)
+  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
   const members: any[] = querySnapshot.docs.map(async (doc) => {
     const { success, error, data } = MemberSchema.safeParse({
       id: doc.id,
@@ -71,8 +91,13 @@ export async function fetchMembers() {
       console.error(error.issues)
     }
   })
-  const response = await Promise.all(members)
-  return response
+
+  const data = await Promise.all(members)
+  console.log(data)
+  return {
+    rows: data,
+    lastDoc: lastDoc,
+  }
 }
 
 export async function fetchMemberByID(id: string) {

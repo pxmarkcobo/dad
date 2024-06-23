@@ -22,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import PageHeader from "@/components/header/page-header"
 
 const FileSchema = z.object({
@@ -112,106 +113,108 @@ export default function Settings() {
   }
 
   return (
-    <>
+    <div className="flex h-full flex-col">
       <PageHeader title="Settings" />
-      <section className="p-4 sm:px-6">
-        {/* <Button onClick={() => start()}>Run Script</Button> */}
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="space-y-4 pb-4">
-              <div className="min-w-0 flex-1 space-y-8">
-                <h2 className="font-semibold">Profile</h2>
-                <FormField
-                  control={form.control}
-                  name="displayName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
-                        Display name
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 sm:max-w-sm"
-                          placeholder="Please set the full name"
-                          required={true}
-                          autoComplete="off"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Email
-                  </label>
-                  <Input
-                    disabled={true}
-                    type="text"
-                    value={user?.email ?? ""}
-                    className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 sm:max-w-sm"
+      <ScrollArea className="flex-1 p-4 sm:px-6">
+        <section className="p-4 sm:px-6">
+          <Button onClick={() => start()}>Run Script</Button>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="space-y-4 pb-4">
+                <div className="min-w-0 flex-1 space-y-8">
+                  <h2 className="font-semibold">Profile</h2>
+                  <FormField
+                    control={form.control}
+                    name="displayName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
+                          Display name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 sm:max-w-sm"
+                            placeholder="Please set the full name"
+                            required={true}
+                            autoComplete="off"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div>
+                    <label
+                      htmlFor="username"
+                      className="mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Email
+                    </label>
+                    <Input
+                      disabled={true}
+                      type="text"
+                      value={user?.email ?? ""}
+                      className="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 sm:max-w-sm"
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="photoURL"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
+                          Photo
+                        </FormLabel>
+                        <FormControl>
+                          <div className="flex items-center gap-4 align-middle">
+                            <span
+                              data-slot="avatar"
+                              className="inline-grid size-16 shrink-0 overflow-hidden rounded-[--avatar-radius] align-middle outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 *:rounded-[--avatar-radius] dark:outline-white/[--ring-opacity]"
+                            >
+                              <Image
+                                src={field.value}
+                                alt=""
+                                width={100}
+                                height={100}
+                              />
+                            </span>
+                            <div className="flex flex-col text-sm leading-6 text-gray-600">
+                              <label
+                                htmlFor="file-upload"
+                                className="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500"
+                              >
+                                <span>Upload a file</span>
+                                <Input
+                                  id="file-upload"
+                                  type="file"
+                                  className="sr-only"
+                                  onChange={handleFileChange}
+                                />
+                              </label>
+                              <p className="text-xs leading-5 text-gray-600">
+                                PNG, JPG, GIF up to 5MB
+                              </p>
+                            </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
-                <FormField
-                  control={form.control}
-                  name="photoURL"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="col-span-1 mb-2 ml-auto block text-sm font-medium text-gray-900 dark:text-white">
-                        Photo
-                      </FormLabel>
-                      <FormControl>
-                        <div className="flex items-center gap-4 align-middle">
-                          <span
-                            data-slot="avatar"
-                            className="inline-grid size-16 shrink-0 overflow-hidden rounded-[--avatar-radius] align-middle outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 *:rounded-[--avatar-radius] dark:outline-white/[--ring-opacity]"
-                          >
-                            <Image
-                              src={field.value}
-                              alt=""
-                              width={100}
-                              height={100}
-                            />
-                          </span>
-                          <div className="flex flex-col text-sm leading-6 text-gray-600">
-                            <label
-                              htmlFor="file-upload"
-                              className="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none hover:text-indigo-500"
-                            >
-                              <span>Upload a file</span>
-                              <Input
-                                id="file-upload"
-                                type="file"
-                                className="sr-only"
-                                onChange={handleFileChange}
-                              />
-                            </label>
-                            <p className="text-xs leading-5 text-gray-600">
-                              PNG, JPG, GIF up to 5MB
-                            </p>
-                          </div>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
-            </div>
-            <Button
-              className="float-left mt-2"
-              type="submit"
-              disabled={form.formState.isSubmitting}
-            >
-              Save Changes
-            </Button>
-          </form>
-        </Form>
-      </section>
-    </>
+              <Button
+                className="float-left mt-2"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                Save Changes
+              </Button>
+            </form>
+          </Form>
+        </section>
+      </ScrollArea>
+    </div>
   )
 }

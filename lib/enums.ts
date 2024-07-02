@@ -10,6 +10,7 @@ export enum FamilyRelationChoices {
   Husband = "Husband",
   Wife = "Wife",
   Others = "Others",
+  LiveInPartner = "Live-in Partner",
 }
 
 export enum CivilStatusChoices {

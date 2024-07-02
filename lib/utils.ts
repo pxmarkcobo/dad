@@ -1,10 +1,8 @@
 import { firestore } from "@/services/firebase"
-import { faker } from "@faker-js/faker"
 import { ColumnFiltersState } from "@tanstack/react-table"
 import { clsx, type ClassValue } from "clsx"
-import { format, parse, parseISO } from "date-fns"
+import { format, parse } from "date-fns"
 import {
-  DocumentReference,
   DocumentSnapshot,
   QueryConstraint,
   addDoc,
@@ -21,16 +19,14 @@ import {
   where,
 } from "firebase/firestore"
 import { twMerge } from "tailwind-merge"
+import { utils, writeFileXLSX } from "xlsx"
 
 import {
-  Beneficiary,
-  BeneficiarySchema,
   Collector,
   CollectorSchema,
   Coordinator,
   CoordinatorSchema,
   Member,
-  MemberRelationsSchema,
   MemberSchema,
 } from "./schema"
 
@@ -67,7 +63,7 @@ export async function fetchTotalMembersCount() {
   return total
 }
 
-export async function fetchMembers(options: {
+export async function fetchMembersPaginated(options: {
   pageSize: number
   lastDoc: DocumentSnapshot | null
   filters: ColumnFiltersState
@@ -153,51 +149,13 @@ export async function postMemberAPI(payload: unknown) {
   }
 
   let { id: memberID, ...memberFields } = data
-  // const dependents: any[] = [...memberFields.dependents]
 
   if (!memberID) {
-    // Create beneficiaries
-    const beneficiaryCollection = collection(firestore, "beneficiaries")
-
-    // const dependentRefs = []
-    // for (const dependent of dependents) {
-    //   const dependentRef = await addDoc(beneficiaryCollection, dependent)
-    //   console.log("Beneficiary document written with ID: ", dependentRef.id)
-    //   dependentRefs.push(dependentRef)
-    //   dependent.id = dependentRef.id
-    // }
-
-    // memberFields.dependents = dependentRefs
-
-    // Create member
     const memberCollection = collection(firestore, "members")
     const memberRef = await addDoc(memberCollection, memberFields)
     memberID = memberRef.id
     console.log("Member document written with ID: ", memberRef.id)
   } else {
-    // Update beneficiaries
-    // const beneficiaryCollection = collection(firestore, "beneficiaries")
-
-    // const dependentRefs = []
-    // for (const dependent of dependents) {
-    //   const { id, ...data } = dependent
-    //   if (!id) {
-    //     const dependentRef = await addDoc(beneficiaryCollection, dependent)
-    //     console.log("Beneficiary document written with ID: ", dependentRef.id)
-    //     dependentRefs.push(dependentRef)
-    //     dependent.id = dependentRef.id
-    //     // create
-    //   } else {
-    //     // update
-    //     const dependentRef = doc(firestore, "beneficiaries", id as string)
-    //     await updateDoc(dependentRef, data)
-    //     console.log("Beneficiary document updated with ID: ", dependentRef.id)
-    //     dependentRefs.push(dependentRef)
-    //   }
-    // }
-
-    // memberFields.dependents = dependentRefs
-    // Update member
     const memberRef = doc(firestore, "members", memberID as string)
     await updateDoc(memberRef, memberFields)
     console.log("Member document updated with ID: ", memberRef.id)
@@ -207,45 +165,8 @@ export async function postMemberAPI(payload: unknown) {
     data: {
       id: memberID,
       ...memberFields,
-      // dependents: dependents,
     },
   }
-}
-
-export async function updateMemberRelations(payload: unknown) {
-  const { success, error, data } = MemberRelationsSchema.safeParse(payload)
-
-  if (!success) {
-    let formErrors = {}
-    error.issues.forEach((issue) => {
-      formErrors = { ...formErrors, [issue.path[0]]: issue.message }
-    })
-
-    return {
-      success: false,
-      error_message: formErrors,
-    }
-  }
-
-  // TODO: try-catch
-  const memberRef = doc(firestore, "members", data.memberID)
-  const fields: any = {
-    primary_beneficiary: "",
-    collector: doc(firestore, "collectors", data.collector.id as string),
-  }
-
-  if (data.primaryBeneficiary) {
-    fields.primary_beneficiary = doc(
-      firestore,
-      "beneficiaries",
-      data.primaryBeneficiary.id as string
-    )
-  }
-  console.log("Fields", fields)
-  await updateDoc(memberRef, fields)
-  console.log(`Member with ID ${data.memberID} relation updated`)
-
-  return { success: true }
 }
 
 export async function fetchCollectors() {
@@ -350,4 +271,157 @@ export async function postCoordinatorAPI(payload: unknown) {
     console.log(`Coordinator with ID ${id} updated`)
   }
   return { success: true, data: { id, ...fields } }
+}
+
+// Admin Actions
+
+const REPORT_TEMPLATE = [
+  ["Registration Date: "],
+  ["Confirmed by the Board: "],
+  [],
+  [
+    "Count",
+    "Registration Date",
+    "Name",
+    "Date of Birth",
+    "Sex",
+    "Isolated",
+    "Widowed",
+    "Live-In",
+    "Civil Status",
+    "Primary Beneficiary",
+    "Dependent",
+    "Date of Birth (Dependent)",
+    "Relation",
+    "Zone",
+    "Chapel",
+    "Barangay",
+    "Sitio",
+    "Selda",
+    "Alagad",
+    "Amount Paid",
+    "Remarks",
+  ],
+]
+
+export async function generateRegistrationReport({
+  registration_date,
+}: {
+  registration_date: string
+}) {
+  console.log({ registration_date })
+
+  const memberCollection = collection(firestore, "members")
+
+  let queryParams: QueryConstraint[] = [
+    where("registration_date", "==", registration_date),
+  ]
+
+  const q = query(memberCollection, orderBy("zone"), ...queryParams)
+  const querySnapshot = await getDocs(q)
+
+  const data: any[] = querySnapshot.docs.map(async (doc) => {
+    const { success, error, data } = MemberSchema.safeParse({
+      id: doc.id,
+      ...doc.data(),
+    })
+
+    if (success) {
+      return data as Member
+    } else {
+      console.error(error.issues)
+    }
+  })
+  const members: Member[] = await Promise.all(data)
+
+  let csv: any = REPORT_TEMPLATE
+  csv[0][0] = `Registration Date: ${registration_date}`
+
+  let order = 1
+  for (const member of members) {
+    let memberCSV = [
+      [
+        order,
+        member.registration_date,
+        `${member.last_name}, ${member.first_name} ${member.middle_name}`,
+        member.birth_date,
+        member.sex,
+        member.isolated,
+        member.widowed,
+        member.live_in,
+        member.civil_status,
+        member.primary_beneficiary,
+        ,
+        ,
+        ,
+        member.zone,
+        member.chapel,
+        member.barangay,
+        member.sitio,
+        member.selda,
+        member.collector,
+        member.amount,
+        member.remarks,
+      ],
+    ]
+    console.log({ member })
+    console.log(member.dependents.length)
+    if (member.dependents.length != 0) {
+      let index = 0
+      for (const dependent of member.dependents) {
+        if (index == 0) {
+          memberCSV[0][10] = dependent.name
+          memberCSV[0][11] = dependent.birth_date
+          memberCSV[0][12] = dependent.relation
+        } else {
+          let dependentRow = new Array(13)
+          dependentRow[10] = dependent.name
+          dependentRow[11] = dependent.birth_date
+          dependentRow[12] = dependent.relation
+          memberCSV.push(dependentRow)
+        }
+        index += 1
+      }
+    }
+    order += 1
+    csv.push(...memberCSV)
+  }
+
+  csv = csv.concat([[], [], []])
+  csv.push([, , "Prepared by:", , , , "Noted by:", , , , "Summary:"])
+  csv.push([, , , , , , , , , , "New Members", members.length])
+  csv.push([
+    ,
+    ,
+    "Doris Teodora N. Crodua",
+    ,
+    ,
+    ,
+    "Hermes R. Estrada",
+    ,
+    ,
+    ,
+    "Assumed Membership",
+    0,
+  ])
+  csv.push([
+    ,
+    ,
+    "Secretary",
+    ,
+    ,
+    ,
+    "President",
+    ,
+    ,
+    ,
+    "Total Additional Members",
+    members.length,
+  ])
+
+  const ws = utils.aoa_to_sheet(csv)
+  const wb = utils.book_new()
+  utils.book_append_sheet(wb, ws, "Registration Report")
+  writeFileXLSX(wb, `RegistrationReport-${registration_date}.xlsx`)
+  console.log({ csv })
 }

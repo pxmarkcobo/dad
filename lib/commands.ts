@@ -1,17 +1,8 @@
 import { firestore } from "@/services/firebase"
-import { faker } from "@faker-js/faker"
-import {
-  collection,
-  doc,
-  getCountFromServer,
-  updateDoc,
-} from "firebase/firestore"
-
-import { alagads } from "./data/collectors"
-import { fetchCollectors, fetchMembers, postCollectorAPI } from "./utils"
+import { collection, getCountFromServer } from "firebase/firestore"
 
 export async function start() {
-  await fetchTotalCount()
+  // await fetchTotalCount()
 }
 
 // async function populateCollectors() {
@@ -55,8 +46,8 @@ export async function start() {
 //   }
 // }
 
-export async function fetchTotalCount() {
-  const coll = collection(firestore, "members")
-  const snapshot = await getCountFromServer(coll)
-  console.log("count: ", snapshot.data().count)
-}
+// export async function fetchTotalCount() {
+//   const coll = collection(firestore, "members")
+//   const snapshot = await getCountFromServer(coll)
+//   console.log("count: ", snapshot.data().count)
+// }

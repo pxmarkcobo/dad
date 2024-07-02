@@ -21,7 +21,7 @@ import {
 import { DocumentSnapshot } from "firebase/firestore"
 
 import { Member } from "@/lib/schema"
-import { fetchMembers, fetchTotalMembersCount } from "@/lib/utils"
+import { fetchMembersPaginated, fetchTotalMembersCount } from "@/lib/utils"
 import {
   Table,
   TableBody,
@@ -70,7 +70,7 @@ export function MembersTable(): JSX.Element {
   const { status, data } = useQuery({
     queryKey: ["members", { ...pagination, columnFilters }],
     queryFn: () =>
-      fetchMembers({ ...fetchDataOptions, filters: columnFilters }),
+      fetchMembersPaginated({ ...fetchDataOptions, filters: columnFilters }),
     placeholderData: keepPreviousData,
   })
 

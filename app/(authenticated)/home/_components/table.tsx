@@ -5,6 +5,7 @@ import { useMemberInfo } from "@/contexts/member-info-context"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import {
   ColumnFiltersState,
+  OnChangeFn,
   PaginationState,
   SortingState,
   VisibilityState,
@@ -38,15 +39,6 @@ import { DataTableToolbar } from "./table-toolbar"
 export function MembersTable(): JSX.Element {
   const { setMemberInfo } = useMemberInfo()
   const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null)
-  const [pageCount, setPageCount] = useState<number>(-1)
-
-  useEffect(() => {
-    const fetch = async () => {
-      const total = await fetchTotalMembersCount()
-      setPageCount(Math.ceil(total / 10))
-    }
-    fetch()
-  }, [])
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -76,8 +68,9 @@ export function MembersTable(): JSX.Element {
   }
 
   const { status, data } = useQuery({
-    queryKey: ["members", pagination],
-    queryFn: () => fetchMembers(fetchDataOptions),
+    queryKey: ["members", { ...pagination, columnFilters }],
+    queryFn: () =>
+      fetchMembers({ ...fetchDataOptions, filters: columnFilters }),
     placeholderData: keepPreviousData,
   })
 
@@ -85,7 +78,15 @@ export function MembersTable(): JSX.Element {
     if (status == "success") {
       setLastDoc(data.lastDoc ?? null)
     }
-  }, [status, data])
+  }, [status, data, columnFilters])
+
+  const updateColumnFilters: OnChangeFn<ColumnFiltersState> = (
+    updaterOrValue
+  ) => {
+    setPagination({ pageIndex: 0, pageSize: 10 })
+    setLastDoc(null)
+    setColumnFilters(updaterOrValue)
+  }
 
   const defaultData = React.useMemo(() => [], [])
 
@@ -100,11 +101,11 @@ export function MembersTable(): JSX.Element {
       pagination,
     },
     manualPagination: true,
-    pageCount: pageCount,
+    rowCount: data?.rowCount,
     onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onColumnFiltersChange: updateColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

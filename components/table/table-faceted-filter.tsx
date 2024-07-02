@@ -33,7 +33,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues()
+  // const facets = column?.getFacetedUniqueValues()
   const selectedValues = new Set(column?.getFilterValue() as string[])
 
   return (
@@ -111,11 +111,11 @@ export function DataTableFacetedFilter<TData, TValue>({
                       <CheckIcon className={cn("size-4")} />
                     </div>
                     <span className="text-nowrap">{option}</span>
-                    {facets?.get(option) && (
+                    {/* {facets?.get(option) && (
                       <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
                         {facets.get(option)}
                       </span>
-                    )}
+                    )} */}
                   </CommandItem>
                 )
               })}

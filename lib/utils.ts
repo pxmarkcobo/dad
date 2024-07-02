@@ -1,10 +1,12 @@
 import { firestore } from "@/services/firebase"
 import { faker } from "@faker-js/faker"
+import { ColumnFiltersState } from "@tanstack/react-table"
 import { clsx, type ClassValue } from "clsx"
 import { format, parse, parseISO } from "date-fns"
 import {
   DocumentReference,
   DocumentSnapshot,
+  QueryConstraint,
   addDoc,
   collection,
   doc,
@@ -16,6 +18,7 @@ import {
   query,
   startAfter,
   updateDoc,
+  where,
 } from "firebase/firestore"
 import { twMerge } from "tailwind-merge"
 
@@ -65,19 +68,33 @@ export async function fetchTotalMembersCount() {
 }
 
 export async function fetchMembers(options: {
-  pageIndex: number
   pageSize: number
   lastDoc: DocumentSnapshot | null
+  filters: ColumnFiltersState
 }) {
+  console.log({ options })
+
   const memberCollection = collection(firestore, "members")
 
-  const q = query(
-    memberCollection,
-    orderBy("zone"),
+  let queryParams: QueryConstraint[] = []
+  for (const filter of options.filters) {
+    queryParams.push(where(filter.id, "in", filter.value as string[]))
+  }
+
+  let q = query(memberCollection, ...queryParams)
+  const countQuerySnapshot = await getCountFromServer(q)
+  const total = countQuerySnapshot.data().count
+  console.log({ total })
+
+  queryParams = queryParams.concat([
     startAfter(options.lastDoc),
-    limit(options.pageSize)
-  )
+    limit(options.pageSize),
+  ])
+  console.log({ queryParams })
+
+  q = query(memberCollection, orderBy("zone"), ...queryParams)
   const querySnapshot = await getDocs(q)
+
   const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1]
   const members: any[] = querySnapshot.docs.map(async (doc) => {
     const { success, error, data } = MemberSchema.safeParse({
@@ -93,10 +110,11 @@ export async function fetchMembers(options: {
   })
 
   const data = await Promise.all(members)
-  console.log(data)
+
   return {
     rows: data,
     lastDoc: lastDoc,
+    rowCount: total,
   }
 }
 
